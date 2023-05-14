@@ -1,16 +1,49 @@
 import { FormControl, Box, Typography } from "@mui/material";
-import Logo from "../Logo/Logo";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import Logo from "../../Logo/Logo";
 import { data, dataTextField } from "./logInData";
-import TextFieldInput from "../Form/TextFieldInput ";
+import TextFieldInput from "../../Form/TextFieldInput ";
 import { useState } from "react";
 import styles from "./LogIn.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import auth from "../../firebase";
+import { useCookies } from "react-cookie";
 
 const LogIn = () => {
-  const [selectedValue, setSelectedValue] = useState({
+  const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const [cookies, setCookies] = useCookies(["token"]);
+  const history = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, userData.email, userData.password)
+      .then((userCredential) => {
+        const accessToken = userCredential.user.accessToken;
+        setCookies("token", accessToken, { path: "/" });
+        history("/home");
+      })
+      .catch((error) => {
+        let message = error.message;
+        let code = error.code;
+        if (code === "auth/user-not-found") {
+          message = "The email you entered isn’t connected to an account.";
+          setError(message);
+        } else if (code === "auth/wrong-password") {
+          message = "The password you’ve entered is incorrect.";
+          setError(message);
+        } else if (code === "auth/invalid-email") {
+          message = "Invalid email.";
+          setError(message);
+        } else if (code === "auth/missing-password") {
+          message = "Enter the password.";
+          setError(message);
+        }
+      });
+  };
   return (
     <Box
       display="flex"
@@ -42,16 +75,16 @@ const LogIn = () => {
           marginTop="40px"
           width="396px"
         >
-          <FormControl component="form" onSubmit={""} fullWidth>
+          <FormControl component="form" onSubmit={handleSubmit} fullWidth>
             {dataTextField.map((data) => (
               <TextFieldInput
                 key={data.id}
                 {...data}
-                value={selectedValue[data.value]}
+                value={userData[data.value]}
                 onChange={(e) =>
-                  setSelectedValue({
-                    ...selectedValue,
-                    [data.value]: e.target.value,
+                  setUserData({
+                    ...userData,
+                    [data.name]: e.target.value,
                   })
                 }
               />
@@ -67,6 +100,14 @@ const LogIn = () => {
                 </Typography>
               </Box>
             ))}
+            <Typography
+              variant="h6"
+              color="error"
+              fontSize="0.67em"
+              marginTop="10px"
+            >
+              {error}
+            </Typography>
           </FormControl>
         </Box>
         <Typography className={styles.text}>

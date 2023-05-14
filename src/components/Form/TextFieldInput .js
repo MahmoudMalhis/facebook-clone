@@ -6,7 +6,7 @@ import {
   RadioGroup,
   Radio,
 } from "@mui/material";
-import styles from "../SignUp/Signup.module.css";
+import styles from "../pages/SignUp/Signup.module.css";
 
 const TextFieldInput = ({
   id,
@@ -20,38 +20,40 @@ const TextFieldInput = ({
   onChange,
   isRadio,
   label,
+  name,
   ...rest
 }) => {
   return (
     <Box key={id}>
-      <RadioGroup value={value} onChange={onChange}>
-        {isRadio && (
+      {isRadio ? (
+        <RadioGroup value={value} onChange={onChange}>
           <FormControlLabel
             className={styles.label}
             value={label}
             label={label}
             control={<Radio />}
           />
-        )}
-      </RadioGroup>
-      <TextField
-        placeholder={placeholder}
-        size="small"
-        margin="dense"
-        fullWidth={fullWidth}
-        type={type}
-        select={isSelect ? true : false}
-        value={value}
-        onChange={onChange}
-        name={rest.name}
-      >
-        {isSelect &&
-          option.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-      </TextField>
+        </RadioGroup>
+      ) : (
+        <TextField
+          placeholder={placeholder}
+          size="small"
+          margin="dense"
+          fullWidth={fullWidth}
+          type={type}
+          select={isSelect ? true : false}
+          value={value}
+          onChange={onChange}
+          name={name}
+        >
+          {isSelect &&
+            option.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+        </TextField>
+      )}
     </Box>
   );
 };

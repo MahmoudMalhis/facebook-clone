@@ -12,6 +12,7 @@ export const dataTextField = [
     fullWidth: false,
     type: "email",
     value: "email",
+    name: "email",
     onChange: (e) => {},
   },
   {
@@ -20,12 +21,14 @@ export const dataTextField = [
     fullWidth: false,
     type: "password",
     value: "password",
+    name: "password",
     onChange: (e) => {},
   },
   {
     id: 3,
     label: "Log In",
     type: "submit",
+    name: "submit",
   },
 ];
 

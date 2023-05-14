@@ -1,11 +1,11 @@
 import { FormControl, Box, Typography } from "@mui/material";
-import Logo from "../Logo/Logo";
+import Logo from "../../Logo/Logo";
 import { dataHeader, dataTextField, data } from "./data";
 import { useState } from "react";
 import styles from "./Signup.module.css";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import auth from "../firebase";
-import TextFieldInput from "../Form/TextFieldInput ";
+import auth from "../../firebase";
+import TextFieldInput from "../../Form/TextFieldInput ";
 
 const SignUp = () => {
   const [selectedValue, setSelectedValue] = useState({
