@@ -6,6 +6,7 @@ import styles from "./Signup.module.css";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../firebase";
 import TextFieldInput from "../Form/TextFieldInput ";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const [selectedValue, setSelectedValue] = useState({
@@ -77,10 +78,14 @@ const SignUp = () => {
               }
             />
           ))}
-          {data.map(({ id, label, variant, question }) => (
+          {data.map(({ id, label, variant, question, isAccount }) => (
             <Box key={id} className={styles.input}>
               <Typography variant={variant}>
-                {label} {question}
+                {isAccount ? (
+                  <Link to="/">{label}</Link>
+                ) : (
+                  `${label}${question}`
+                )}
               </Typography>
             </Box>
           ))}

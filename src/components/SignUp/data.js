@@ -228,5 +228,6 @@ export const data = [
     id: 5,
     label: "Already have an account?",
     variant: "anchor",
+    isAccount: true,
   },
 ];

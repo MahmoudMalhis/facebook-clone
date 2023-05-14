@@ -205,9 +205,13 @@
 .input:nth-child(16) {
     padding-top: 10px;
     margin-top: 10px;
-    color: #1877f2;
     font-size: 17px;
     line-height: 20px;
     cursor: pointer;
     order: 10
+}
+
+.input:nth-child(16) a {
+    text-decoration: none;
+    color: #1877f2;
 }
