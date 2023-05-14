@@ -46,40 +46,40 @@
     flex-wrap: wrap;
 }
 
-.input:nth-child(1) {
+.form>div:nth-child(1) {
     margin-right: 8px;
     width: 194px;
     order: 1
 }
 
-.input:nth-child(2) {
+.form>div:nth-child(2) {
     width: 194px;
     order: 2
 }
 
-.input:nth-child(3),
-.input:nth-child(4) {
+.form>div:nth-child(3),
+.form>div:nth-child(4) {
     width: 395px;
     order: 3
 }
 
 
 
-.input:nth-child(6),
-.input:nth-child(7) {
+.form>div:nth-child(6),
+.form>div:nth-child(7) {
     margin-left: 10px;
 }
 
-.input:nth-child(5),
-.input:nth-child(6),
-.input:nth-child(7) {
+.form>div:nth-child(5),
+.form>div:nth-child(6),
+.form>div:nth-child(7) {
     width: 125px;
     order: 5
 }
 
-.input:nth-child(8),
-.input:nth-child(9),
-.input:nth-child(10) {
+.form>div:nth-child(8),
+.form>div:nth-child(9),
+.form>div:nth-child(10) {
     display: flex;
     align-items: center;
     width: 103px;
@@ -92,17 +92,17 @@
     order: 7
 }
 
-.input:nth-child(8) {
+.form>div:nth-child(8) {
     margin-left: 0;
 }
 
-.input:nth-child(10) {
+.form>div:nth-child(10) {
     margin-right: 0;
 }
 
-.input:nth-child(8) fieldset,
-.input:nth-child(9) fieldset,
-.input:nth-child(10) fieldset {
+.form>div:nth-child(8) fieldset,
+.form>div:nth-child(9) fieldset,
+.form>div:nth-child(10) fieldset {
     display: none;
 }
 
@@ -114,8 +114,8 @@
     width: 100%;
 }
 
-.input:nth-child(12) p,
-.input:nth-child(13) p {
+.form>div:nth-child(12) p,
+.form>div:nth-child(13) p {
     color: #606770;
     font-family: SFProText-Medium, Helvetica, Arial, sans-serif;
     font-size: 12px;
@@ -125,8 +125,8 @@
     margin-top: 2px;
 }
 
-.input:nth-child(12) p svg,
-.input:nth-child(13) p svg {
+.form>div:nth-child(12) p svg,
+.form>div:nth-child(13) p svg {
     width: 12px;
     height: 12px;
     color: #e2e4e5;
@@ -134,49 +134,49 @@
     border-radius: 50%;
 }
 
-.input:nth-child(12) {
+.form>div:nth-child(12) {
     order: 4;
     width: 100%;
 
 }
 
-.input:nth-child(13) {
+.form>div:nth-child(13) {
     order: 6;
     width: 100%;
 
 }
 
-.input:nth-child(14) p,
-.input:nth-child(15) p {
+.form>div:nth-child(14) p,
+.form>div:nth-child(15) p {
     color: #777;
     font-size: 11px;
     margin: 1em 0;
     order: 8
 }
 
-.input:nth-child(14) a,
-.input:nth-child(15) a {
+.form>div:nth-child(14) a,
+.form>div:nth-child(15) a {
     color: #385898;
     cursor: pointer;
     text-decoration: none;
 }
 
-.input:nth-child(14) a:hover,
-.input:nth-child(15) a:hover {
+.form>div:nth-child(14) a:hover,
+.form>div:nth-child(15) a:hover {
     text-decoration: underline;
 }
 
 
-.input:nth-child(14),
-.input:nth-child(15) {
+.form>div:nth-child(14),
+.form>div:nth-child(15) {
     order: 8
 }
 
-.input:nth-child(11) {
+.form>div:nth-child(11) {
     order: 9
 }
 
-.input:nth-child(11) input {
+.form>div:nth-child(11) input {
     background: none;
     background-color: #00a400;
     border: none;
@@ -197,12 +197,12 @@
     order: 9
 }
 
-.input:nth-child(11) input:hover {
+.form>div:nth-child(11) input:hover {
     opacity: 0.8;
     outline: none;
 }
 
-.input:nth-child(16) {
+.form>div:nth-child(16) {
     padding-top: 10px;
     margin-top: 10px;
     font-size: 17px;
@@ -211,7 +211,7 @@
     order: 10
 }
 
-.input:nth-child(16) a {
+.form>div:nth-child(16) a {
     text-decoration: none;
     color: #1877f2;
 }
