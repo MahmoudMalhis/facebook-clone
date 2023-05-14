@@ -23,7 +23,7 @@ const TextFieldInput = ({
   ...rest
 }) => {
   return (
-    <Box className={styles.input} key={id}>
+    <Box key={id}>
       <RadioGroup value={value} onChange={onChange}>
         {isRadio && (
           <FormControlLabel
