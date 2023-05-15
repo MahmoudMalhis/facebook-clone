@@ -137,36 +137,36 @@ export const dataTextField = [
   },
   {
     id: 8,
+    label: "Sign Up",
+    type: "submit",
+    isRadio: false,
+  },
+];
+
+export const radioGroup = [
+  {
+    id: 1,
     fullWidth: false,
     label: "Female",
     value: "female",
     gender: "gender",
-    isRadio: true,
     onChange: (e) => {},
   },
   {
-    id: 9,
+    id: 2,
     fullWidth: false,
     label: "Male",
     value: "male",
     gender: "gender",
-    isRadio: true,
     onChange: (e) => {},
   },
   {
-    id: 10,
+    id: 3,
     fullWidth: false,
     label: "Custom",
     value: "custom",
     gender: "gender",
-    isRadio: true,
     onChange: (e) => {},
-  },
-  {
-    id: 11,
-    label: "Sign Up",
-    type: "submit",
-    isRadio: false,
   },
 ];
 

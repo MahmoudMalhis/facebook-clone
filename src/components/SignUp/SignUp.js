@@ -1,15 +1,21 @@
-import { FormControl, Box, Typography } from "@mui/material";
+import {
+  FormControl,
+  Box,
+  Typography,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
 import Logo from "../Logo/Logo";
-import { dataHeader, dataTextField, data } from "./data";
+import { dataHeader, dataTextField, data, radioGroup } from "./data";
 import { useState } from "react";
 import styles from "./Signup.module.css";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../firebase";
 import TextFieldInput from "../Form/TextFieldInput ";
-import { Link } from "react-router-dom";
 
 const SignUp = () => {
-  const [selectedValue, setSelectedValue] = useState({
+  const userInfo = {
     fName: "",
     lName: "",
     email: "",
@@ -18,17 +24,26 @@ const SignUp = () => {
     selectedDay: "",
     selectedYear: "",
     gender: "",
-  });
+  };
+
+  const [selectedValue, setSelectedValue] = useState(userInfo);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     createUserWithEmailAndPassword(
       auth,
+      selectedValue.lName,
       selectedValue.email,
-      selectedValue.password
+      selectedValue.password,
+      selectedValue.fName,
+      selectedValue.selectedMonth,
+      selectedValue.selectedDay,
+      selectedValue.selectedYear,
+      selectedValue.gender
     )
       .then((userCredential) => {
         console.log("User created successfully: ", userCredential);
+        console.log(userCredential.user);
       })
       .catch((error) => {
         console.log("Error creating user: ", error);
@@ -78,16 +93,23 @@ const SignUp = () => {
               }
             />
           ))}
-          {data.map(({ id, label, variant, question, isAccount }) => (
+          <RadioGroup>
+            {radioGroup.map((item) => {
+              return (
+                <FormControlLabel
+                  key={item.id}
+                  className={styles.label}
+                  value={item.label}
+                  label={item.label}
+                  control={<Radio />}
+                />
+              );
+            })}
+          </RadioGroup>
+          {data.map(({ id, label, variant, question }) => (
             <Box key={id} className={styles.input}>
               <Typography variant={variant}>
-                {isAccount ? (
-                  <Link to="/">{label}</Link>
-                ) : (
-                  <>
-                    {label} {question}
-                  </>
-                )}
+                {label} {question}
               </Typography>
             </Box>
           ))}
