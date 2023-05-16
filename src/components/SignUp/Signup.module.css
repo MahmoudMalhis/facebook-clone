@@ -11,7 +11,6 @@
     padding: 16px;
     padding-top: 0;
     position: relative;
-    width: 432px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
     border-radius: 8px;
 }
@@ -21,7 +20,6 @@
     border-radius: 8px 8px 0 0;
     box-sizing: border-box;
     padding: 10px 16px;
-    width: 432px;
 }
 
 .paragraph:first-child {
@@ -47,33 +45,21 @@
 }
 
 .form>div:nth-child(1) {
-    margin-right: 8px;
-    width: 194px;
     order: 1
 }
 
 .form>div:nth-child(2) {
-    width: 194px;
     order: 2
 }
 
 .form>div:nth-child(3),
 .form>div:nth-child(4) {
-    width: 395px;
     order: 3
-}
-
-
-
-.form>div:nth-child(6),
-.form>div:nth-child(7) {
-    margin-left: 10px;
 }
 
 .form>div:nth-child(5),
 .form>div:nth-child(6),
 .form>div:nth-child(7) {
-    width: 125px;
     order: 5
 }
 
@@ -113,6 +99,12 @@
     width: 100%;
 }
 
+/* @media(min-width: 450px) {
+    .form>div:nth-child(9) {
+        width: 100%;
+    }
+} */
+
 .label {
     width: 100%;
     border: 1px solid #ccd0d5;
@@ -124,12 +116,10 @@
 
 .form>div:nth-child(10) {
     order: 4;
-    width: 100%;
 }
 
 .form>div:nth-child(11) {
     order: 6;
-    width: 100%;
 }
 
 .form>div:nth-child(10) p,
@@ -141,7 +131,7 @@
     line-height: 20px;
     margin-bottom: 0;
     margin-top: 2px;
-    width: 100%;
+    text-align: left;
 }
 
 .form>div:nth-child(10) p svg,
@@ -166,6 +156,7 @@
     color: #777;
     font-size: 11px;
     margin: 1em 0;
+    text-align: left;
 }
 
 .form>div:nth-child(12) a,

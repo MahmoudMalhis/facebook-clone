@@ -5,19 +5,21 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Grid,
 } from "@mui/material";
 import Logo from "../Logo/Logo";
 import { dataHeader, dataTextField, data, radioGroup } from "./data";
 import { useState } from "react";
 import styles from "./Signup.module.css";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import auth from "../firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { ref, push, child, update } from "firebase/database";
+import { auth, database } from "../firebase";
 import TextFieldInput from "../Form/TextFieldInput ";
 
 const SignUp = () => {
   const userInfo = {
-    fName: "",
     lName: "",
+    fName: "",
     email: "",
     password: "",
     selectedMonth: "",
@@ -30,40 +32,37 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(
-      auth,
-      selectedValue.lName,
-      selectedValue.email,
-      selectedValue.password,
-      selectedValue.fName,
-      selectedValue.selectedMonth,
-      selectedValue.selectedDay,
-      selectedValue.selectedYear,
-      selectedValue.gender
-    )
-      .then((userCredential) => {
-        console.log("User created successfully: ", userCredential);
-        console.log(userCredential.user);
-      })
-      .catch((error) => {
-        console.log("Error creating user: ", error);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        selectedValue.email,
+        selectedValue.password
+      );
+      const user = userCredential.user;
+      await updateProfile(user, {
+        displayName: `${selectedValue.fName} ${selectedValue.lName}`,
       });
+      console.log("User created successfully: ", userCredential);
+      console.log(userCredential.user);
+    } catch (error) {
+      console.log("Error creating user: ", error);
+    }
   };
+
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems={"center"}
-      className={styles.main}
-    >
+    <Box textAlign="center" className={styles.main}>
       <Logo />
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems={"center"}
+      <Grid
+        container
+        xs={10}
+        sm={8}
+        md={6}
+        lg={4}
+        xl={3}
+        justifyContent={"center"}
         className={styles.box}
       >
-        <Box className={styles.text}>
+        <Grid item xs={12} className={styles.text}>
           {dataHeader.map((item) => (
             <Typography
               key={item.id}
@@ -73,7 +72,7 @@ const SignUp = () => {
               {item.label}
             </Typography>
           ))}
-        </Box>
+        </Grid>
         <FormControl
           component="form"
           onSubmit={handleSubmit}
@@ -96,25 +95,26 @@ const SignUp = () => {
           <RadioGroup>
             {radioGroup.map((item) => {
               return (
-                <FormControlLabel
-                  key={item.id}
-                  className={styles.label}
-                  value={item.label}
-                  label={item.label}
-                  control={<Radio />}
-                />
+                <Grid item xs={4} key={item.id}>
+                  <FormControlLabel
+                    className={styles.label}
+                    value={item.label}
+                    label={item.label}
+                    control={<Radio />}
+                  />
+                </Grid>
               );
             })}
           </RadioGroup>
-          {data.map(({ id, label, variant, question }) => (
-            <Box key={id} className={styles.input}>
+          {data.map(({ id, label, variant, question, xs }) => (
+            <Grid item xs={xs} key={id} className={styles.input}>
               <Typography variant={variant}>
                 {label} {question}
               </Typography>
-            </Box>
+            </Grid>
           ))}
         </FormControl>
-      </Box>
+      </Grid>
     </Box>
   );
 };

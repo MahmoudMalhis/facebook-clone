@@ -1,12 +1,4 @@
-import {
-  Box,
-  FormControlLabel,
-  MenuItem,
-  TextField,
-  RadioGroup,
-  Radio,
-} from "@mui/material";
-import styles from "../SignUp/Signup.module.css";
+import { Grid, MenuItem, TextField } from "@mui/material";
 
 const TextFieldInput = ({
   id,
@@ -20,10 +12,11 @@ const TextFieldInput = ({
   onChange,
   isRadio,
   label,
-  ...rest
+  xs,
+  name,
 }) => {
   return (
-    <Box key={id}>
+    <Grid item xs={xs}>
       <TextField
         placeholder={placeholder}
         size="small"
@@ -33,7 +26,7 @@ const TextFieldInput = ({
         select={isSelect ? true : false}
         value={value}
         onChange={onChange}
-        name={rest.name}
+        name={name}
       >
         {isSelect &&
           option.map((option) => (
@@ -42,7 +35,7 @@ const TextFieldInput = ({
             </MenuItem>
           ))}
       </TextField>
-    </Box>
+    </Grid>
   );
 };
 
