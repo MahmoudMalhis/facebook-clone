@@ -12,9 +12,10 @@ import { dataHeader, dataTextField, data, radioGroup } from "./data";
 import { useState } from "react";
 import styles from "./Signup.module.css";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { ref, push, child, update } from "firebase/database";
+import { ref, push, child, update, set } from "firebase/database";
 import { auth, database } from "../firebase";
 import TextFieldInput from "../Form/TextFieldInput ";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const userInfo = {
@@ -32,6 +33,18 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newPostKey = push(child(ref(database), "posts")).key;
+    const userDatabase = {
+      fName: selectedValue.fName,
+      lName: selectedValue.lName,
+      email: selectedValue.email,
+      password: selectedValue.password,
+      selectedMonth: selectedValue.selectedMonth,
+      selectedDay: selectedValue.selectedDay,
+      selectedYear: selectedValue.selectedYear,
+      gender: selectedValue.gender,
+    };
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -39,11 +52,10 @@ const SignUp = () => {
         selectedValue.password
       );
       const user = userCredential.user;
-      await updateProfile(user, {
-        displayName: `${selectedValue.fName} ${selectedValue.lName}`,
-      });
+      set(ref(database, "users/" + newPostKey), userDatabase);
+
       console.log("User created successfully: ", userCredential);
-      console.log(userCredential.user);
+      console.log(user);
     } catch (error) {
       console.log("Error creating user: ", error);
     }
@@ -92,7 +104,14 @@ const SignUp = () => {
               }
             />
           ))}
-          <RadioGroup>
+          <RadioGroup
+            onChange={(e) =>
+              setSelectedValue({
+                ...selectedValue,
+                gender: e.target.value,
+              })
+            }
+          >
             {radioGroup.map((item) => {
               return (
                 <Grid item xs={4} key={item.id}>
@@ -106,10 +125,16 @@ const SignUp = () => {
               );
             })}
           </RadioGroup>
-          {data.map(({ id, label, variant, question, xs }) => (
+          {data.map(({ id, label, variant, question, xs, isAccount }) => (
             <Grid item xs={xs} key={id} className={styles.input}>
               <Typography variant={variant}>
-                {label} {question}
+                {isAccount ? (
+                  <Link to="/">{label}</Link>
+                ) : (
+                  <>
+                    {label} {question}
+                  </>
+                )}
               </Typography>
             </Grid>
           ))}

@@ -99,12 +99,6 @@
     width: 100%;
 }
 
-/* @media(min-width: 450px) {
-    .form>div:nth-child(9) {
-        width: 100%;
-    }
-} */
-
 .label {
     width: 100%;
     border: 1px solid #ccd0d5;
@@ -180,7 +174,7 @@
     order: 10
 }
 
-.form>div:nth-child(14) span {
+.form>div:nth-child(14) a {
     text-decoration: none;
     color: #1877f2;
 }
