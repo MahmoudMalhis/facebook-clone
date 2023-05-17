@@ -53,11 +53,7 @@ const SignUp = () => {
       );
       const user = userCredential.user;
       set(ref(database, "users/" + newPostKey), userDatabase);
-
-      console.log("User created successfully: ", userCredential);
-      console.log(user);
     } catch (error) {
-      console.log("Error creating user: ", error);
     }
   };
 
