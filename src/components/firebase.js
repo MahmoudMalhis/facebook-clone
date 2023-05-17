@@ -2,12 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAofZ4vGvxxXB7joBKh3xmlLZJrtPCoTIA",
-  authDomain: "facebook-a8101.firebaseapp.com",
-  projectId: "facebook-a8101",
-  storageBucket: "facebook-a8101.appspot.com",
-  messagingSenderId: "115896948039",
-  appId: "1:115896948039:web:4f9aa78a4bd99d7e6fe862",
+  apiKey: "AIzaSyCUPas-Y7P-RBTp4y78NuY8XsHyb502MjY",
+  authDomain: "face-a8764.firebaseapp.com",
+  databaseURL: "https://face-a8764-default-rtdb.firebaseio.com",
+  projectId: "face-a8764",
+  storageBucket: "face-a8764.appspot.com",
+  messagingSenderId: "24628669557",
+  appId: "1:24628669557:web:1df3211dade0b4b93adc3c",
 };
 
 const app = initializeApp(firebaseConfig);
