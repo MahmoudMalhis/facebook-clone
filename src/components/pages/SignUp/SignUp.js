@@ -7,14 +7,15 @@ import {
   Radio,
   Grid,
 } from "@mui/material";
-import Logo from "../Logo/Logo";
+import Logo from "../../Logo/Logo";
 import { dataHeader, dataTextField, data, radioGroup } from "./data";
 import { useState } from "react";
 import styles from "./Signup.module.css";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, push, child, update, set } from "firebase/database";
-import { auth, database } from "../firebase";
-import TextFieldInput from "../Form/TextFieldInput ";
+import auth from "../../firebase";
+import { database } from "../../firebase";
+import TextFieldInput from "../../Form/TextFieldInput ";
 import { Link } from "react-router-dom";
 
 const SignUp = () => {
