@@ -10,7 +10,7 @@ const Groups = () => {
       height="500px"
       color="#757575"
     >
-      Home
+      Groups
     </Typography>
   );
 };

@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 
-const Groups = () => {
+const Store = () => {
   return (
     <Typography
       fontSize="100px"
@@ -10,9 +10,9 @@ const Groups = () => {
       height="500px"
       color="#757575"
     >
-      Home
+      Store
     </Typography>
   );
 };
 
-export default Groups;
+export default Store;
