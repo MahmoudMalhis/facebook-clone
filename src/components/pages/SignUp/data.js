@@ -36,6 +36,7 @@ export const dataTextField = [
     type: "text",
     value: "fName",
     onChange: (e) => {},
+    xs: 6,
   },
   {
     id: 2,
@@ -44,6 +45,7 @@ export const dataTextField = [
     type: "text",
     value: "lName",
     onChange: (e) => {},
+    xs: 6,
   },
   {
     id: 3,
@@ -51,6 +53,7 @@ export const dataTextField = [
     fullWidth: true,
     type: "email",
     value: "email",
+    xs: 12,
     onChange: (e) => {},
   },
   {
@@ -59,6 +62,7 @@ export const dataTextField = [
     fullWidth: true,
     type: "password",
     value: "password",
+    xs: 12,
     onChange: (e) => {},
   },
   {
@@ -67,6 +71,7 @@ export const dataTextField = [
     isSelect: true,
     value: "selectedMonth",
     onChange: (e) => {},
+    xs: 4,
     option: [
       {
         value: "Jan",
@@ -124,6 +129,7 @@ export const dataTextField = [
     isSelect: true,
     value: "selectedDay",
     onChange: (e) => {},
+    xs: 4,
     option: dayOption,
   },
 
@@ -133,40 +139,42 @@ export const dataTextField = [
     isSelect: true,
     value: "selectedYear",
     onChange: (e) => {},
+    xs: 4,
     option: yearOption,
   },
   {
     id: 8,
+    label: "Sign Up",
+    type: "submit",
+    xs: 12,
+    isRadio: false,
+  },
+];
+
+export const radioGroup = [
+  {
+    id: 1,
     fullWidth: false,
     label: "Female",
     value: "female",
     gender: "gender",
-    isRadio: true,
     onChange: (e) => {},
   },
   {
-    id: 9,
+    id: 2,
     fullWidth: false,
     label: "Male",
     value: "male",
     gender: "gender",
-    isRadio: true,
     onChange: (e) => {},
   },
   {
-    id: 10,
+    id: 3,
     fullWidth: false,
     label: "Custom",
     value: "custom",
     gender: "gender",
-    isRadio: true,
     onChange: (e) => {},
-  },
-  {
-    id: 11,
-    label: "Sign Up",
-    type: "submit",
-    isRadio: false,
   },
 ];
 
@@ -196,16 +204,19 @@ export const data = [
     id: 1,
     label: "Birthday",
     variant: "body1",
+    xs: 12,
     question: <QuestionMarkIcon />,
   },
   {
     id: 2,
     label: "Gender",
     variant: "body1",
+    xs: 12,
     question: <QuestionMarkIcon />,
   },
   {
     id: 3,
+    xs: 12,
     label: (
       <Typography variant="body1">
         {`People who use our service may have uploaded your contact information to Facebook. `}
@@ -216,6 +227,7 @@ export const data = [
   },
   {
     id: 4,
+    xs: 12,
     label: (
       <Typography variant="body1">
         {`By clicking Sign Up, you agree to our`} {Terms}
@@ -228,5 +240,7 @@ export const data = [
     id: 5,
     label: "Already have an account?",
     variant: "anchor",
+    xs: 12,
+    isAccount: true,
   },
 ];
