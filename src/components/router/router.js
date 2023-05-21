@@ -3,6 +3,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LogIn from "../pages/LogIn/LogIn";
 import SignUp from "../pages/SignUp/SignUp";
 import Home from "../pages/Home/Home";
+import Layout from "./Layout";
+import LiveTV from "../pages/LiveTV";
+import Store from "../pages/Store";
+import Groups from "../pages/Groups";
+import Games from "../pages/Games";
 
 const router = () => {
   return (
@@ -10,7 +15,13 @@ const router = () => {
       <Routes>
         <Route path="/" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/live-tv" element={<LiveTV />} />
+          <Route path="/store" element={<Store />} />
+          <Route path="/groups" element={<Groups />} />
+          <Route path="/games" element={<Games />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
