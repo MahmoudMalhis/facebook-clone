@@ -1,18 +1,31 @@
-import Typography from "@mui/material/Typography";
+import { Box } from "@mui/material";
+import LeftSide from "./LeftSide/LeftSide";
 
-const Groups = () => {
+const Home = () => {
   return (
-    <Typography
-      fontSize="100px"
+    <Box
+      bgcolor="#f0f2f5"
       display="flex"
       justifyContent="center"
-      alignItems="center"
-      height="500px"
-      color="#757575"
+      overflow="hidden"
     >
-      Home
-    </Typography>
+      <Box
+        width="1464px"
+        height="calc(100vh - 80px)"
+        display="flex"
+        justifyContent="space-between"
+        marginTop="16px"
+      >
+        <LeftSide />
+        <Box width="745px" className="center">
+          center
+        </Box>
+        <Box width="360px" className="right">
+          right
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
-export default Groups;
+export default Home;
