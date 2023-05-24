@@ -1,5 +1,7 @@
 import { Box } from "@mui/material";
 import LeftSide from "./LeftSide/LeftSide";
+import MainPostForm from "./posts/MainPosts";
+import { CustomMainPostFormBox } from "./posts/PostStyle";
 
 const Home = () => {
   return (
@@ -17,9 +19,9 @@ const Home = () => {
         marginTop="16px"
       >
         <LeftSide />
-        <Box width="745px" className="center">
-          center
-        </Box>
+        <CustomMainPostFormBox>
+          <MainPostForm />
+        </CustomMainPostFormBox>
         <Box width="360px" className="right">
           right
         </Box>
