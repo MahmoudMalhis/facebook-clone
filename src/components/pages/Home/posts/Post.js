@@ -1,126 +1,224 @@
-import React, { useState } from "react";
-import { Avatar, Box, Typography } from "@mui/material";
+import React, { useState, useContext } from "react";
+import {
+  Avatar,
+  Box,
+  Typography,
+  ListItem,
+  Menu,
+  MenuItem,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import SendIcon from "@mui/icons-material/Send";
 import ReplyIcon from "@mui/icons-material/Reply";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import {
   CustomAvatar,
   CustomIconButtonReaction,
   CustomInput,
+  CustomLinearScaleIcon,
+  CustomList,
 } from "./PostStyle";
+import ImageContext from "../../../../context/ImageContext";
 
 const Post = () => {
-  const [imageUrls, setImageUrls] = useState([]);
   const [likes, setLikes] = useState(false);
+  const [commentLikes, setCommentLikes] = useState(false);
   const [comment, setComment] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
+  const [counterLike, setCounterLike] = useState(0);
+  const [anchorPost, setAnchorPost] = useState(null);
 
-  const handelLike = () => {
+  const { imageUrls } = useContext(ImageContext);
+
+  const handleLike = () => {
+    if (likes) {
+      setCounterLike(counterLike - 1);
+    } else {
+      setCounterLike(counterLike + 1);
+    }
     setLikes(!likes);
   };
 
-  const handelComment = () => {
+  const handleCommentLike = () => {
+    setCommentLikes(!commentLikes);
+  };
+
+  const handleComment = () => {
     setComment(!comment);
-    console.log(comment);
   };
 
   const handleInputChange = (event) => {
     setCommentText(event.target.value);
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      if (commentText.trim() !== "") {
-        const newComment = {
-          id: Date.now(),
-          text: commentText.trim(),
-        };
-        setComments([...comments, newComment]);
-        setCommentText("");
-      }
+  const handleSendComment = () => {
+    if (commentText.trim() !== "") {
+      const newComment = {
+        id: Date.now(),
+        text: commentText.trim(),
+        currentTime: new Date().toLocaleTimeString(),
+      };
+      setComments([...comments, newComment]);
+      setCommentText("");
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSendComment();
+    }
+  };
+
+  const handleSendButtonClick = () => {
+    handleSendComment();
+  };
+
+  const handleClosePostMenu = () => {
+    setAnchorPost(null);
+  };
+  const handlePostMenu = (event) => {
+    setAnchorPost(event.currentTarget);
+  };
   return (
     <>
-      {/* {imageUrls.map((imageUrl, index) => ( */}
-      <Box
-        width="680px"
-        backgroundColor="#fff"
-        borderRadius="8px"
-        padding="10px"
-        marginTop="20px"
-        //   key={index}
-      >
-        <Box display="flex" alignItems="center">
-          <Avatar />
-          <Typography marginLeft="10px">Mahmoud</Typography>
-        </Box>
-        <img
-          style={{
-            width: "100%",
-            height: "100%",
-          }}
-          src="https://scontent.fjrs29-1.fna.fbcdn.net/v/t45.1600-4/347433538_23853512172430679_9104260515673206396_n.png?stp=cp0_dst-jpg_p526x296_q90_spS444&_nc_cat=102&ccb=1-7&_nc_sid=68ce8d&_nc_ohc=kCWL-DnOwygAX8FHSxA&_nc_ht=scontent.fjrs29-1.fna&oh=00_AfAGNYWMK8ENBVcXyszvp_qkMWxuvuDz8R3967TnefnyMQ&oe=6470A30B"
-          alt="Uploaded"
-        />
-        {likes && (
-          <Typography fontSize="12px" color="#666">
-            Mahmoud
-          </Typography>
-        )}
+      {imageUrls.map((imageUrl, index) => (
         <Box
-          justifyContent="center"
-          display="flex"
-          borderTop="1px solid #ddd"
-          borderBottom="1px solid #ddd"
+          width="680px"
+          backgroundColor="#fff"
+          borderRadius="8px"
+          padding="10px"
+          marginTop="20px"
+          key={index}
         >
-          <CustomIconButtonReaction
-            onClick={handelLike}
-            sx={{ color: likes ? "#1976d2" : "inherit" }}
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            <ThumbUpIcon />
-            <Typography marginLeft="10px">Like</Typography>
-          </CustomIconButtonReaction>
-          <CustomIconButtonReaction onClick={handelComment}>
-            <ChatBubbleIcon />
-            <Typography marginLeft="10px">Comment</Typography>
-          </CustomIconButtonReaction>
-          <CustomIconButtonReaction>
-            <ReplyIcon />
-            <Typography marginLeft="10px">Share</Typography>
-          </CustomIconButtonReaction>
-        </Box>
-        {comment && (
-          <>
-            {comments.map((comment) => (
-              <Box display="flex" alignItems="center" marginTop="20px">
-                <CustomAvatar />
-                <Typography
-                  key={comment.id}
-                  backgroundColor="#f0f2f5"
-                  padding="10px"
-                  borderRadius="30px"
-                >
-                  {comment.text}
+            <Box display="flex" alignItems="center">
+              <Avatar />
+              <Box marginLeft="10px">
+                <Typography fontWeight="700">Mahmoud</Typography>
+                <Typography fontSize="12px" color="#999">
+                  {new Date().toLocaleTimeString()}
                 </Typography>
               </Box>
-            ))}
-            <Box display="flex" alignItems="center" marginTop="20px">
-              <CustomAvatar />
-              <CustomInput
-                type="text"
-                value={commentText}
-                onChange={handleInputChange}
-                onKeyPress={handleKeyPress}
-              />
             </Box>
-          </>
-        )}
-      </Box>
-      {/* ))} */}
+            <Tooltip>
+              <IconButton onClick={handlePostMenu}>
+                <CustomLinearScaleIcon />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorPost}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorPost)}
+              onClose={handleClosePostMenu}
+            >
+              <MenuItem onClick={handleClosePostMenu}>
+                <BookmarkIcon />
+                <Typography textAlign="center">Saved</Typography>
+              </MenuItem>
+            </Menu>
+          </Box>
+          <img
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            src={imageUrl}
+            alt="Uploaded"
+          />
+          {likes && (
+            <Typography fontSize="12px" color="#666">
+              {counterLike}
+            </Typography>
+          )}
+          <Box
+            justifyContent="center"
+            display="flex"
+            borderTop="1px solid #ddd"
+            borderBottom="1px solid #ddd"
+          >
+            <CustomIconButtonReaction
+              onClick={handleLike}
+              sx={{ color: likes ? "#1976d2" : "inherit" }}
+            >
+              <ThumbUpIcon />
+              <Typography marginLeft="10px">Like</Typography>
+            </CustomIconButtonReaction>
+            <CustomIconButtonReaction onClick={handleComment}>
+              <ChatBubbleIcon />
+              <Typography marginLeft="10px">Comment</Typography>
+            </CustomIconButtonReaction>
+            <CustomIconButtonReaction>
+              <ReplyIcon />
+              <Typography marginLeft="10px">Share</Typography>
+            </CustomIconButtonReaction>
+          </Box>
+          {comment && (
+            <>
+              {comments.map((comment) => (
+                <>
+                  <Box
+                    key={comment.id}
+                    display="flex"
+                    alignItems="center"
+                    marginTop="20px"
+                  >
+                    <CustomAvatar />
+                    <Box
+                      backgroundColor="#f0f2f5"
+                      padding="10px"
+                      borderRadius="30px"
+                    >
+                      <Typography fontWeight="bold">Mahmoud Malhis</Typography>
+                      <Typography>{comment.text}</Typography>
+                    </Box>
+                  </Box>
+                  <CustomList>
+                    <ListItem>{comment.currentTime}</ListItem>
+                    <ListItem
+                      onClick={handleCommentLike}
+                      sx={{
+                        color: commentLikes ? "#1976d2" : "inherit",
+                        fontWeight: commentLikes ? "bold" : "inherit",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Like
+                    </ListItem>
+                  </CustomList>
+                </>
+              ))}
+              <Box display="flex" alignItems="center" marginTop="20px">
+                <CustomAvatar />
+                <CustomInput
+                  type="text"
+                  value={commentText}
+                  onChange={handleInputChange}
+                  onKeyPress={handleKeyPress}
+                />
+                <SendIcon onClick={handleSendButtonClick} />
+              </Box>
+            </>
+          )}
+        </Box>
+      ))}
     </>
   );
 };

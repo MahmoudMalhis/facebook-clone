@@ -4,8 +4,10 @@ import {
   Button,
   IconButton,
   Input,
+  List,
   TextareaAutosize,
 } from "@mui/material";
+import LinearScaleIcon from "@mui/icons-material/LinearScale";
 import { styled } from "@mui/material/styles";
 
 export const CustomMainPostFormBox = styled(Box)(({}) => ({
@@ -65,6 +67,14 @@ export const CustomIconButtonImgUpload = styled(IconButton)(({}) => ({
   outlineOffset: "5px",
   borderRadius: "8px",
   marginTop: "32px",
+  overflowY: "scroll",
+  "&::-webkit-scrollbar": {
+    width: "5px",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "#BCC0C4",
+    borderRadius: "20px",
+  },
 }));
 
 export const CustomIconButtonReaction = styled(IconButton)(({}) => ({
@@ -93,4 +103,17 @@ export const CustomInput = styled(Input)(({}) => ({
   "&::after": {
     border: "none",
   },
+}));
+
+export const CustomList = styled(List)(({}) => ({
+  display: "flex",
+  fontSize: "12px",
+  color: "#999",
+  width: "187px",
+  marginLeft: "30px",
+}));
+
+export const CustomLinearScaleIcon = styled(LinearScaleIcon)(({}) => ({
+  color: "#999",
+  cursor: "pointer",
 }));
