@@ -4,13 +4,12 @@ import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCUPas-Y7P-RBTp4y78NuY8XsHyb502MjY",
-  authDomain: "face-a8764.firebaseapp.com",
-  databaseURL: "https://face-a8764-default-rtdb.firebaseio.com",
-  projectId: "face-a8764",
-  storageBucket: "face-a8764.appspot.com",
-  messagingSenderId: "24628669557",
-  appId: "1:24628669557:web:1df3211dade0b4b93adc3c",
+  apiKey: "AIzaSyBRxJXs7uV-k2JKB_etWc6fBvMHvbFWwn0",
+  authDomain: "facebook-49080.firebaseapp.com",
+  projectId: "facebook-49080",
+  storageBucket: "facebook-49080.appspot.com",
+  messagingSenderId: "67285052648",
+  appId: "1:67285052648:web:7950f3b89a7d465c1a2d5d",
 };
 
 const app = initializeApp(firebaseConfig);

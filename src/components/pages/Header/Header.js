@@ -1,15 +1,6 @@
-// import AppBar from "@mui/material/AppBar";
-// import Box from "@mui/material/Box";
-// import Toolbar from "@mui/material/Toolbar";
-// import IconButton from "@mui/material/IconButton";
-// import MenuItem from "@mui/material/MenuItem";
-// import Menu from "@mui/material/Menu";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import MoreIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
 import Badge from "@mui/material/Badge";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import * as React from "react";
@@ -24,6 +15,8 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { signOut } from "firebase/auth";
 import { Link, NavLink } from "react-router-dom";
 import { icons } from "./Icon";
 import {
@@ -34,14 +27,14 @@ import {
   CustomFacebookIcon,
   StyledIcon,
 } from "./styled";
-
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import auth from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isSearchVisible, setIsSearchVisible] = useState(true);
-
+  const history = useNavigate();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -59,6 +52,18 @@ function ResponsiveAppBar() {
 
   const handleSearchVisible = () => {
     setIsSearchVisible(!isSearchVisible);
+  };
+
+  const handleLogOut = async () => {
+    try {
+      await signOut(auth);
+      history("/");
+    } catch (error) {}
+  };
+
+  const handleLogoutAndClose = () => {
+    handleLogOut();
+    handleCloseUserMenu();
   };
 
   return (
@@ -173,11 +178,12 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleLogoutAndClose}>
+                <Typography textAlign="center" marginLeft="10px">
+                  Logout
+                </Typography>
+                <LogoutIcon />
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
