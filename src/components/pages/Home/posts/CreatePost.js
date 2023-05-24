@@ -8,7 +8,7 @@ import {
   Input,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   CustomDialogActionsButton,
   CustomIconButtonImgUpload,
@@ -19,12 +19,14 @@ import FilterIcon from "@mui/icons-material/Filter";
 import { storage } from "../../../firebase";
 import { ref } from "firebase/storage";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import ImageContext from "../../../../context/ImageContext";
 
 const CreatePost = () => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
-  const [imageUrls, setImageUrls] = useState([]);
-  const [selectedImag, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const { setImageUrls } = useContext(ImageContext);
 
   const handlePostClick = () => {
     setOpen(true);
@@ -35,7 +37,7 @@ const CreatePost = () => {
     setSelectedImage(URL.createObjectURL(event.target.files[0]));
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!file) {
       return;
     }
@@ -43,17 +45,24 @@ const CreatePost = () => {
     const storageRef = ref(storage, `/image/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on("state_changed", () => {
-      getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-        console.log(url);
-        setImageUrls((prevImageUrls) => [...prevImageUrls, url]);
-      });
-    });
+    try {
+      await uploadTask;
+      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+      setImageUrls((prevImageUrls) => [...prevImageUrls, downloadURL]);
+    } catch (error) {}
   };
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleUploadAndClose = () => {
+    handleUpload();
+    handleClose();
+    setFile(null);
+    setSelectedImage(null);
+  };
+
   return (
     <>
       <Box
@@ -86,6 +95,7 @@ const CreatePost = () => {
           textAlign="center"
           borderBottom="1px solid #ddd"
           width="500px"
+          margin="auto"
         >
           Create post
         </DialogTitle>
@@ -104,14 +114,14 @@ const CreatePost = () => {
           />
           <label htmlFor="upload-button">
             <CustomIconButtonImgUpload component="span">
-              {selectedImag ? (
+              {selectedImage ? (
                 <img
                   style={{
                     width: "auto",
                     height: "auto",
                     overflowY: "scroll",
                   }}
-                  src={selectedImag}
+                  src={selectedImage}
                   alt="Uploaded"
                 />
               ) : (
@@ -121,7 +131,10 @@ const CreatePost = () => {
           </label>
         </DialogContent>
         <DialogActions justifyContent="center">
-          <CustomDialogActionsButton width="100%" onClick={handleUpload}>
+          <CustomDialogActionsButton
+            width="100%"
+            onClick={handleUploadAndClose}
+          >
             Posts
           </CustomDialogActionsButton>
         </DialogActions>
