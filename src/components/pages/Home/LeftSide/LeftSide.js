@@ -19,13 +19,27 @@ const LeftSide = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const userRef = ref(database, `users/-NVesu6SVjlxmiNMRNrF`);
-        get(userRef)
+        const { email } = user;
+        const usersRef = ref(database, "users");
+        get(usersRef)
           .then((snapshot) => {
             if (snapshot.exists()) {
-              const userData = snapshot.val();
-              const { fName, lName } = userData;
-              setUserFullName(fName + " " + lName);
+              const usersData = snapshot.val();
+              const userId = Object.keys(usersData).find(
+                (key) => usersData[key].email === email
+              );
+              if (userId) {
+                const userRef = ref(database, `users/${userId}`);
+                get(userRef)
+                  .then((userSnapshot) => {
+                    if (userSnapshot.exists()) {
+                      const userData = userSnapshot.val();
+                      const { fName, lName } = userData;
+                      setUserFullName(`${fName} ${lName}`);
+                    }
+                  })
+                  .catch((error) => {});
+              }
             }
           })
           .catch((error) => {});
@@ -37,7 +51,7 @@ const LeftSide = () => {
     <CustomLeftSide>
       <StyledIconButton>
         <Avatar
-          alt="Mahmoud Sharp"
+          alt={userFullName}
           src="/static/images/avatar/2.jpg"
           width="40px"
         />

@@ -1,15 +1,20 @@
+import LikeCounterContext from "../../../../context/LikeCounterContext";
+import LikeContext from "../../../../context/LikeContext";
 import CreatePost from "./CreatePost";
-import Post from "./Post";
-import ImageContext from "../../../../context/ImageContext";
+import Post from "./Post/Post";
 import { useState } from "react";
 
 const MainPostForm = () => {
-  const [imageUrls, setImageUrls] = useState([]);
+  const [counterLike, setCounterLike] = useState(false);
+  const [likes, setLikes] = useState(false);
+
   return (
-    <ImageContext.Provider value={{ imageUrls, setImageUrls }}>
-      <CreatePost />
-      <Post />
-    </ImageContext.Provider>
+    <LikeCounterContext.Provider value={{ counterLike, setCounterLike }}>
+      <LikeContext.Provider value={{ likes, setLikes }}>
+        <CreatePost />
+        <Post />
+      </LikeContext.Provider>
+    </LikeCounterContext.Provider>
   );
 };
 
