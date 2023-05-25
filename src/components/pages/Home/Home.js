@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import LeftSide from "./LeftSide/LeftSide";
 import MainPostForm from "./posts/MainPosts";
 import { CustomMainPostFormBox } from "./posts/PostStyle";
+import RightSide from "./RightSide/RightSide";
 
 const Home = () => {
   return (
@@ -23,7 +24,7 @@ const Home = () => {
           <MainPostForm />
         </CustomMainPostFormBox>
         <Box width="360px" className="right">
-          right
+          <RightSide />
         </Box>
       </Box>
     </Box>
