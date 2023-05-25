@@ -1,28 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { firestore } from "../../../../firebase";
-import PostHeader from "./PostHeader";
-import PostContent from "./PostContent";
-import PostActions from "./PostActions";
+import PostHeader from ".//PostHeader";
+import PostContent from ".//PostContent";
+import PostActions from ".//PostActions";
 import PostComments from "./PostComments";
 
 const Post = () => {
-  const [postContent, setPostContent] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const querySnapshot = await getDocs(collection(firestore, "posts"));
-      const posts = querySnapshot.docs.map((doc) => doc.data());
-      setPostContent(posts);
-    };
+    const unsubscribe = onSnapshot(
+      collection(firestore, "posts"),
+      (snapshot) => {
+        const updatedPosts = snapshot.docs.map((doc) => doc.data());
+        setPosts(updatedPosts);
+      }
+    );
 
-    fetchPosts();
+    return () => unsubscribe();
   }, []);
 
   return (
     <>
-      {postContent.map((post, index) => (
+      {posts.map((post, index) => (
         <Box
           width="680px"
           backgroundColor="#fff"
