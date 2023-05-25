@@ -26,7 +26,7 @@ const Post = () => {
     <>
       {posts.map((post, index) => (
         <Box
-          width="680px"
+          maxWidth="100%"
           backgroundColor="#fff"
           borderRadius="8px"
           padding="10px"

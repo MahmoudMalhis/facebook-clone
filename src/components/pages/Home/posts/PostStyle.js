@@ -10,8 +10,7 @@ import {
 import LinearScaleIcon from "@mui/icons-material/LinearScale";
 import { styled } from "@mui/material/styles";
 
-export const CustomMainPostFormBox = styled(Box)(({}) => ({
-  width: "745px",
+export const CustomMainPostFormBox = styled(Box)(({ theme }) => ({
   overflowY: "scroll",
   scrollbarColor: "#BCC0C4",
   "&::-webkit-scrollbar": {
@@ -20,6 +19,14 @@ export const CustomMainPostFormBox = styled(Box)(({}) => ({
   "&::-webkit-scrollbar-thumb": {
     backgroundColor: "#BCC0C4",
     borderRadius: "20px",
+  },
+  width: "750px",
+  [theme.breakpoints.down("lg")]: {
+    width: "450px",
+  },
+  [theme.breakpoints.down("md")]: {
+    width: "400px",
+    margin: "auto",
   },
 }));
 

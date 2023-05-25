@@ -16,6 +16,15 @@ export const CustomLabelIcon = styled("span")(({ theme }) => ({
 
 export const CustomLeftSide = styled(Box)(({ theme }) => ({
   width: "360px",
+  [theme.breakpoints.down("lg")]: {
+    width: "200px",
+  },
+  [theme.breakpoints.down("md")]: {
+    padding: "0",
+  },
+  [theme.breakpoints.down("sm")]: {
+    display: "none",
+  },
   display: "flex",
   flexDirection: "column",
   justifyContent: "left",
