@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -22,6 +22,8 @@ import {
   CustomList,
 } from "./PostStyle";
 import ImageContext from "../../../../context/ImageContext";
+import { collection, getDocs } from "firebase/firestore";
+import { firestore } from "../../../firebase";
 
 const Post = () => {
   const [likes, setLikes] = useState(false);
@@ -31,8 +33,17 @@ const Post = () => {
   const [comments, setComments] = useState([]);
   const [counterLike, setCounterLike] = useState(0);
   const [anchorPost, setAnchorPost] = useState(null);
+  const [postContent, setPostContent] = useState([]);
 
-  const { imageUrls } = useContext(ImageContext);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const querySnapshot = await getDocs(collection(firestore, "posts"));
+      const posts = querySnapshot.docs.map((doc) => doc.data());
+      setPostContent(posts);
+    };
+
+    fetchPosts();
+  }, []);
 
   const handleLike = () => {
     if (likes) {
@@ -86,7 +97,7 @@ const Post = () => {
   };
   return (
     <>
-      {imageUrls.map((imageUrl, index) => (
+      {postContent.map((post, index) => (
         <Box
           width="680px"
           backgroundColor="#fff"
@@ -105,7 +116,7 @@ const Post = () => {
               <Box marginLeft="10px">
                 <Typography fontWeight="700">Mahmoud</Typography>
                 <Typography fontSize="12px" color="#999">
-                  {new Date().toLocaleTimeString()}
+                  {post.createdAt}
                 </Typography>
               </Box>
             </Box>
@@ -135,17 +146,18 @@ const Post = () => {
               </MenuItem>
             </Menu>
           </Box>
+          <Typography>{post.text}</Typography>
           <img
             style={{
               width: "100%",
               height: "100%",
             }}
-            src={imageUrl}
+            src={post.imageUrl}
             alt="Uploaded"
           />
           {likes && (
             <Typography fontSize="12px" color="#666">
-              {counterLike}
+              {`${counterLike} Like`}
             </Typography>
           )}
           <Box

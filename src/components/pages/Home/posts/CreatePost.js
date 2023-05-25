@@ -16,15 +16,17 @@ import {
   StyledIconButton,
 } from "./PostStyle";
 import FilterIcon from "@mui/icons-material/Filter";
-import { storage } from "../../../firebase";
+import { storage, firestore } from "../../../firebase";
 import { ref } from "firebase/storage";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import ImageContext from "../../../../context/ImageContext";
+import { collection, addDoc } from "firebase/firestore";
 
 const CreatePost = () => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [postText, setPostText] = useState("");
 
   const { setImageUrls } = useContext(ImageContext);
 
@@ -37,19 +39,49 @@ const CreatePost = () => {
     setSelectedImage(URL.createObjectURL(event.target.files[0]));
   };
 
+  const handleInputChange = (event) => {
+    setPostText(event.target.value);
+  };
+
   const handleUpload = async () => {
     if (!file) {
       return;
     }
 
+    let imageUrl = null;
     const storageRef = ref(storage, `/image/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     try {
       await uploadTask;
-      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-      setImageUrls((prevImageUrls) => [...prevImageUrls, downloadURL]);
-    } catch (error) {}
+      imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      const post = {
+        imageUrl,
+        text: postText,
+        createdAt: new Date().toLocaleString([], {
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        }),
+      };
+      const docRef = await addDoc(collection(firestore, "posts"), post);
+      const postId = docRef.id;
+      post.id = postId;
+
+      setFile(null);
+      setSelectedImage(null);
+      setPostText("");
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleClose = () => {
@@ -59,8 +91,6 @@ const CreatePost = () => {
   const handleUploadAndClose = () => {
     handleUpload();
     handleClose();
-    setFile(null);
-    setSelectedImage(null);
   };
 
   return (
@@ -104,7 +134,11 @@ const CreatePost = () => {
             <Avatar />
             <Typography marginLeft="10px">mahmoud</Typography>
           </Box>
-          <CustomTextareaAutosize placeholder="Whats on your mind, mahmoud?" />
+          <CustomTextareaAutosize
+            value={postText}
+            onChange={handleInputChange}
+            placeholder="Whats on your mind, mahmoud?"
+          />
           <Input
             type="file"
             accept="image/*"

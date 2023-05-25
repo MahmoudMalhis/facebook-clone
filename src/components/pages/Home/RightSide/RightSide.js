@@ -1,16 +1,5 @@
 import { Box, Typography } from "@mui/material";
 import { CustomAvatar } from "../posts/PostStyle";
-import { database } from "../../../firebase";
-import {
-  ref,
-  push,
-  child,
-  update,
-  set,
-  get,
-  orderByChild,
-  equalTo,
-} from "firebase/database";
 
 const RightSide = () => {
   return (
