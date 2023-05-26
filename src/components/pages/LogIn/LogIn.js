@@ -1,9 +1,9 @@
 import { FormControl, Box, Typography } from "@mui/material";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import Logo from "../../Logo/Logo";
 import { data, dataTextField } from "./logInData";
 import TextFieldInput from "../../Form/TextFieldInput ";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./LogIn.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import auth from "../../firebase";
@@ -17,6 +17,17 @@ const LogIn = () => {
   const [error, setError] = useState("");
   const [cookies, setCookies] = useCookies(["token"]);
   const history = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        history("/home");
+      } else {
+        console.log(error);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

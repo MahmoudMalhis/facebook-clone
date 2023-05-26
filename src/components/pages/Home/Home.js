@@ -1,5 +1,8 @@
 import { Box } from "@mui/material";
 import LeftSide from "./LeftSide/LeftSide";
+import MainPostForm from "./posts/MainPosts";
+import RightSide from "./RightSide/RightSide";
+import { CustomBox } from "./HomeStyled";
 
 const Home = () => {
   return (
@@ -9,21 +12,11 @@ const Home = () => {
       justifyContent="center"
       overflow="hidden"
     >
-      <Box
-        width="1464px"
-        height="calc(100vh - 80px)"
-        display="flex"
-        justifyContent="space-between"
-        marginTop="16px"
-      >
+      <CustomBox>
         <LeftSide />
-        <Box width="745px" className="center">
-          center
-        </Box>
-        <Box width="360px" className="right">
-          right
-        </Box>
-      </Box>
+        <MainPostForm />
+        <RightSide />
+      </CustomBox>
     </Box>
   );
 };
