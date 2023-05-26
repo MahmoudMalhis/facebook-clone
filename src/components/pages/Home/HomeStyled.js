@@ -11,6 +11,7 @@ export const CustomBox = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.down("md")]: {
     width: "100%",
+    overflow: "scroll",
   },
 
   height: "calc(100vh - 80px)",

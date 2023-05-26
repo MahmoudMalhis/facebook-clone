@@ -2,9 +2,6 @@ import { Avatar } from "@mui/material";
 import { topIcons, bottomIcons } from "./icon";
 import { StyledIconButton, CustomLabelIcon, CustomLeftSide } from "./styled";
 import { useState, useContext } from "react";
-import { database } from "../../../firebase";
-import auth from "../../../firebase";
-import { ref, get } from "firebase/database";
 import { AuthContext } from "../../../../context/AuthContext";
 import { Link } from "react-router-dom";
 

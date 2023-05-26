@@ -1,23 +1,55 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ReplyIcon from "@mui/icons-material/Reply";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import { CustomIconButtonReaction } from "../PostStyle";
+import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { firestore } from "../../../../firebase";
 import LikeCounterContext from "../../../../../context/LikeCounterContext";
-import LikeContext from "../../../../../context/LikeContext";
+import { ShowCommentsContext } from "../../../../../context/ShowCommentContext";
 
-const PostActions = () => {
-  const { likes, setLikes } = useContext(LikeContext);
+const PostActions = ({ post }) => {
   const { counterLike, setCounterLike } = useContext(LikeCounterContext);
+  const { showComments, setShowComments } = useContext(ShowCommentsContext);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeDoc, setLikeDoc] = useState(null);
 
-  const handleLike = () => {
-    if (likes) {
-      setCounterLike(counterLike - 1);
+  useEffect(() => {
+    const fetchLike = async () => {
+      const likeRef = doc(firestore, "likes", post.id);
+      const likeSnapshot = await getDoc(likeRef);
+      if (likeSnapshot.exists()) {
+        setLikeDoc(likeSnapshot.ref);
+        setIsLiked(true);
+      }
+    };
+    fetchLike();
+  }, [post.id]);
+
+  const handleLike = async () => {
+    if (likeDoc) {
+      await deleteDoc(likeDoc);
+      setIsLiked(false);
+      setLikeDoc(null);
+      setCounterLike((prevCounter) => ({
+        ...prevCounter,
+        [post.id]: prevCounter[post.id] - 1,
+      }));
     } else {
-      setCounterLike(counterLike + 1);
+      const likeRef = doc(firestore, "likes", post.id);
+      await setDoc(likeRef, { liked: true });
+      setIsLiked(true);
+      setLikeDoc(likeRef);
+      setCounterLike((prevCounter) => ({
+        ...prevCounter,
+        [post.id]: prevCounter[post.id] + 1,
+      }));
     }
-    setLikes(!likes);
+  };
+
+  const handleShowComment = () => {
+    setShowComments(!showComments);
   };
 
   return (
@@ -29,12 +61,12 @@ const PostActions = () => {
     >
       <CustomIconButtonReaction
         onClick={handleLike}
-        sx={{ color: likes ? "#1976d2" : "inherit" }}
+        sx={{ color: isLiked ? "#1976d2" : "inherit" }}
       >
         <ThumbUpIcon />
         <Typography marginLeft="10px">Like</Typography>
       </CustomIconButtonReaction>
-      <CustomIconButtonReaction>
+      <CustomIconButtonReaction onClick={handleShowComment}>
         <ChatBubbleIcon />
         <Typography marginLeft="10px">Comment</Typography>
       </CustomIconButtonReaction>

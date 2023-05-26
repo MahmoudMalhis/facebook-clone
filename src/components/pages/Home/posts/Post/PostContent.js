@@ -9,18 +9,20 @@ const PostContent = ({ post }) => {
 
   return (
     <>
-      <Typography>{post.text}</Typography>
-      <img
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
-        src={post.imageUrl}
-        alt="Uploaded"
-      />
-      {likes && (
+      <Typography padding="20px">{post.text}</Typography>
+      {post.imageUrl !== null && (
+        <img
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+          src={post.imageUrl}
+          alt="Uploaded"
+        />
+      )}
+      {likes[post.id] && (
         <Typography fontSize="12px" color="#666">
-          {`${counterLike} Like`}
+          {`${counterLike[post.id] || 0} Like`}
         </Typography>
       )}
     </>
