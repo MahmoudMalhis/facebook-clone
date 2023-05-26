@@ -1,51 +1,20 @@
 import { Avatar } from "@mui/material";
 import { topIcons, bottomIcons } from "./icon";
 import { StyledIconButton, CustomLabelIcon, CustomLeftSide } from "./styled";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import { database } from "../../../firebase";
 import auth from "../../../firebase";
 import { ref, get } from "firebase/database";
-import { onAuthStateChanged } from "firebase/auth";
+import { AuthContext } from "../../../../context/AuthContext";
 import { Link } from "react-router-dom";
 
 const LeftSide = () => {
   const [seeMore, setSeMore] = useState(true);
-  const [userFullName, setUserFullName] = useState("");
+  const userFullName = useContext(AuthContext);
 
   const handelSeeMore = () => {
     setSeMore(!seeMore);
   };
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const { email } = user;
-        const usersRef = ref(database, "users");
-        get(usersRef)
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              const usersData = snapshot.val();
-              const userId = Object.keys(usersData).find(
-                (key) => usersData[key].email === email
-              );
-              if (userId) {
-                const userRef = ref(database, `users/${userId}`);
-                get(userRef)
-                  .then((userSnapshot) => {
-                    if (userSnapshot.exists()) {
-                      const userData = userSnapshot.val();
-                      const { fName, lName } = userData;
-                      setUserFullName(`${fName} ${lName}`);
-                    }
-                  })
-                  .catch((error) => {});
-              }
-            }
-          })
-          .catch((error) => {});
-      }
-    });
-  }, []);
 
   return (
     <CustomLeftSide>
