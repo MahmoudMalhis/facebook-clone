@@ -8,6 +8,11 @@ import styles from "./LogIn.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import auth from "../../firebase";
 import { useCookies } from "react-cookie";
+import {
+  CustomLogInBox,
+  CustomLogoBox,
+  CustomLogoTypography,
+} from "./styledLogin";
 
 const LogIn = () => {
   const [userData, setUserData] = useState({
@@ -56,19 +61,13 @@ const LogIn = () => {
       });
   };
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      height="100vh"
-      bgcolor="#f0f2f5"
-    >
-      <Box width="580px" paddingRight="32px" className={styles.logo}>
+    <CustomLogInBox>
+      <CustomLogoBox className={styles.logo}>
         <Logo />
-        <Typography className={styles.connect}>
+        <CustomLogoTypography>
           Connect with friends and the world around you on Facebook.
-        </Typography>
-      </Box>
+        </CustomLogoTypography>
+      </CustomLogoBox>
       <Box
         display="flex"
         flexDirection="column"
@@ -126,7 +125,7 @@ const LogIn = () => {
           business.
         </Typography>
       </Box>
-    </Box>
+    </CustomLogInBox>
   );
 };
 
