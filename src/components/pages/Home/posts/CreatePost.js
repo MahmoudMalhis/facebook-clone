@@ -8,7 +8,7 @@ import {
   Input,
   Typography,
 } from "@mui/material";
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import {
   CustomDialogActionsButton,
   CustomIconButtonImgUpload,
@@ -19,16 +19,15 @@ import FilterIcon from "@mui/icons-material/Filter";
 import { storage, firestore } from "../../../firebase";
 import { ref } from "firebase/storage";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import ImageContext from "../../../../context/ImageContext";
 import { collection, addDoc } from "firebase/firestore";
+import { AuthContext } from "../../../../context/AuthContext";
 
 const CreatePost = () => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [postText, setPostText] = useState("");
-
-  const { setImageUrls } = useContext(ImageContext);
+  const userFullName = useContext(AuthContext);
 
   const handlePostClick = () => {
     setOpen(true);
@@ -44,19 +43,18 @@ const CreatePost = () => {
   };
 
   const handleUpload = async () => {
-    if (!file) {
-      return;
-    }
-
     let imageUrl = null;
-    const storageRef = ref(storage, `/image/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
 
-    try {
-      await uploadTask;
-      imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-    } catch (error) {
-      console.log(error);
+    if (file) {
+      const storageRef = ref(storage, `/image/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      try {
+        await uploadTask;
+        imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     try {
@@ -72,9 +70,9 @@ const CreatePost = () => {
         }),
       };
       const docRef = await addDoc(collection(firestore, "posts"), post);
-      const postId = docRef.id;
-      post.id = postId;
-
+      console.log("id" + docRef.path);
+      // setPostId(docRef.id);
+      // console.log(postId);
       setFile(null);
       setSelectedImage(null);
       setPostText("");
@@ -96,7 +94,7 @@ const CreatePost = () => {
   return (
     <>
       <Box
-        width="680px"
+        maxWidth="100%"
         backgroundColor="#fff"
         borderRadius="8px"
         padding="10px"
@@ -104,7 +102,7 @@ const CreatePost = () => {
         onClick={handlePostClick}
       >
         <Box display="flex" alignItems="center">
-          <Avatar alt="Mahmoud" src="/static/images/avatar/2.jpg" />
+          <Avatar alt={userFullName} src="/static/images/avatar/2.jpg" />
           <Box
             width="100%"
             height="15px"
@@ -132,12 +130,12 @@ const CreatePost = () => {
         <DialogContent>
           <Box display="flex" alignItems="center" margin="20px 0">
             <Avatar />
-            <Typography marginLeft="10px">mahmoud</Typography>
+            <Typography marginLeft="10px">{userFullName}</Typography>
           </Box>
           <CustomTextareaAutosize
             value={postText}
             onChange={handleInputChange}
-            placeholder="Whats on your mind, mahmoud?"
+            placeholder={`Whats on your mind, ${userFullName}?`}
           />
           <Input
             type="file"
