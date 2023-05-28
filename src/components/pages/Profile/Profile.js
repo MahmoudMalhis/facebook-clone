@@ -1,5 +1,5 @@
-import { Box, Typography, List, ListItem } from "@mui/material";
-import { useState, useContext, useEffect } from "react";
+import { Box, Typography } from "@mui/material";
+import { useState, useContext } from "react";
 import {
   StyledIconButton,
   StyledAvatar,
@@ -14,6 +14,7 @@ import { deleteObject, ref } from "firebase/storage";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { AuthContext } from "../../../context/AuthContext";
+import { ProfilePicContext } from "../../../context/ProfilePicContext";
 import { ImageCover } from "./StyleProfile";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import PhotoDialog from "./PhotoDialog ";
@@ -29,7 +30,7 @@ const Profile = () => {
   const [selectedImageProfilePic, setSelectedImageProfilePic] = useState(null);
   const [isProfilePicSelected, setIsProfilePicSelected] = useState(false);
   const userData = useContext(AuthContext);
-
+  const profileImage = useContext(ProfilePicContext);
   const handlePostClick = () => {
     setOpen(true);
   };
@@ -87,28 +88,6 @@ const Profile = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userDoc = await getDoc(doc(firestore, "users", userData.email));
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          if (userData.imageUrl) {
-            setSelectedImage(userData.imageUrl);
-          }
-          if (userData.profilePicUrl) {
-            setSelectedImageProfilePic(userData.profilePicUrl);
-            setIsProfilePicSelected(true);
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchUserData();
-  }, [userData.email]);
-
   const handleUploadProfilePic = async () => {
     let imageUrl = null;
 
@@ -162,7 +141,7 @@ const Profile = () => {
       <Box>
         <Box height="70vh">
           <CustomProfileMainBox>
-            <ImageCover src={selectedImage} />
+            <ImageCover src={profileImage.cover} />
             <StyledIconButton onClick={handlePostClick}>
               <Typography marginLeft="10px">Edit cover photo</Typography>
             </StyledIconButton>
@@ -171,7 +150,7 @@ const Profile = () => {
                 <StyledBottomAvatar onClick={handlePostClickProfilePic}>
                   <StyledAvatar
                     alt={userData.email}
-                    src={selectedImageProfilePic}
+                    src={profileImage.profilePicUrl}
                   >
                     <AddAPhotoIcon />
                   </StyledAvatar>
@@ -180,7 +159,7 @@ const Profile = () => {
                 <StyledBottomAvatar onClick={handlePostClickProfilePic}>
                   <StyledAvatar
                     alt={userData.email}
-                    src={selectedImageProfilePic}
+                    src={profileImage.profilePicUrl}
                   >
                     <AddAPhotoIcon />
                   </StyledAvatar>
@@ -196,7 +175,7 @@ const Profile = () => {
           onClose={handleClose}
           onUploadAndClose={handleUploadAndClose}
           onChange={handleChange}
-          selectedImage={selectedImage}
+          selectedImage={profileImage.cover}
         />
 
         <PhotoDialog
@@ -204,7 +183,7 @@ const Profile = () => {
           onClose={handleCloseProfilePic}
           onUploadAndClose={handleUploadAndCloseProfilePic}
           onChange={handleChangeProfilePic}
-          selectedImage={selectedImageProfilePic}
+          selectedImage={profileImage.profilePicUrl}
         />
       </Box>
       <Box bgcolor="#f0f2f5" padding="30px">

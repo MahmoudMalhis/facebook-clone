@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Badge from "@mui/material/Badge";
 import SearchIcon from "@mui/icons-material/Search";
 import MailIcon from "@mui/icons-material/Mail";
@@ -26,15 +26,21 @@ import {
   StyledIconButton,
   CustomFacebookIcon,
   StyledIcon,
+  CustomLink,
 } from "./styled";
 import auth from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
+import { ProfilePicContext } from "../../../context/ProfilePicContext";
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isSearchVisible, setIsSearchVisible] = useState(true);
+  const userData = useContext(AuthContext);
+  const profileImage = useContext(ProfilePicContext);
   const history = useNavigate();
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -159,7 +165,10 @@ function ResponsiveAppBar() {
             </Box>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt={userData.fullName}
+                  src={profileImage.profilePicUrl}
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -178,11 +187,22 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              <CustomLink to="/profile">
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Avatar
+                    alt={userData.fullName}
+                    src={profileImage.profilePicUrl}
+                  />
+                  <Typography textAlign="center" marginLeft="10px">
+                    {userData.fullName}
+                  </Typography>
+                </MenuItem>
+              </CustomLink>
               <MenuItem onClick={handleLogoutAndClose}>
+                <LogoutIcon />
                 <Typography textAlign="center" marginLeft="10px">
                   Logout
                 </Typography>
-                <LogoutIcon />
               </MenuItem>
             </Menu>
           </Box>

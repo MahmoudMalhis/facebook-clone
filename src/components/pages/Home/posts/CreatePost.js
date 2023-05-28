@@ -21,6 +21,7 @@ import { ref } from "firebase/storage";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 import { AuthContext } from "../../../../context/AuthContext";
+import { ProfilePicContext } from "../../../../context/ProfilePicContext";
 
 const CreatePost = () => {
   const [open, setOpen] = useState(false);
@@ -28,6 +29,7 @@ const CreatePost = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [postText, setPostText] = useState("");
   const userData = useContext(AuthContext);
+  const profileImage = useContext(ProfilePicContext);
 
   const handlePostClick = () => {
     setOpen(true);
@@ -69,7 +71,10 @@ const CreatePost = () => {
           minute: "numeric",
         }),
       };
-      const docRef = await addDoc(collection(firestore, "posts"), post);
+      const docRef = await addDoc(
+        collection(firestore, "users", userData.email, "posts"),
+        post
+      );
       console.log("id" + docRef.path);
       // setPostId(docRef.id);
       // console.log(postId);
@@ -102,7 +107,7 @@ const CreatePost = () => {
         onClick={handlePostClick}
       >
         <Box display="flex" alignItems="center">
-          <Avatar alt={userData.fullName} src="/static/images/avatar/2.jpg" />
+          <Avatar alt={userData.fullName} src={profileImage.profilePicUrl} />
           <Box
             width="100%"
             height="15px"
@@ -129,7 +134,7 @@ const CreatePost = () => {
         </DialogTitle>
         <DialogContent>
           <Box display="flex" alignItems="center" margin="20px 0">
-            <Avatar />
+            <Avatar alt={userData.fullName} src={profileImage.profilePicUrl} />
             <Typography marginLeft="10px">{userData.fullName}</Typography>
           </Box>
           <CustomTextareaAutosize

@@ -6,7 +6,7 @@ import { AuthContext } from "./AuthContext";
 export const ProfilePicContext = createContext();
 
 export const ProfilePicProvider = ({ children }) => {
-  const [avatarImage, setAvatarImage] = useState(null);
+  const [profileImage, setProfileImage] = useState({});
   const userData = useContext(AuthContext);
 
   useEffect(() => {
@@ -16,7 +16,10 @@ export const ProfilePicProvider = ({ children }) => {
         if (userDoc.exists()) {
           const profileData = userDoc.data();
           if (profileData.profilePicUrl) {
-            setAvatarImage(profileData.profilePicUrl);
+            setProfileImage({ profilePic: profileData.profilePicUrl });
+          }
+          if (profileData.imageUrl) {
+            setProfileImage({ ...profileData, cover: profileData.imageUrl });
           }
         }
       } catch (error) {
@@ -28,7 +31,7 @@ export const ProfilePicProvider = ({ children }) => {
   }, [userData.email]);
 
   return (
-    <ProfilePicContext.Provider value={avatarImage}>
+    <ProfilePicContext.Provider value={profileImage}>
       {children}
     </ProfilePicContext.Provider>
   );

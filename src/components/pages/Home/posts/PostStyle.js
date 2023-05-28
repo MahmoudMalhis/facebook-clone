@@ -8,6 +8,7 @@ import {
   TextareaAutosize,
 } from "@mui/material";
 import LinearScaleIcon from "@mui/icons-material/LinearScale";
+import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 export const CustomMainPostFormBox = styled(Box)(({ theme }) => ({
@@ -124,4 +125,9 @@ export const CustomList = styled(List)(({}) => ({
 export const CustomLinearScaleIcon = styled(LinearScaleIcon)(({}) => ({
   color: "#999",
   cursor: "pointer",
+}));
+
+export const CustomLink = styled(Link)(({}) => ({
+  color: "inherit",
+  textDecoration: "none",
 }));

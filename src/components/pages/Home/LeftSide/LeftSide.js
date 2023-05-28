@@ -3,11 +3,13 @@ import { topIcons, bottomIcons } from "./icon";
 import { StyledIconButton, CustomLabelIcon, CustomLeftSide } from "./styled";
 import { useState, useContext } from "react";
 import { AuthContext } from "../../../../context/AuthContext";
+import { ProfilePicContext } from "../../../../context/ProfilePicContext";
 import { Link } from "react-router-dom";
 
 const LeftSide = () => {
   const [seeMore, setSeMore] = useState(true);
   const userData = useContext(AuthContext);
+  const profileImage = useContext(ProfilePicContext);
 
   const handelSeeMore = () => {
     setSeMore(!seeMore);
@@ -19,7 +21,7 @@ const LeftSide = () => {
         <StyledIconButton>
           <Avatar
             alt={userData.fullName}
-            src="/static/images/avatar/2.jpg"
+            src={profileImage.profilePicUrl}
             width="40px"
           />
           <CustomLabelIcon>{userData.fullName}</CustomLabelIcon>

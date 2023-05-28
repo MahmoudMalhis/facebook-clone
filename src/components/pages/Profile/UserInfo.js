@@ -13,17 +13,17 @@ const UserInfo = () => {
       value: userData.gender,
     },
     {
-      id: 1,
+      id: 2,
       label: "Barth day:",
       value: `${userData.selectedYear} - ${userData.selectedMonth}- ${userData.selectedDay}`,
     },
     {
-      id: 1,
+      id: 3,
       label: "Email:",
       value: userData.email,
     },
     {
-      id: 1,
+      id: 4,
       label: "Age:",
       value: new Date().getFullYear() - userData.selectedYear,
     },

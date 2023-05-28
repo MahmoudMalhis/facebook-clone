@@ -26,6 +26,7 @@ import SendIcon from "@mui/icons-material/Send";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { firestore } from "../../../../firebase";
 import { AuthContext } from "../../../../../context/AuthContext";
+import { ProfilePicContext } from "../../../../../context/ProfilePicContext";
 import { ShowCommentsContext } from "../../../../../context/ShowCommentContext";
 
 const PostComments = ({ postId }) => {
@@ -35,6 +36,7 @@ const PostComments = ({ postId }) => {
   const [anchorComment, setAnchorComment] = useState(null);
   const { showComments } = useContext(ShowCommentsContext);
   const userData = useContext(AuthContext);
+  const profileImage = useContext(ProfilePicContext);
 
   const handleCommentMenu = (event) => {
     setAnchorComment(event.currentTarget);
@@ -119,7 +121,10 @@ const PostComments = ({ postId }) => {
               alignItems="center"
               marginTop="20px"
             >
-              <CustomAvatar />
+              <CustomAvatar
+                ait={userData.fullName}
+                src={profileImage.profilePicUrl}
+              />
               <Box backgroundColor="#f0f2f5" padding="10px" borderRadius="30px">
                 <Typography fontWeight="bold">{userData.fullName}</Typography>
                 <Typography>{comment.text}</Typography>
@@ -166,7 +171,10 @@ const PostComments = ({ postId }) => {
           </Box>
         ))}
       <Box display="flex" alignItems="center" marginTop="20px">
-        <CustomAvatar />
+        <CustomAvatar
+          alt={userData.fullName}
+          src={profileImage.profilePicUrl}
+        />
         <CustomInput
           type="text"
           value={commentText}

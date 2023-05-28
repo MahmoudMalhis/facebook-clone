@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Box } from "@mui/material";
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestore } from "../../../../firebase";
@@ -6,25 +6,28 @@ import PostHeader from ".//PostHeader";
 import PostContent from ".//PostContent";
 import PostActions from ".//PostActions";
 import PostComments from "./PostComments";
+import { AuthContext } from "../../../../../context/AuthContext";
 
 const Post = () => {
   const [posts, setPosts] = useState([]);
+  const userData = useContext(AuthContext);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(firestore, "posts"),
-      (snapshot) => {
-        const updatedPosts = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setPosts(updatedPosts);
-        console.log(updatedPosts);
-      }
-    );
+    if (Object.keys(userData).length) {
+      const unsubscribe = onSnapshot(
+        collection(firestore, "users", userData.email, "posts/"),
+        (snapshot) => {
+          const updatedPosts = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setPosts(updatedPosts);
+        }
+      );
 
-    return () => unsubscribe();
-  }, []);
+      return () => unsubscribe();
+    }
+  }, [userData]);
 
   return (
     <>

@@ -2,6 +2,7 @@ import { styled, alpha } from "@mui/material/styles";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
+import { Link } from "react-router-dom";
 
 export const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -70,4 +71,9 @@ export const StyledIconButton = styled(IconButton)(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
     width: "130px",
   },
+}));
+
+export const CustomLink = styled(Link)(({ theme }) => ({
+  color: "inherit",
+  textDecoration: "none",
 }));
