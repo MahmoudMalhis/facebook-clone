@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const LeftSide = () => {
   const [seeMore, setSeMore] = useState(true);
-  const userFullName = useContext(AuthContext);
+  const userData = useContext(AuthContext);
 
   const handelSeeMore = () => {
     setSeMore(!seeMore);
@@ -15,14 +15,16 @@ const LeftSide = () => {
 
   return (
     <CustomLeftSide>
-      <StyledIconButton>
-        <Avatar
-          alt={userFullName}
-          src="/static/images/avatar/2.jpg"
-          width="40px"
-        />
-        <CustomLabelIcon>{userFullName}</CustomLabelIcon>
-      </StyledIconButton>
+      <Link to="/profile">
+        <StyledIconButton>
+          <Avatar
+            alt={userData.fullName}
+            src="/static/images/avatar/2.jpg"
+            width="40px"
+          />
+          <CustomLabelIcon>{userData.fullName}</CustomLabelIcon>
+        </StyledIconButton>
+      </Link>
       {topIcons.map(({ icon: Icon, to, id, label }) =>
         label === "See more" ? (
           seeMore && (
