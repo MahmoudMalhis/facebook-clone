@@ -17,7 +17,7 @@ import { firestore } from "../../../../firebase";
 
 const PostHeader = ({ post }) => {
   const [anchorPost, setAnchorPost] = useState(null);
-  const userFullName = useContext(AuthContext);
+  const userData = useContext(AuthContext);
 
   const handlePostMenu = (event) => {
     setAnchorPost(event.currentTarget);
@@ -41,7 +41,7 @@ const PostHeader = ({ post }) => {
       <Box display="flex" alignItems="center">
         <Avatar />
         <Box marginLeft="10px">
-          <Typography fontWeight="700">{userFullName}</Typography>
+          <Typography fontWeight="700">{userData.fullName}</Typography>
           <Typography fontSize="12px" color="#999">
             {post.createdAt}
           </Typography>

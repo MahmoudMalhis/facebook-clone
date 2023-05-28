@@ -27,7 +27,7 @@ const CreatePost = () => {
   const [file, setFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [postText, setPostText] = useState("");
-  const userFullName = useContext(AuthContext);
+  const userData = useContext(AuthContext);
 
   const handlePostClick = () => {
     setOpen(true);
@@ -102,7 +102,7 @@ const CreatePost = () => {
         onClick={handlePostClick}
       >
         <Box display="flex" alignItems="center">
-          <Avatar alt={userFullName} src="/static/images/avatar/2.jpg" />
+          <Avatar alt={userData.fullName} src="/static/images/avatar/2.jpg" />
           <Box
             width="100%"
             height="15px"
@@ -130,12 +130,12 @@ const CreatePost = () => {
         <DialogContent>
           <Box display="flex" alignItems="center" margin="20px 0">
             <Avatar />
-            <Typography marginLeft="10px">{userFullName}</Typography>
+            <Typography marginLeft="10px">{userData.fullName}</Typography>
           </Box>
           <CustomTextareaAutosize
             value={postText}
             onChange={handleInputChange}
-            placeholder={`Whats on your mind, ${userFullName}?`}
+            placeholder={`Whats on your mind, ${userData.fullName}?`}
           />
           <Input
             type="file"

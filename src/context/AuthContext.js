@@ -7,7 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [userFullName, setUserFullName] = useState("");
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -27,8 +27,23 @@ export const AuthProvider = ({ children }) => {
                   .then((userSnapshot) => {
                     if (userSnapshot.exists()) {
                       const userData = userSnapshot.val();
-                      const { fName, lName } = userData;
-                      setUserFullName(`${fName} ${lName}`);
+                      const {
+                        fName,
+                        lName,
+                        email,
+                        selectedMonth,
+                        selectedDay,
+                        selectedYear,
+                        gender,
+                      } = userData;
+                      setUserData({
+                        fullName: `${fName} ${lName}`,
+                        email: email,
+                        selectedMonth: selectedMonth,
+                        selectedDay: selectedDay,
+                        selectedYear: selectedYear,
+                        gender: gender,
+                      });
                     }
                   })
                   .catch((error) => {});
@@ -43,6 +58,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={userFullName}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={userData}>{children}</AuthContext.Provider>
   );
 };

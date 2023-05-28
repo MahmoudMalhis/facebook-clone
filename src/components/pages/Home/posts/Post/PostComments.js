@@ -34,7 +34,7 @@ const PostComments = ({ postId }) => {
   const [comments, setComments] = useState([]);
   const [anchorComment, setAnchorComment] = useState(null);
   const { showComments } = useContext(ShowCommentsContext);
-  const userFullName = useContext(AuthContext);
+  const userData = useContext(AuthContext);
 
   const handleCommentMenu = (event) => {
     setAnchorComment(event.currentTarget);
@@ -121,7 +121,7 @@ const PostComments = ({ postId }) => {
             >
               <CustomAvatar />
               <Box backgroundColor="#f0f2f5" padding="10px" borderRadius="30px">
-                <Typography fontWeight="bold">{userFullName}</Typography>
+                <Typography fontWeight="bold">{userData.fullName}</Typography>
                 <Typography>{comment.text}</Typography>
               </Box>
               <Tooltip>
