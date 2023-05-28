@@ -27,6 +27,7 @@ export const CustomMainPostFormBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     width: "400px",
     margin: "0 auto",
+    maxWidth: "100%",
   },
 }));
 

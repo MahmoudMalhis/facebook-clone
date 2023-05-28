@@ -5,6 +5,9 @@ import {
   StyledAvatar,
   StyledUserName,
   StyledBottomAvatar,
+  CustomProfileMainBox,
+  CustomProfileInfoBox,
+  StyledAvatarBox,
 } from "./StyleProfile";
 import { storage, firestore } from "../../firebase";
 import { deleteObject, ref } from "firebase/storage";
@@ -15,6 +18,7 @@ import { ImageCover } from "./StyleProfile";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import PhotoDialog from "./PhotoDialog ";
 import MainPosts from "../Home/posts/MainPosts";
+import UserInfo from "./UserInfo";
 
 const Profile = () => {
   const [open, setOpen] = useState(false);
@@ -157,12 +161,12 @@ const Profile = () => {
     <>
       <Box>
         <Box height="70vh">
-          <Box width="1250px" height="50vh" margin="0 auto" position="relative">
+          <CustomProfileMainBox>
             <ImageCover src={selectedImage} />
             <StyledIconButton onClick={handlePostClick}>
               <Typography marginLeft="10px">Edit cover photo</Typography>
             </StyledIconButton>
-            <Box display="flex">
+            <StyledAvatarBox>
               {isProfilePicSelected ? (
                 <StyledBottomAvatar onClick={handlePostClickProfilePic}>
                   <StyledAvatar
@@ -183,8 +187,8 @@ const Profile = () => {
                 </StyledBottomAvatar>
               )}
               <StyledUserName>{userData.fullName}</StyledUserName>
-            </Box>
-          </Box>
+            </StyledAvatarBox>
+          </CustomProfileMainBox>
         </Box>
 
         <PhotoDialog
@@ -203,30 +207,11 @@ const Profile = () => {
           selectedImage={selectedImageProfilePic}
         />
       </Box>
-      <Box bgcolor="#f0f2f5" paddingTop="30px">
-        <Box
-          width="1465px"
-          margin="0 auto"
-          display="flex"
-          justifyContent="center"
-        >
+      <Box bgcolor="#f0f2f5" padding="30px">
+        <CustomProfileInfoBox>
           <MainPosts />
-          <Box
-            bgcolor="#fff"
-            height="fit-content"
-            borderRadius="8px"
-            marginLeft="15px"
-          >
-            <List>
-              <ListItem>{`Gender: ${userData.gender}`}</ListItem>
-              <ListItem>{`Barth day: ${userData.selectedYear} -  ${userData.selectedMonth} - ${userData.selectedDay}`}</ListItem>
-              <ListItem>{`Email: ${userData.email}`}</ListItem>
-              <ListItem>{`Age: ${
-                new Date().getFullYear() - userData.selectedYear
-              }`}</ListItem>
-            </List>
-          </Box>
-        </Box>
+          <UserInfo />
+        </CustomProfileInfoBox>
       </Box>
     </>
   );
