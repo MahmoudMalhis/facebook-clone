@@ -8,6 +8,7 @@ import LiveTV from "../pages/LiveTV";
 import Store from "../pages/Store";
 import Groups from "../pages/Groups";
 import Games from "../pages/Games";
+import Profile from "../pages/Profile/Profile";
 
 const router = () => {
   return (
@@ -21,6 +22,7 @@ const router = () => {
           <Route path="/store" element={<Store />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/games" element={<Games />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>
