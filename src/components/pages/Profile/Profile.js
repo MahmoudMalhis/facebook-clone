@@ -13,7 +13,7 @@ import {
 import { storage, firestore } from "../../firebase";
 import { deleteObject, ref } from "firebase/storage";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, addDoc, collection } from "firebase/firestore";
 import { AuthContext } from "../../../context/AuthContext";
 import { ProfilePicContext } from "../../../context/ProfilePicContext";
 import { FriendDataContext } from "../../../context/FriendDataContext";
@@ -24,6 +24,7 @@ import MainPosts from "../Home/posts/MainPosts";
 import UserInfo from "./UserInfo";
 import { FriendPicContext } from "../../../context/FriendPicContext";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
 
 const Profile = () => {
   const [open, setOpen] = useState(false);
@@ -33,6 +34,7 @@ const Profile = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageProfilePic, setSelectedImageProfilePic] = useState(null);
   const [isProfilePicSelected, setIsProfilePicSelected] = useState(false);
+  const [isFriendAdded, setIsFriendAdded] = useState(false);
 
   const friendData = useContext(FriendDataContext);
   const userDataContext = useContext(AuthContext);
@@ -147,6 +149,35 @@ const Profile = () => {
     handleCloseProfilePic();
   };
 
+  const handleAddFriend = async () => {
+    try {
+      const requestData = {
+        senderId: userDataContext.email,
+        receiverId: friendData.email,
+        time: new Date().getTime(),
+      };
+      const notificationData = {
+        senderId: userDataContext.email,
+        senderName: userDataContext.fullName,
+        time: new Date().getTime(),
+        isClicked: false,
+      };
+
+      const requestDocRef = await addDoc(
+        collection(firestore, "users", userDataContext.email, "friendRequest"),
+        requestData
+      );
+      const notificationDocRef = await addDoc(
+        collection(firestore, "users", friendData.email, "notifications"),
+        notificationData
+      );
+
+      setIsFriendAdded(true);
+    } catch (error) {
+      console.log("error => " + error);
+    }
+  };
+
   return (
     <>
       <Box>
@@ -154,10 +185,17 @@ const Profile = () => {
           <CustomProfileMainBox>
             <ImageCover src={profileImage.cover} />
             {friendData ? (
-              <AddFriend>
-                <PersonAddIcon />
-                <Typography marginLeft="5px">Add Friend</Typography>
-              </AddFriend>
+              isFriendAdded ? (
+                <AddFriend onClick={handleAddFriend}>
+                  <PersonAddIcon />
+                  <Typography marginLeft="5px">Add Friend</Typography>
+                </AddFriend>
+              ) : (
+                <AddFriend>
+                  <DownloadDoneIcon />
+                  <Typography marginLeft="5px">Added</Typography>
+                </AddFriend>
+              )
             ) : (
               <StyledIconButton onClick={handlePostClick}>
                 <Typography

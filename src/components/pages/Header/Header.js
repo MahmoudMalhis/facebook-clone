@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Badge from "@mui/material/Badge";
 import SearchIcon from "@mui/icons-material/Search";
 import MailIcon from "@mui/icons-material/Mail";
@@ -28,24 +28,51 @@ import {
   StyledIcon,
   CustomLink,
 } from "./styled";
-import auth from "../../firebase";
+import auth, { firestore } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import { ProfilePicContext } from "../../../context/ProfilePicContext";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorNotification, setAnchorNotification] = useState(null);
   const [isSearchVisible, setIsSearchVisible] = useState(true);
+  const [notifications, setNotifications] = useState([]);
   const userData = useContext(AuthContext);
   const profileImage = useContext(ProfilePicContext);
   const history = useNavigate();
+
+  useEffect(() => {
+    const fetchNotification = async () => {
+      try {
+        const unsubscribe = onSnapshot(
+          collection(firestore, "users", userData.email, "notifications"),
+          (snapshot) => {
+            const notificationData = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+            setNotifications(notificationData);
+          }
+        );
+
+        return () => unsubscribe();
+      } catch (error) {}
+    };
+
+    fetchNotification();
+  }, [userData.email]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+  };
+  const handleOpenNotification = (event) => {
+    setAnchorNotification(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
@@ -54,6 +81,9 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+  const handleCloseNotification = () => {
+    setAnchorNotification(null);
   };
 
   const handleSearchVisible = () => {
@@ -157,11 +187,17 @@ function ResponsiveAppBar() {
                   <MailIcon />
                 </Badge>
               </IconButton>
-              <IconButton size="large" aria-label="show 17 new notifications">
-                <Badge badgeContent={17} color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+              <Tooltip title="Open notification">
+                <IconButton
+                  size="large"
+                  aria-label="show 17 new notifications"
+                  onClick={handleOpenNotification}
+                >
+                  <Badge badgeContent={notifications.length} color="error">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
             </Box>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -204,6 +240,38 @@ function ResponsiveAppBar() {
                   Logout
                 </Typography>
               </MenuItem>
+            </Menu>
+
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorNotification}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorNotification)}
+              onClose={handleCloseNotification}
+            >
+              {notifications.map((notification) => {
+                return (
+                  <MenuItem
+                    onClick={handleCloseNotification}
+                    key={notification.id}
+                  >
+                    <CustomLink to={`profile/${notification.senderId}`}>
+                      <Typography>
+                        {`Send ${notification.senderName} added`}
+                      </Typography>
+                    </CustomLink>
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Box>
         </Toolbar>

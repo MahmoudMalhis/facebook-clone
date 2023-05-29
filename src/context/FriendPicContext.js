@@ -2,21 +2,21 @@ import { doc, getDoc } from "firebase/firestore";
 import React, { createContext, useEffect, useState, useContext } from "react";
 import { firestore } from "../components/firebase";
 import { AuthContext } from "./AuthContext";
+import { useParams } from "react-router-dom";
 
 export const FriendPicContext = createContext();
 
 export const FriendPicProvider = ({ children }) => {
   const [friendImage, setFriendImage] = useState();
-  const friendData = useContext(AuthContext);
-  const email = "";
+  const email = useParams();
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchFriendImage = async () => {
       try {
-        const userDoc = await getDoc(doc(firestore, "users", email));
-        if (userDoc.exists()) {
+        const friendDoc = await getDoc(doc(firestore, "users", email));
+        if (friendDoc.exists()) {
           setFriendImage({});
-          const profileData = userDoc.data();
+          const profileData = friendDoc.data();
           if (profileData.profilePicUrl) {
             setFriendImage({ profilePic: profileData.profilePicUrl });
           }
@@ -29,7 +29,7 @@ export const FriendPicProvider = ({ children }) => {
       }
     };
 
-    fetchUserData();
+    fetchFriendImage();
   }, [email]);
 
   return (
