@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   StyledIconButton,
   StyledAvatar,
@@ -25,8 +25,10 @@ import UserInfo from "./UserInfo";
 import { FriendPicContext } from "../../../context/FriendPicContext";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
+import { useParams } from "react-router-dom";
 
 const Profile = () => {
+  const { email } = useParams();
   const [open, setOpen] = useState(false);
   const [openProfilePic, setOpenProfilePic] = useState(false);
   const [file, setFile] = useState(null);
@@ -36,13 +38,18 @@ const Profile = () => {
   const [isProfilePicSelected, setIsProfilePicSelected] = useState(false);
   const [isFriendAdded, setIsFriendAdded] = useState(false);
 
-  const friendData = useContext(FriendDataContext);
+  const { friendData, setEmailAddressForData } = useContext(FriendDataContext);
   const userDataContext = useContext(AuthContext);
   const userData = friendData ?? userDataContext;
 
-  const friendImage = useContext(FriendPicContext);
+  const { friendImage, setEmailAddress } = useContext(FriendPicContext);
   const profileImageContext = useContext(ProfilePicContext);
   const profileImage = friendImage ?? profileImageContext;
+
+  useEffect(() => {
+    setEmailAddress(email);
+    setEmailAddressForData(email);
+  }, [email, setEmailAddress, setEmailAddressForData]);
 
   const handlePostClick = () => {
     setOpen(true);

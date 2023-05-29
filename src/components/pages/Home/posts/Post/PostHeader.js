@@ -22,9 +22,9 @@ import { FriendPicContext } from "../../../../../context/FriendPicContext";
 const PostHeader = ({ post }) => {
   const [anchorPost, setAnchorPost] = useState(null);
   const userDataContext = useContext(AuthContext);
-  const friendData = useContext(FriendDataContext);
+  const { friendData } = useContext(FriendDataContext);
   const userData = friendData ?? userDataContext;
-  const friendImage = useContext(FriendPicContext);
+  const { friendImage } = useContext(FriendPicContext);
   const profileImageContext = useContext(ProfilePicContext);
   const profileImage = friendImage ?? profileImageContext;
 

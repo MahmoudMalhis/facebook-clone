@@ -6,7 +6,7 @@ import { FriendDataContext } from "../../../context/FriendDataContext";
 
 const UserInfo = () => {
   const userDataContext = useContext(AuthContext);
-  const friendData = useContext(FriendDataContext);
+  const { friendData } = useContext(FriendDataContext);
   const userData = friendData ?? userDataContext;
 
   const Info = [

@@ -30,7 +30,7 @@ const CreatePost = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [postText, setPostText] = useState("");
   const userData = useContext(AuthContext);
-  const friendImage = useContext(FriendPicContext);
+  const { friendImage } = useContext(FriendPicContext);
   const profileImageContext = useContext(ProfilePicContext);
   const profileImage = friendImage ?? profileImageContext;
 
