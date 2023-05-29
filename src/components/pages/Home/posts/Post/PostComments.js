@@ -7,7 +7,6 @@ import {
   Tooltip,
   Menu,
   MenuItem,
-  Button,
 } from "@mui/material";
 import {
   CustomAvatar,
@@ -28,6 +27,7 @@ import { firestore } from "../../../../firebase";
 import { AuthContext } from "../../../../../context/AuthContext";
 import { ProfilePicContext } from "../../../../../context/ProfilePicContext";
 import { ShowCommentsContext } from "../../../../../context/ShowCommentContext";
+import { FriendPicContext } from "../../../../../context/FriendPicContext";
 
 const PostComments = ({ postId }) => {
   const [commentLikes, setCommentLikes] = useState(false);
@@ -36,7 +36,9 @@ const PostComments = ({ postId }) => {
   const [anchorComment, setAnchorComment] = useState(null);
   const { showComments } = useContext(ShowCommentsContext);
   const userData = useContext(AuthContext);
-  const profileImage = useContext(ProfilePicContext);
+  const friendImage = useContext(FriendPicContext);
+  const profileImageContext = useContext(ProfilePicContext);
+  const profileImage = friendImage ?? profileImageContext;
 
   const handleCommentMenu = (event) => {
     setAnchorComment(event.currentTarget);

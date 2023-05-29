@@ -7,10 +7,13 @@ import PostContent from ".//PostContent";
 import PostActions from ".//PostActions";
 import PostComments from "./PostComments";
 import { AuthContext } from "../../../../../context/AuthContext";
+import { FriendDataContext } from "../../../../../context/FriendDataContext";
 
 const Post = () => {
   const [posts, setPosts] = useState([]);
-  const userData = useContext(AuthContext);
+  const userDataContext = useContext(AuthContext);
+  const friendData = useContext(FriendDataContext);
+  const userData = friendData ?? userDataContext;
 
   useEffect(() => {
     if (Object.keys(userData).length) {

@@ -16,11 +16,17 @@ import { ProfilePicContext } from "../../../../../context/ProfilePicContext";
 import { deleteDoc, doc } from "firebase/firestore";
 import { firestore } from "../../../../firebase";
 import { Link } from "react-router-dom";
+import { FriendDataContext } from "../../../../../context/FriendDataContext";
+import { FriendPicContext } from "../../../../../context/FriendPicContext";
 
 const PostHeader = ({ post }) => {
   const [anchorPost, setAnchorPost] = useState(null);
-  const userData = useContext(AuthContext);
-  const profileImage = useContext(ProfilePicContext);
+  const userDataContext = useContext(AuthContext);
+  const friendData = useContext(FriendDataContext);
+  const userData = friendData ?? userDataContext;
+  const friendImage = useContext(FriendPicContext);
+  const profileImageContext = useContext(ProfilePicContext);
+  const profileImage = friendImage ?? profileImageContext;
 
   const handlePostMenu = (event) => {
     setAnchorPost(event.currentTarget);

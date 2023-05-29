@@ -8,6 +8,13 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
+export const MainBox = styled(Box)(({ theme }) => ({
+  height: "70vh",
+  [theme.breakpoints.down("sm")]: {
+    height: "75px",
+  },
+}));
+
 export const ImageCover = styled("img")(({}) => ({
   width: "100%",
   height: "100%",
@@ -111,5 +118,35 @@ export const CustomListItemTextUserInfo = styled(ListItemText)(({ theme }) => ({
   "& span": {
     fontWeight: "bold",
     marginRight: "10px",
+  },
+}));
+
+export const AddFriend = styled(IconButton)(({ theme }) => ({
+  marginLeft: "10px",
+  backgroundColor: "#0573e7",
+  color: "#f0f2f5",
+  padding: "10px 20px",
+  borderRadius: "5px",
+  position: "absolute",
+  right: "80px",
+  bottom: "-90px",
+  "z-index": "1",
+  [theme.breakpoints.down("md")]: {
+    "& p": {
+      fontSize: "12px",
+    },
+    "& svg": {
+      fontSize: "15px",
+    },
+    right: "20px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    bottom: "-210px",
+    left: "50%",
+    transform: "translateX(-50%)",
+  },
+  "&:hover": {
+    backgroundColor: "#0573e7",
+    opacity: "0.7",
   },
 }));

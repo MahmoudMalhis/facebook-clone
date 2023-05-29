@@ -22,6 +22,7 @@ import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 import { AuthContext } from "../../../../context/AuthContext";
 import { ProfilePicContext } from "../../../../context/ProfilePicContext";
+import { FriendPicContext } from "../../../../context/FriendPicContext";
 
 const CreatePost = () => {
   const [open, setOpen] = useState(false);
@@ -29,7 +30,9 @@ const CreatePost = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [postText, setPostText] = useState("");
   const userData = useContext(AuthContext);
-  const profileImage = useContext(ProfilePicContext);
+  const friendImage = useContext(FriendPicContext);
+  const profileImageContext = useContext(ProfilePicContext);
+  const profileImage = friendImage ?? profileImageContext;
 
   const handlePostClick = () => {
     setOpen(true);

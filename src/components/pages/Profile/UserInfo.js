@@ -1,10 +1,13 @@
-import { Fragment, useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../../context/AuthContext";
-import { List, ListItem, ListItemText } from "@mui/material";
+import { ListItem } from "@mui/material";
 import { CustomListItemTextUserInfo, CustomListUserInfo } from "./StyleProfile";
+import { FriendDataContext } from "../../../context/FriendDataContext";
 
 const UserInfo = () => {
-  const userData = useContext(AuthContext);
+  const userDataContext = useContext(AuthContext);
+  const friendData = useContext(FriendDataContext);
+  const userData = friendData ?? userDataContext;
 
   const Info = [
     {

@@ -8,18 +8,22 @@ import {
   CustomProfileMainBox,
   CustomProfileInfoBox,
   StyledAvatarBox,
+  AddFriend,
 } from "./StyleProfile";
 import { storage, firestore } from "../../firebase";
 import { deleteObject, ref } from "firebase/storage";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { setDoc, doc, getDoc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import { AuthContext } from "../../../context/AuthContext";
 import { ProfilePicContext } from "../../../context/ProfilePicContext";
+import { FriendDataContext } from "../../../context/FriendDataContext";
 import { ImageCover } from "./StyleProfile";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import PhotoDialog from "./PhotoDialog ";
 import MainPosts from "../Home/posts/MainPosts";
 import UserInfo from "./UserInfo";
+import { FriendPicContext } from "../../../context/FriendPicContext";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
 const Profile = () => {
   const [open, setOpen] = useState(false);
@@ -29,8 +33,15 @@ const Profile = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageProfilePic, setSelectedImageProfilePic] = useState(null);
   const [isProfilePicSelected, setIsProfilePicSelected] = useState(false);
-  const userData = useContext(AuthContext);
-  const profileImage = useContext(ProfilePicContext);
+
+  const friendData = useContext(FriendDataContext);
+  const userDataContext = useContext(AuthContext);
+  const userData = friendData ?? userDataContext;
+
+  const friendImage = useContext(FriendPicContext);
+  const profileImageContext = useContext(ProfilePicContext);
+  const profileImage = friendImage ?? profileImageContext;
+
   const handlePostClick = () => {
     setOpen(true);
   };
@@ -139,17 +150,33 @@ const Profile = () => {
   return (
     <>
       <Box>
-        <Box height="70vh">
+        <Box height="75vh">
           <CustomProfileMainBox>
             <ImageCover src={profileImage.cover} />
-            <StyledIconButton onClick={handlePostClick}>
-              <Typography marginLeft="10px">Edit cover photo</Typography>
-            </StyledIconButton>
+            {friendData ? (
+              <AddFriend>
+                <PersonAddIcon />
+                <Typography marginLeft="5px">Add Friend</Typography>
+              </AddFriend>
+            ) : (
+              <StyledIconButton onClick={handlePostClick}>
+                <Typography
+                  marginLeft="10px"
+                  color="#0573e7"
+                  bgcolor="#f0f2f5"
+                  padding="5px 10px"
+                  borderRadius="5px"
+                  fontSize="10px"
+                >
+                  Edit cover photo
+                </Typography>
+              </StyledIconButton>
+            )}
             <StyledAvatarBox>
               {isProfilePicSelected ? (
                 <StyledBottomAvatar onClick={handlePostClickProfilePic}>
                   <StyledAvatar
-                    alt={userData.email}
+                    alt={userData.fullName}
                     src={profileImage.profilePicUrl}
                   >
                     <AddAPhotoIcon />
@@ -158,7 +185,7 @@ const Profile = () => {
               ) : (
                 <StyledBottomAvatar onClick={handlePostClickProfilePic}>
                   <StyledAvatar
-                    alt={userData.email}
+                    alt={userData.fullName}
                     src={profileImage.profilePicUrl}
                   >
                     <AddAPhotoIcon />
