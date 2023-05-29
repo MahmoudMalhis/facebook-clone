@@ -22,6 +22,7 @@ const router = () => {
           <Route path="/store" element={<Store />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/games" element={<Games />} />
+          <Route path="/profile/:email" element={<Profile />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
