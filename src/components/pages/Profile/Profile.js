@@ -193,14 +193,14 @@ const Profile = () => {
             <ImageCover src={profileImage.cover} />
             {friendData ? (
               isFriendAdded ? (
-                <AddFriend onClick={handleAddFriend}>
-                  <PersonAddIcon />
-                  <Typography marginLeft="5px">Add Friend</Typography>
-                </AddFriend>
-              ) : (
                 <AddFriend>
                   <DownloadDoneIcon />
                   <Typography marginLeft="5px">Added</Typography>
+                </AddFriend>
+              ) : (
+                <AddFriend onClick={handleAddFriend}>
+                  <PersonAddIcon />
+                  <Typography marginLeft="5px">Add Friend</Typography>
                 </AddFriend>
               )
             ) : (

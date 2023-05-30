@@ -1,7 +1,6 @@
 import { styled, alpha } from "@mui/material/styles";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import IconButton from "@mui/material/IconButton";
-import InputBase from "@mui/material/InputBase";
+import { Box, IconButton, InputBase } from "@mui/material/";
 import { Link } from "react-router-dom";
 
 export const Search = styled("div")(({ theme }) => ({
@@ -76,4 +75,33 @@ export const StyledIconButton = styled(IconButton)(({ theme }) => ({
 export const CustomLink = styled(Link)(({ theme }) => ({
   color: "inherit",
   textDecoration: "none",
+}));
+
+export const SearchFilter = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  "z-index": "1000",
+  left: "50%",
+  transform: "translateX(-50%)",
+  top: "54px",
+  width: "70%",
+  borderRadius: "8px",
+  background: "#fff",
+  "& a:not(:nth-child(1)) div": {
+    borderTop: "1px solid #999",
+  },
+  "& div": {
+    padding: "10px 20px",
+  },
+  color: "#000",
+}));
+
+export const SearchItem = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  Zindex: "1000",
+  left: "50%",
+  transform: "translateX(-50%)",
+  top: "54px",
+  width: "70%",
+  borderRadius: "8px",
+  backgroundColor: "#fff",
 }));
