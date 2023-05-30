@@ -13,7 +13,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { AuthContext } from "../../../../../context/AuthContext";
 import { ProfilePicContext } from "../../../../../context/ProfilePicContext";
-import { deleteDoc, doc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 import { firestore } from "../../../../firebase";
 import { Link } from "react-router-dom";
 import { FriendDataContext } from "../../../../../context/FriendDataContext";
@@ -34,6 +34,15 @@ const PostHeader = ({ post }) => {
 
   const handleClosePostMenu = () => {
     setAnchorPost(null);
+  };
+
+  const handleSavePost = async () => {
+    const saveRef = await addDoc(
+      collection(firestore, "users", userDataContext.email, "save"),
+      { post: post }
+    );
+    console.log(saveRef);
+    handleClosePostMenu();
   };
 
   const handleDelete = async (postId) => {
@@ -80,7 +89,7 @@ const PostHeader = ({ post }) => {
         open={Boolean(anchorPost)}
         onClose={handleClosePostMenu}
       >
-        <MenuItem onClick={handleClosePostMenu}>
+        <MenuItem onClick={handleSavePost}>
           <BookmarkIcon />
           <Typography textAlign="center">Saved</Typography>
         </MenuItem>

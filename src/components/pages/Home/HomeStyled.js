@@ -17,6 +17,7 @@ export const CustomBox = styled(Box)(({ theme }) => ({
   height: "calc(100vh - 80px)",
   display: "flex",
   justifyContent: "space-between",
+  margin: "auto",
   marginTop: "16px",
   padding: "0 20px",
 }));

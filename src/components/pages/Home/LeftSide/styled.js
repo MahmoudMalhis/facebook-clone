@@ -6,6 +6,9 @@ export const StyledIconButton = styled(IconButton)(({ theme }) => ({
   borderRadius: "5px",
   width: "100%",
   justifyContent: "left",
+  "a.active &": {
+    color: "#0573e7",
+  },
 }));
 
 export const CustomLabelIcon = styled("span")(({ theme }) => ({

@@ -24,6 +24,7 @@ export const topIcons = [
     id: 1,
     icon: PeopleAltIcon,
     label: "Friends",
+    to: "/",
   },
   {
     id: 2,
@@ -41,6 +42,7 @@ export const topIcons = [
     id: 4,
     icon: FlagIcon,
     label: "Pages",
+    to: "/",
   },
   {
     id: 5,
@@ -52,27 +54,31 @@ export const topIcons = [
     id: 6,
     icon: RecentActorsIcon,
     label: "Most Recent",
+    to: "/",
   },
   {
     id: 7,
     icon: GroupsIcon,
     label: "Groups",
-    to: "/groups",
+    to: "/",
   },
   {
     id: 8,
     icon: StorefrontIcon,
     label: "Marketplace",
+    to: "/",
   },
   {
     id: 9,
     icon: RestoreIcon,
     label: "Memories",
+    to: "/",
   },
   {
     id: 10,
     icon: EventNoteIcon,
     label: "Event",
+    to: "/",
   },
   {
     id: 11,

@@ -9,6 +9,7 @@ import Store from "../pages/Store";
 import Groups from "../pages/Groups";
 import Games from "../pages/Games";
 import Profile from "../pages/Profile/Profile";
+import Save from "../pages/SavePost/Save";
 
 const router = () => {
   return (
@@ -24,6 +25,7 @@ const router = () => {
           <Route path="/games" element={<Games />} />
           <Route path="/profile/:email" element={<Profile />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/save" element={<Save />} />
         </Route>
       </Routes>
     </BrowserRouter>

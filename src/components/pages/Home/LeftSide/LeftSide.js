@@ -4,7 +4,7 @@ import { StyledIconButton, CustomLabelIcon, CustomLeftSide } from "./styled";
 import { useState, useContext } from "react";
 import { AuthContext } from "../../../../context/AuthContext";
 import { ProfilePicContext } from "../../../../context/ProfilePicContext";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const LeftSide = () => {
   const [seeMore, setSeMore] = useState(true);
@@ -36,12 +36,12 @@ const LeftSide = () => {
             </StyledIconButton>
           )
         ) : (
-          <Link to={to}>
+          <NavLink to={to} exact>
             <StyledIconButton key={id}>
               <Icon />
               <CustomLabelIcon variant="span">{label}</CustomLabelIcon>
             </StyledIconButton>
-          </Link>
+          </NavLink>
         )
       )}
       {bottomIcons.map(
