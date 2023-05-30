@@ -41,7 +41,6 @@ const PostHeader = ({ post }) => {
       collection(firestore, "users", userDataContext.email, "save"),
       { post: post }
     );
-    console.log(saveRef);
     handleClosePostMenu();
   };
 

@@ -86,7 +86,7 @@ export const SearchFilter = styled(Box)(({ theme }) => ({
   width: "70%",
   borderRadius: "8px",
   background: "#fff",
-  "& a:not(:nth-child(1)) div": {
+  "& a:not(:nth-of-type(1)) div": {
     borderTop: "1px solid #999",
   },
   "& div": {

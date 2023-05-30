@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 export const CustomMainPostFormBox = styled(Box)(({ theme }) => ({
-  overflowY: "scroll",
+  overflow: "scroll",
   scrollbarColor: "#BCC0C4",
   "&::-webkit-scrollbar": {
     width: "5px",
@@ -76,7 +76,7 @@ export const CustomIconButtonImgUpload = styled(IconButton)(({}) => ({
   outlineOffset: "5px",
   borderRadius: "8px",
   marginTop: "32px",
-  overflowY: "scroll",
+  overflow: "scroll",
   "&::-webkit-scrollbar": {
     width: "5px",
   },

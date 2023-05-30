@@ -15,7 +15,6 @@ const PostSaved = () => {
   const { isLoading, setIsLoading } = useContext(LoadingDataContext);
   const userData = useContext(AuthContext);
 
-  console.log("1");
   useEffect(() => {
     setIsLoading(true);
     if (Object.keys(userData).length) {

@@ -9,8 +9,6 @@ export const FriendPicProvider = ({ children }) => {
   const [friendImage, setFriendImage] = useState();
   const [emailAddress, setEmailAddress] = useState(null);
 
-  console.log("emailAddress from FPicContext", emailAddress);
-
   useEffect(() => {
     const fetchFriendImage = async () => {
       try {

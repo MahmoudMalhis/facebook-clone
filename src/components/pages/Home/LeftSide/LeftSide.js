@@ -36,8 +36,8 @@ const LeftSide = () => {
             </StyledIconButton>
           )
         ) : (
-          <NavLink to={to} exact>
-            <StyledIconButton key={id}>
+          <NavLink to={to} key={id}>
+            <StyledIconButton>
               <Icon />
               <CustomLabelIcon variant="span">{label}</CustomLabelIcon>
             </StyledIconButton>
@@ -53,8 +53,8 @@ const LeftSide = () => {
               <CustomLabelIcon variant="span">{label}</CustomLabelIcon>
             </StyledIconButton>
           ) : (
-            <Link to={to}>
-              <StyledIconButton key={id}>
+            <Link to={to} key={id}>
+              <StyledIconButton>
                 <Icon />
                 <CustomLabelIcon variant="span">{label}</CustomLabelIcon>
               </StyledIconButton>

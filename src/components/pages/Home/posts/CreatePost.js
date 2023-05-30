@@ -78,9 +78,6 @@ const CreatePost = () => {
         collection(firestore, "users", userData.email, "posts"),
         post
       );
-      console.log("id" + docRef.path);
-      // setPostId(docRef.id);
-      // console.log(postId);
       setFile(null);
       setSelectedImage(null);
       setPostText("");
@@ -106,7 +103,6 @@ const CreatePost = () => {
         backgroundColor="#fff"
         borderRadius="8px"
         padding="10px"
-        overflowY="scroll"
         onClick={handlePostClick}
       >
         <Box display="flex" alignItems="center">
@@ -159,7 +155,7 @@ const CreatePost = () => {
                   style={{
                     width: "auto",
                     height: "auto",
-                    overflowY: "scroll",
+                    msOverflowY: "scroll",
                   }}
                   src={selectedImage}
                   alt="Uploaded"
@@ -170,7 +166,7 @@ const CreatePost = () => {
             </CustomIconButtonImgUpload>
           </label>
         </DialogContent>
-        <DialogActions justifyContent="center">
+        <DialogActions>
           <CustomDialogActionsButton
             width="100%"
             onClick={handleUploadAndClose}

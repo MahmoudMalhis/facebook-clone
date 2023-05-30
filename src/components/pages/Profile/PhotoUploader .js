@@ -15,7 +15,7 @@ const PhotoUploader = ({ onChange, selectedImage }) => (
       <CustomIconButtonImgUpload component="span">
         {selectedImage ? (
           <img
-            style={{ width: "auto", height: "auto", overflowY: "scroll" }}
+            style={{ width: "auto", height: "auto", overflow: "scroll" }}
             src={selectedImage}
             alt="Uploaded"
           />

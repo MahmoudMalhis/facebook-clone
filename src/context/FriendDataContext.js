@@ -7,7 +7,6 @@ export const FriendDataContext = createContext();
 const FriendDataProvider = ({ children }) => {
   const [friendData, setFriendData] = useState();
   const [emailAddress, setEmailAddressForData] = useState(null);
-  console.log("emailAddress from FDataContext", emailAddress);
 
   useEffect(() => {
     const fetchData = async () => {

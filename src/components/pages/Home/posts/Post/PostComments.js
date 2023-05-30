@@ -105,7 +105,6 @@ const PostComments = ({ postId }) => {
       const commentDocRef = doc(commentsRef, commentId.toString());
       await deleteDoc(commentDocRef);
       setComments(comments.filter((comment) => comment.id !== commentId));
-      console.log(commentDocRef);
     } catch (error) {
       console.log(error);
     }

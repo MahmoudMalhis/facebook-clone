@@ -139,7 +139,7 @@ function ResponsiveAppBar() {
                 {icons.map(({ icon: Icon, to, id }) => (
                   <MenuItem key={id} onClick={handleCloseNavMenu}>
                     <StyledIconButton>
-                      <NavLink to={to} exact>
+                      <NavLink to={to}>
                         <StyledIcon>
                           <Icon />
                         </StyledIcon>
@@ -156,7 +156,7 @@ function ResponsiveAppBar() {
             >
               {icons.map(({ icon: Icon, to, id }) => (
                 <StyledIconButton key={id}>
-                  <NavLink to={to} exact>
+                  <NavLink to={to}>
                     <StyledIcon>
                       <Icon />
                     </StyledIcon>
