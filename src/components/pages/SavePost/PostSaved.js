@@ -7,12 +7,17 @@ import { firestore } from "../../firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
+import SkeletonLod from "../../Skeleton";
+import LoadingDataContext from "../../../context/LoadingDataContext";
 
 const PostSaved = () => {
   const [posts, setPosts] = useState([]);
+  const { isLoading, setIsLoading } = useContext(LoadingDataContext);
   const userData = useContext(AuthContext);
 
+  console.log("1");
   useEffect(() => {
+    setIsLoading(true);
     if (Object.keys(userData).length) {
       const unsubscribe = onSnapshot(
         collection(firestore, "users", userData.email, "save"),
@@ -22,6 +27,7 @@ const PostSaved = () => {
             ...doc.data(),
           }));
           setPosts(savedPosts);
+          setIsLoading(false);
         }
       );
 
@@ -33,7 +39,9 @@ const PostSaved = () => {
 
   return (
     <Box width="60%" margin="0 auto">
-      {posts.length === 0 ? (
+      {isLoading ? (
+        <SkeletonLod />
+      ) : posts.length === 0 ? (
         <Box
           fontSize="100px"
           display="flex"
