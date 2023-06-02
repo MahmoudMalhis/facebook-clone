@@ -10,13 +10,13 @@ const PostContent = ({ post }) => {
   return (
     <>
       <Typography padding="20px">{post.text}</Typography>
-      {post.imageUrl !== null && (
+      {post.imageUrlPost !== null && (
         <img
           style={{
             width: "100%",
             height: "100%",
           }}
-          src={post.imageUrl}
+          src={post.imageUrlPost}
           alt="Uploaded"
         />
       )}

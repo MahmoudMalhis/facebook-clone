@@ -53,15 +53,18 @@ const PostHeader = ({ post }) => {
     }
   };
 
+  let profileEmail =
+    "/profile" + (userDataContext.email === post.email ? "" : `/${post.email}`);
+
   return (
     <Box display="flex" alignItems="center" justifyContent="space-between">
       <Box display="flex" alignItems="center">
-        <Link to="/profile">
-          <Avatar alt={userData.fullName} src={profileImage.profilePicUrl} />
+        <Link to={`${profileEmail}`}>
+          <Avatar alt={post.name} src={post.imageUrlProfile} />
         </Link>
         <Box marginLeft="10px">
-          <CustomLink to="/profile">
-            <Typography fontWeight="700">{userData.fullName}</Typography>
+          <CustomLink to={profileEmail}>
+            <Typography fontWeight="700">{post.name}</Typography>
           </CustomLink>
           <Typography fontSize="12px" color="#999">
             {post.createdAt}

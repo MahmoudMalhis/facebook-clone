@@ -1,14 +1,15 @@
-import Router from "./components/router/router";
-import "./App.css";
+import React, { useState } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { ProfilePicProvider } from "./context/ProfilePicContext";
 import FriendDataProvider from "./context/FriendDataContext";
 import { FriendPicProvider } from "./context/FriendPicContext";
 import { ShowCommentsContext } from "./context/ShowCommentContext";
-import { useState } from "react";
 import LikeCounterContext from "./context/LikeCounterContext";
 import LikeContext from "./context/LikeContext";
 import LoadingDataContext from "./context/LoadingDataContext";
+import PostsProvider from "./context/PostsContext";
+import Router from "./components/router/router";
+import "./App.css";
 
 function App() {
   const [showComments, setShowComments] = useState(false);
@@ -25,7 +26,9 @@ function App() {
               <ProfilePicProvider>
                 <FriendPicProvider>
                   <FriendDataProvider>
-                    <Router />
+                    <PostsProvider>
+                      <Router />
+                    </PostsProvider>
                   </FriendDataProvider>
                 </FriendPicProvider>
               </ProfilePicProvider>

@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import LoadingDataContext from "../../../context/LoadingDataContext";
 import { FriendDataContext } from "../../../context/FriendDataContext";
 import { AuthContext } from "../../../context/AuthContext";
@@ -12,6 +12,8 @@ import { AddFriend } from "./StyleProfile";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import MenuProfile from "./Menu";
+import { PostsContext } from "../../../context/PostsContext";
 
 const AddFriendButton = () => {
   const { email } = useParams();
@@ -20,28 +22,71 @@ const AddFriendButton = () => {
   const [friendConfirm, setFriendConfirm] = useState([]);
   const { setIsLoading } = useContext(LoadingDataContext);
   const { friendData, setEmailAddressForData } = useContext(FriendDataContext);
-  const userDatContext = useContext(AuthContext);
+  const userDataContext = useContext(AuthContext);
   const { friendImage, setEmailAddress } = useContext(FriendPicContext);
   const profileImage = useContext(ProfilePicContext);
+  const { posts } = useContext(PostsContext);
 
   useEffect(() => {
     setEmailAddress(email);
     setEmailAddressForData(email);
   }, [email, setEmailAddress, setEmailAddressForData]);
 
+  const updatedPostsFriendRef = useRef([]);
+  useEffect(() => {
+    if (Object.keys(friendData).length) {
+      const unsubscribe = onSnapshot(
+        collection(firestore, "users", friendData.email, "posts/"),
+        (snapshot) => {
+          const updatedPosts = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          updatedPostsFriendRef.current = updatedPosts;
+          console.log(updatedPostsFriendRef.current);
+        }
+      );
+
+      return () => unsubscribe();
+    }
+  }, [friendData]);
+
+  const updatedPostsUserRef = useRef([]);
+  useEffect(() => {
+    if (Object.keys(userDataContext).length) {
+      const unsubscribe = onSnapshot(
+        collection(firestore, "users", userDataContext.email, "posts/"),
+        (snapshot) => {
+          const updatedPosts = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          updatedPostsUserRef.current = updatedPosts;
+          console.log(updatedPostsUserRef.current);
+        }
+      );
+
+      return () => unsubscribe();
+    }
+  }, [userDataContext]);
+
   const handleConfirm = async () => {
     try {
-      addDoc(collection(firestore, "users", userDatContext.email, "friend"), {
+      addDoc(collection(firestore, "users", userDataContext.email, "friend"), {
         senderId: friendData.email,
         name: friendData.fullName,
         Image: friendImage?.profilePicUrl || "",
+        posts: updatedPostsFriendRef.current,
+        isFavorite: false,
       });
 
       addDoc(collection(firestore, "users", friendData.email, "friend"), {
-        senderId: userDatContext.email,
-        name: userDatContext.fullName,
-        Image: profileImage.profilePicUrl,
+        senderId: userDataContext.email,
+        name: userDataContext.fullName,
+        Image: profileImage.profilePicUrl || "",
+        posts: updatedPostsUserRef.current,
       });
+      console.log("added");
     } catch (error) {
       console.log(error);
     }
@@ -49,22 +94,22 @@ const AddFriendButton = () => {
 
   const handleAddFriend = async () => {
     const requestData = {
-      senderId: userDatContext.email,
+      senderId: userDataContext.email,
       receiverId: friendData.email,
       time: new Date().getTime(),
       isFriendAdded: true,
     };
 
     const notificationData = {
-      senderId: userDatContext.email,
-      senderName: userDatContext.fullName,
+      senderId: userDataContext.email,
+      senderName: userDataContext.fullName,
       time: new Date().getTime(),
       isClicked: false,
     };
 
     const addedFriendData = {
-      senderId: userDatContext.email,
-      senderName: userDatContext.fullName,
+      senderId: userDataContext.email,
+      senderName: userDataContext.fullName,
       time: new Date().getTime(),
       approve: false,
     };
@@ -72,7 +117,12 @@ const AddFriendButton = () => {
     try {
       await Promise.all([
         addDoc(
-          collection(firestore, "users", userDatContext.email, "friendRequest"),
+          collection(
+            firestore,
+            "users",
+            userDataContext.email,
+            "friendRequest"
+          ),
           requestData
         ),
         addDoc(
@@ -93,7 +143,7 @@ const AddFriendButton = () => {
     try {
       setIsLoading(true);
       const unsubscribe = onSnapshot(
-        collection(firestore, "users", userDatContext.email, "addedFriend"),
+        collection(firestore, "users", userDataContext.email, "addedFriend"),
         (snapshot) => {
           const addedFriend = snapshot.docs.map((doc) => ({
             ...doc.data(),
@@ -104,7 +154,7 @@ const AddFriendButton = () => {
       );
 
       const added = onSnapshot(
-        collection(firestore, "users", userDatContext.email, "friendRequest"),
+        collection(firestore, "users", userDataContext.email, "friendRequest"),
         (snapshot) => {
           const addedFriend = snapshot.docs.map((doc) => ({
             ...doc.data(),
@@ -115,7 +165,7 @@ const AddFriendButton = () => {
       );
 
       const confirm = onSnapshot(
-        collection(firestore, "users", userDatContext.email, "friend"),
+        collection(firestore, "users", userDataContext.email, "friend"),
         (snapshot) => {
           const confirmFriend = snapshot.docs.map((doc) => ({
             ...doc.data(),
@@ -133,7 +183,7 @@ const AddFriendButton = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [userDatContext.email, setIsLoading]);
+  }, [userDataContext.email, setIsLoading]);
 
   let senderId;
   let friendAdd;
@@ -163,10 +213,7 @@ const AddFriendButton = () => {
   return (
     <>
       {added ? (
-        <AddFriend>
-          <HowToRegIcon />
-          <Typography marginLeft="5px">Friends</Typography>
-        </AddFriend>
+        <MenuProfile />
       ) : senderId ? (
         <AddFriend onClick={handleConfirm}>
           <HowToRegIcon />

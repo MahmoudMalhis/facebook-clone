@@ -16,7 +16,7 @@ const Profile = () => {
       </Box>
       <Box bgcolor="#f0f2f5" padding="30px">
         <CustomProfileInfoBox>
-          <MainPosts />
+          <MainPosts type="profile" />
           <UserInfo />
         </CustomProfileInfoBox>
       </Box>
