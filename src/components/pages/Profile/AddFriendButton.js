@@ -94,14 +94,15 @@ const AddFriendButton = () => {
     const requestData = {
       senderId: userDataContext.email,
       receiverId: friendData.email,
-      time: new Date().getTime(),
+      time: new Date().toLocaleTimeString(),
       isFriendAdded: true,
     };
 
     const notificationData = {
       senderId: userDataContext.email,
       senderName: userDataContext.fullName,
-      time: new Date().getTime(),
+      senderAvatar: profileImage.profilePicUrl,
+      time: new Date().toLocaleTimeString(),
       isClicked: false,
     };
 

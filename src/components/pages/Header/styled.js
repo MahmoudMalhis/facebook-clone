@@ -13,12 +13,12 @@ export const Search = styled("div")(({ theme }) => ({
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: "inputWidth",
-  [theme.breakpoints.up("sm")]: {
+  [theme.breakpoints.up("md")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
     display: "flex",
   },
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("md")]: {
     display: "none",
   },
 }));
@@ -63,18 +63,27 @@ export const CustomFacebookIcon = styled(FacebookIcon)(({ theme }) => ({
 
 export const StyledIconButton = styled(IconButton)(({ theme }) => ({
   borderRadius: "5px",
-  width: "40px",
   [theme.breakpoints.up("md")]: {
     width: "80px",
   },
   [theme.breakpoints.up("lg")]: {
     width: "130px",
   },
+  "& a": {
+    color: "#333",
+    textDecoration: "none",
+    display: "flex",
+  },
+  "& a p": {
+    marginLeft: "10px",
+  },
 }));
 
 export const CustomLink = styled(Link)(({ theme }) => ({
   color: "inherit",
   textDecoration: "none",
+  width: "100%",
+  borderBottom: "1px solid #999",
 }));
 
 export const SearchFilter = styled(Box)(({ theme }) => ({

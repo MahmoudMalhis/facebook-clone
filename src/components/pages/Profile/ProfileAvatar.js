@@ -8,7 +8,7 @@ import { ProfilePicContext } from "../../../context/ProfilePicContext";
 import {
   StyledAvatar,
   StyledAvatarBox,
-  StyledBottomAvatar,
+  StyledButtonAvatar,
   StyledUserName,
 } from "./StyleProfile";
 import PhotoDialog from "./PhotoDialog ";
@@ -94,23 +94,23 @@ const ProfileAvatar = () => {
             ></StyledAvatar>
           )
         ) : isProfilePicSelected ? (
-          <StyledBottomAvatar onClick={handlePostClickProfilePic}>
+          <StyledButtonAvatar onClick={handlePostClickProfilePic}>
             <StyledAvatar
               alt={userData.fullName}
               src={profileImage.profilePicUrl}
             >
               <AddAPhotoIcon />
             </StyledAvatar>
-          </StyledBottomAvatar>
+          </StyledButtonAvatar>
         ) : (
-          <StyledBottomAvatar onClick={handlePostClickProfilePic}>
+          <StyledButtonAvatar onClick={handlePostClickProfilePic}>
             <StyledAvatar
               alt={userData.fullName}
               src={profileImage.profilePicUrl}
             >
               <AddAPhotoIcon />
             </StyledAvatar>
-          </StyledBottomAvatar>
+          </StyledButtonAvatar>
         )}
         <StyledUserName>{userData.fullName}</StyledUserName>
       </StyledAvatarBox>
