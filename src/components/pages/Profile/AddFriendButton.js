@@ -25,7 +25,6 @@ const AddFriendButton = () => {
   const userDataContext = useContext(AuthContext);
   const { friendImage, setEmailAddress } = useContext(FriendPicContext);
   const profileImage = useContext(ProfilePicContext);
-  const { posts } = useContext(PostsContext);
 
   useEffect(() => {
     setEmailAddress(email);
@@ -43,7 +42,6 @@ const AddFriendButton = () => {
             ...doc.data(),
           }));
           updatedPostsFriendRef.current = updatedPosts;
-          console.log(updatedPostsFriendRef.current);
         }
       );
 
@@ -62,7 +60,6 @@ const AddFriendButton = () => {
             ...doc.data(),
           }));
           updatedPostsUserRef.current = updatedPosts;
-          console.log(updatedPostsUserRef.current);
         }
       );
 
@@ -85,6 +82,7 @@ const AddFriendButton = () => {
         name: userDataContext.fullName,
         Image: profileImage.profilePicUrl || "",
         posts: updatedPostsUserRef.current,
+        isFavorite: false,
       });
       console.log("added");
     } catch (error) {

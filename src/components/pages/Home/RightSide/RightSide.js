@@ -30,6 +30,8 @@ const RightSide = () => {
       console.log(error);
     }
   }, [userDataContext.email]);
+
+  // console.table(friendConfirm[0].post);
   return (
     <CustomRightSideBox>
       <Box padding="0px 25px 25px" borderBottom="1px solid #dedede">

@@ -32,9 +32,7 @@ const PostSaved = () => {
 
       return () => unsubscribe();
     }
-  }, [userData]);
-  //   console.table(posts);
-  console.table(posts[1]?.post?.createdAt);
+  }, [userData, setIsLoading]);
 
   return (
     <Box width="60%" margin="0 auto">

@@ -21,7 +21,7 @@ const PostsProvider = ({ children }) => {
     setIsLoading(true);
     if (Object.keys(userData).length) {
       onSnapshot(
-        collection(firestore, "users", userData.email, "friend"),
+        collection(firestore, "users", userDataContext.email, "friend"),
         (snapshot) => {
           const updatedFriends = snapshot.docs.map((doc) => ({
             id: doc.id,
@@ -46,10 +46,27 @@ const PostsProvider = ({ children }) => {
         }
       );
     }
-  }, [userData, setIsLoading]);
+  }, [userData, userDataContext, setIsLoading]);
 
   useEffect(() => {
     const updatedPostsList = [];
+    if (postType === "favorite") {
+      friends.forEach((friend) => {
+        if (friend.isFavorite) {
+          friend.posts.forEach((post) => {
+            updatedPostsList.push({
+              imageUrlProfile: friend.Image,
+              name: friend.name,
+              email: friend.senderId,
+              imageUrlPost: post.imageUrl,
+              text: post.text,
+              createdAt: post.createdAt,
+              id: post.id,
+            });
+          });
+        }
+      });
+    }
     if (postType === "home") {
       friends.forEach((friend) => {
         friend.posts.forEach((post) => {
@@ -65,23 +82,28 @@ const PostsProvider = ({ children }) => {
         });
       });
     }
-    profilePosts.forEach((post) => {
-      updatedPostsList.push({
-        imageUrlProfile: userData.Image,
-        name: userData.fullName,
-        email: userData.email,
-        imageUrlPost: post.imageUrl,
-        text: post.text,
-        createdAt: post.createdAt,
-        id: post.id,
+    if (postType === "profile" || postType === "home") {
+      profilePosts.forEach((post) => {
+        updatedPostsList.push({
+          imageUrlProfile: userData.Image,
+          name: userData.fullName,
+          email: userData.email,
+          imageUrlPost: post.imageUrl,
+          text: post.text,
+          createdAt: post.createdAt,
+          id: post.id,
+        });
       });
-    });
+    }
+    updatedPostsList.sort(
+      (post_1, post_2) => post_2.createdAt - post_1.createdAt
+    );
     setPostsList(updatedPostsList);
-    console.log(friends);
+    console.table(updatedPostsList);
   }, [friends, profilePosts, userData, postType]);
 
   return (
-    <PostsContext.Provider value={{ postsList, setPostType }}>
+    <PostsContext.Provider value={{ postsList, setPostType, friends }}>
       {children}
     </PostsContext.Provider>
   );

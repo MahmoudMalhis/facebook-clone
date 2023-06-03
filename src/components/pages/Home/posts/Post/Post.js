@@ -11,6 +11,7 @@ import { PostsContext } from "../../../../../context/PostsContext";
 const Post = ({ type }) => {
   const { isLoading } = useContext(LoadingDataContext);
   const { postsList, setPostType } = useContext(PostsContext);
+
   setPostType(type);
   return (
     <>
