@@ -44,9 +44,7 @@ const FriendDataProvider = ({ children }) => {
               }
             }
           }
-        } catch (error) {
-          console.log(error);
-        }
+        } catch (error) {}
       }
     };
 

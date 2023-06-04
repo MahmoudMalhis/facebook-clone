@@ -1,11 +1,11 @@
 import { MenuItem, Typography, Menu } from "@mui/material";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { AddFriend } from "./StyleProfile";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import StarIcon from "@mui/icons-material/Star";
 import { PostsContext } from "../../../context/PostsContext";
 import { FriendDataContext } from "../../../context/FriendDataContext";
-import { collection, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../../firebase";
 import { AuthContext } from "../../../context/AuthContext";
 
@@ -23,11 +23,8 @@ const MenuProfile = () => {
     setAnchorComment(null);
   };
 
-  console.log(userData.email);
   const handleFavorite = async () => {
     friends.forEach(async (friend) => {
-      console.log(friend.isFavorite);
-      console.log(friend.senderId);
       if (friend.senderId === friendData.email) {
         const friendDocRef = doc(
           firestore,
@@ -39,7 +36,6 @@ const MenuProfile = () => {
         await updateDoc(friendDocRef, {
           isFavorite: !friend.isFavorite,
         });
-        console.log(friend.isFavorite);
       }
     });
     handleCloseCommentMenu();

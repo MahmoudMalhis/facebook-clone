@@ -26,12 +26,9 @@ const RightSide = () => {
       return () => {
         confirm();
       };
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [userDataContext.email]);
 
-  // console.table(friendConfirm[0].post);
   return (
     <CustomRightSideBox>
       <Box padding="0px 25px 25px" borderBottom="1px solid #dedede">
@@ -60,7 +57,7 @@ const RightSide = () => {
           return (
             <CustomLink to={`/profile/${friend.senderId}`} key={friend.id}>
               <Box display="flex" alignItems="center">
-                <CustomAvatar src={friend.image} alt={friend.name} />
+                <CustomAvatar src={friend.Image} alt={friend.name} />
                 <Typography>{friend.name}</Typography>
               </Box>
             </CustomLink>

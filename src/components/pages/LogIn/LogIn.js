@@ -28,7 +28,6 @@ const LogIn = () => {
       if (user) {
         history("/home");
       } else {
-        console.log(error);
       }
     });
     return () => unsubscribe();

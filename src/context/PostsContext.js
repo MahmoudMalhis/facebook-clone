@@ -99,7 +99,6 @@ const PostsProvider = ({ children }) => {
       (post_1, post_2) => post_2.createdAt - post_1.createdAt
     );
     setPostsList(updatedPostsList);
-    console.table(updatedPostsList);
   }, [friends, profilePosts, userData, postType]);
 
   return (

@@ -45,7 +45,6 @@ const ProfileCoverPhoto = () => {
       try {
         await deleteObject(oldImageRef);
       } catch (error) {
-        console.log(error);
       }
     }
 
@@ -64,7 +63,6 @@ const ProfileCoverPhoto = () => {
           { merge: true }
         );
       } catch (error) {
-        console.log(error);
       }
     }
 
@@ -72,7 +70,6 @@ const ProfileCoverPhoto = () => {
       setFile(null);
       handleClose();
     } catch (error) {
-      console.log(error);
     }
   };
 

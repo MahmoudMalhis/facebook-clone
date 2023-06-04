@@ -1,7 +1,6 @@
 import { doc, getDoc } from "firebase/firestore";
-import React, { createContext, useEffect, useState, useContext } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { firestore } from "../components/firebase";
-import { AuthContext } from "./AuthContext";
 
 export const FriendPicContext = createContext();
 
@@ -23,9 +22,7 @@ export const FriendPicProvider = ({ children }) => {
             setFriendImage({ ...profileData, cover: profileData.imageUrl });
           }
         }
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
 
     fetchFriendImage();

@@ -70,9 +70,7 @@ const PostComments = ({ postId }) => {
         newComment.id = docRef.id;
         setComments([...comments, newComment]);
         setCommentText("");
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
   };
 
@@ -105,9 +103,7 @@ const PostComments = ({ postId }) => {
       const commentDocRef = doc(commentsRef, commentId.toString());
       await deleteDoc(commentDocRef);
       setComments(comments.filter((comment) => comment.id !== commentId));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     handleCloseCommentMenu();
   };
 

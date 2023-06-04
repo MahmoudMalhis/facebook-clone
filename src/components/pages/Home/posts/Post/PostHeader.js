@@ -48,9 +48,7 @@ const PostHeader = ({ post }) => {
     try {
       const postRef = doc(firestore, "posts", postId);
       await deleteDoc(postRef);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   let profileEmail =

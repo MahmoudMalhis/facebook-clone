@@ -57,9 +57,7 @@ const CreatePost = () => {
       try {
         await uploadTask;
         imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
 
     try {
@@ -82,9 +80,7 @@ const CreatePost = () => {
       setSelectedImage(null);
       setPostText("");
       handleClose();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleClose = () => {

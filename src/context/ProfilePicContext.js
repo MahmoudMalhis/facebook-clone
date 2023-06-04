@@ -24,9 +24,7 @@ export const ProfilePicProvider = ({ children }) => {
             }
           }
         });
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
 
     fetchUserData();

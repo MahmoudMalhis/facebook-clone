@@ -44,7 +44,6 @@ const AddFriendButton = () => {
           updatedPostsFriendRef.current = updatedPosts;
         }
       );
-
       return () => unsubscribe();
     }
   }, [friendData]);
@@ -62,7 +61,6 @@ const AddFriendButton = () => {
           updatedPostsUserRef.current = updatedPosts;
         }
       );
-
       return () => unsubscribe();
     }
   }, [userDataContext]);
@@ -84,9 +82,7 @@ const AddFriendButton = () => {
         posts: updatedPostsUserRef.current,
         isFavorite: false,
       });
-      console.log("added");
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -134,7 +130,6 @@ const AddFriendButton = () => {
         ),
       ]);
     } catch (error) {
-      console.log("Error adding friend:", error);
     }
   };
 
@@ -180,34 +175,12 @@ const AddFriendButton = () => {
         confirm();
       };
     } catch (error) {
-      console.log(error);
     }
   }, [userDataContext.email, setIsLoading]);
 
-  let senderId;
-  let friendAdd;
-  let added;
-
-  for (const friend of addedFriends) {
-    if (friend.senderId === email) {
-      senderId = friend;
-      break;
-    }
-  }
-
-  for (const friend of friendRequest) {
-    if (friend.receiverId === email) {
-      friendAdd = friend;
-      break;
-    }
-  }
-
-  for (const friend of friendConfirm) {
-    if (friend.senderId === email) {
-      added = friend;
-      break;
-    }
-  }
+  const senderId = addedFriends.find((friend) => friend.senderId === email);
+  const friendAdd = friendRequest.find((friend) => friend.receiverId === email);
+  const added = friendConfirm.find((friend) => friend.senderId === email);
 
   return (
     <>

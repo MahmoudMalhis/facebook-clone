@@ -55,18 +55,14 @@ const ProfileAvatar = () => {
           { profilePicUrl: imageUrl },
           { merge: true }
         );
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
 
     try {
       setFileProfilePic(null);
       setIsProfilePicSelected(true);
       handleCloseProfilePic();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleCloseProfilePic = () => {
