@@ -11,6 +11,7 @@ import Games from "../pages/Games";
 import Profile from "../pages/Profile/Profile";
 import Save from "../pages/SavePost/Save";
 import Favorite from "../pages/Favorite/Favorite";
+import Error404 from "../pages/Error404";
 
 const router = () => {
   return (
@@ -29,6 +30,7 @@ const router = () => {
           <Route path="/save" element={<Save />} />
           <Route path="/favorites" element={<Favorite />} />
         </Route>
+        <Route path="/*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>
   );
