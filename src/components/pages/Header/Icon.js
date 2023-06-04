@@ -77,7 +77,7 @@ export const iconsMenu = [
     to: "/save",
   },
   {
-    id: 5,
+    id: 7,
     icon: StarIcon,
     label: "Favorites",
     to: "/favorites",

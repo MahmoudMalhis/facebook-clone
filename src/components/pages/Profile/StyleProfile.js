@@ -30,15 +30,12 @@ export const StyledIconButton = styled(IconButton)(({}) => ({
 export const StyledAvatar = styled(Avatar)(({ theme }) => ({
   width: "175px",
   height: "175px",
-  transform: "translateY(-33%)",
   [theme.breakpoints.down("lg")]: {
     position: "absolute",
     transform: "translate(-50%,-33%)",
     left: "50%",
     bottom: "-33%",
   },
-  bottom: "-50%",
-  left: "80px",
   border: "1px solid #ddd",
 }));
 

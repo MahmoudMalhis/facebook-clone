@@ -28,7 +28,9 @@ const UserInfo = () => {
     {
       id: 4,
       label: "Age:",
-      value: new Date().getFullYear() - userData.selectedYear,
+      value: userData.selectedYear
+        ? new Date().getFullYear() - userData.selectedYear
+        : "",
     },
   ];
 

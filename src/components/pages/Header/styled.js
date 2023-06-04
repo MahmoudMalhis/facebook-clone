@@ -13,14 +13,6 @@ export const Search = styled("div")(({ theme }) => ({
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: "inputWidth",
-  [theme.breakpoints.up("md")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-    display: "flex",
-  },
-  [theme.breakpoints.down("md")]: {
-    display: "none",
-  },
 }));
 
 export const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -80,10 +72,16 @@ export const StyledIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export const CustomLink = styled(Link)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
   color: "inherit",
   textDecoration: "none",
   width: "100%",
   borderBottom: "1px solid #999",
+  "&:hover": {
+    backgroundColor: "#f2f2f2",
+    color: "#0573e7",
+  },
 }));
 
 export const SearchFilter = styled(Box)(({ theme }) => ({

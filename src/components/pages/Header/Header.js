@@ -25,7 +25,9 @@ function ResponsiveAppBar() {
               <Link to="/home">
                 <CustomFacebookIcon />
               </Link>
-              <SearchBar />
+              <Box sx={{ display: { sm: "none", md: "flex" } }}>
+                <SearchBar />
+              </Box>
             </Box>
             <IconMenu />
             <NavIcon />
