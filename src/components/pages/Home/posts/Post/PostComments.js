@@ -33,6 +33,7 @@ const PostComments = ({ postId }) => {
   const [commentLikes, setCommentLikes] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
+  const [commentId, setCommentId] = useState("");
   const [anchorComment, setAnchorComment] = useState(null);
   const { showComments } = useContext(ShowCommentsContext);
   const userData = useContext(AuthContext);
@@ -59,12 +60,17 @@ const PostComments = ({ postId }) => {
   const handleSendComment = async () => {
     if (commentText.trim() !== "") {
       const newComment = {
-        id: Date.now(),
         text: commentText.trim(),
         currentTime: new Date().toLocaleTimeString(),
       };
       try {
-        const postRef = doc(firestore, "posts", postId);
+        const postRef = doc(
+          firestore,
+          "users",
+          userData.email,
+          "posts",
+          postId
+        );
         const commentsRef = collection(postRef, "comments");
         const docRef = await addDoc(commentsRef, newComment);
         newComment.id = docRef.id;
@@ -75,7 +81,7 @@ const PostComments = ({ postId }) => {
   };
 
   useEffect(() => {
-    const postRef = doc(firestore, "posts", postId);
+    const postRef = doc(firestore, "users", userData.email, "posts", postId);
     const commentsRef = collection(postRef, "comments");
 
     const unsubscribe = onSnapshot(commentsRef, (snapshot) => {
@@ -87,7 +93,7 @@ const PostComments = ({ postId }) => {
     });
 
     return () => unsubscribe();
-  }, [postId]);
+  }, [postId, userData.email]);
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -97,10 +103,11 @@ const PostComments = ({ postId }) => {
   };
 
   const handleDelete = async (commentId) => {
+    console.log(commentId);
     try {
-      const postRef = doc(firestore, "posts", postId);
+      const postRef = doc(firestore, "users", userData.email, "posts", postId);
       const commentsRef = collection(postRef, "comments");
-      const commentDocRef = doc(commentsRef, commentId.toString());
+      const commentDocRef = doc(commentsRef, commentId);
       await deleteDoc(commentDocRef);
       setComments(comments.filter((comment) => comment.id !== commentId));
     } catch (error) {}
@@ -124,7 +131,9 @@ const PostComments = ({ postId }) => {
               />
               <Box backgroundColor="#f0f2f5" padding="10px" borderRadius="30px">
                 <Typography fontWeight="bold">{userData.fullName}</Typography>
-                <Typography>{comment.text}</Typography>
+                <Typography>
+                  {comment.text} {comment.id}
+                </Typography>
               </Box>
               <Tooltip>
                 <IconButton onClick={handleCommentMenu}>
