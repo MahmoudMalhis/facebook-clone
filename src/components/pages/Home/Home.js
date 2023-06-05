@@ -14,7 +14,7 @@ const Home = () => {
     >
       <CustomBox>
         <LeftSide />
-        <MainPostForm />
+        <MainPostForm type="home" />
         <RightSide />
       </CustomBox>
     </Box>

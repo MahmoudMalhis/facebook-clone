@@ -8,10 +8,11 @@ import {
   TextareaAutosize,
 } from "@mui/material";
 import LinearScaleIcon from "@mui/icons-material/LinearScale";
+import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 export const CustomMainPostFormBox = styled(Box)(({ theme }) => ({
-  overflowY: "scroll",
+  overflow: "scroll",
   scrollbarColor: "#BCC0C4",
   "&::-webkit-scrollbar": {
     width: "5px",
@@ -26,7 +27,8 @@ export const CustomMainPostFormBox = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.down("md")]: {
     width: "400px",
-    margin: "auto",
+    margin: "0 auto",
+    maxWidth: "100%",
   },
 }));
 
@@ -74,7 +76,7 @@ export const CustomIconButtonImgUpload = styled(IconButton)(({}) => ({
   outlineOffset: "5px",
   borderRadius: "8px",
   marginTop: "32px",
-  overflowY: "scroll",
+  overflow: "scroll",
   "&::-webkit-scrollbar": {
     width: "5px",
   },
@@ -123,4 +125,9 @@ export const CustomList = styled(List)(({}) => ({
 export const CustomLinearScaleIcon = styled(LinearScaleIcon)(({}) => ({
   color: "#999",
   cursor: "pointer",
+}));
+
+export const CustomLink = styled(Link)(({}) => ({
+  color: "inherit",
+  textDecoration: "none",
 }));

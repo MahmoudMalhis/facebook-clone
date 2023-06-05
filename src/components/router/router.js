@@ -8,6 +8,10 @@ import LiveTV from "../pages/LiveTV";
 import Store from "../pages/Store";
 import Groups from "../pages/Groups";
 import Games from "../pages/Games";
+import Profile from "../pages/Profile/Profile";
+import Save from "../pages/SavePost/Save";
+import Favorite from "../pages/Favorite/Favorite";
+import Error404 from "../pages/Error404";
 
 const router = () => {
   return (
@@ -21,7 +25,12 @@ const router = () => {
           <Route path="/store" element={<Store />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/games" element={<Games />} />
+          <Route path="/profile/:email" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/save" element={<Save />} />
+          <Route path="/favorites" element={<Favorite />} />
         </Route>
+        <Route path="/*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>
   );

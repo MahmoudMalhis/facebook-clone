@@ -8,7 +8,7 @@ import {
   Input,
   Typography,
 } from "@mui/material";
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import {
   CustomDialogActionsButton,
   CustomIconButtonImgUpload,
@@ -19,16 +19,20 @@ import FilterIcon from "@mui/icons-material/Filter";
 import { storage, firestore } from "../../../firebase";
 import { ref } from "firebase/storage";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import ImageContext from "../../../../context/ImageContext";
 import { collection, addDoc } from "firebase/firestore";
+import { AuthContext } from "../../../../context/AuthContext";
+import { ProfilePicContext } from "../../../../context/ProfilePicContext";
+import { FriendPicContext } from "../../../../context/FriendPicContext";
 
 const CreatePost = () => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [postText, setPostText] = useState("");
-
-  const { setImageUrls } = useContext(ImageContext);
+  const userData = useContext(AuthContext);
+  const { friendImage } = useContext(FriendPicContext);
+  const profileImageContext = useContext(ProfilePicContext);
+  const profileImage = friendImage ?? profileImageContext;
 
   const handlePostClick = () => {
     setOpen(true);
@@ -44,19 +48,16 @@ const CreatePost = () => {
   };
 
   const handleUpload = async () => {
-    if (!file) {
-      return;
-    }
-
     let imageUrl = null;
-    const storageRef = ref(storage, `/image/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
 
-    try {
-      await uploadTask;
-      imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-    } catch (error) {
-      console.log(error);
+    if (file) {
+      const storageRef = ref(storage, `/image/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      try {
+        await uploadTask;
+        imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+      } catch (error) {}
     }
 
     try {
@@ -71,17 +72,15 @@ const CreatePost = () => {
           minute: "numeric",
         }),
       };
-      const docRef = await addDoc(collection(firestore, "posts"), post);
-      const postId = docRef.id;
-      post.id = postId;
-
+      const docRef = await addDoc(
+        collection(firestore, "users", userData.email, "posts"),
+        post
+      );
       setFile(null);
       setSelectedImage(null);
       setPostText("");
       handleClose();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleClose = () => {
@@ -96,15 +95,14 @@ const CreatePost = () => {
   return (
     <>
       <Box
-        width="680px"
+        maxWidth="100%"
         backgroundColor="#fff"
         borderRadius="8px"
         padding="10px"
-        overflowY="scroll"
         onClick={handlePostClick}
       >
         <Box display="flex" alignItems="center">
-          <Avatar alt="Mahmoud" src="/static/images/avatar/2.jpg" />
+          <Avatar alt={userData.fullName} src={profileImage.profilePicUrl} />
           <Box
             width="100%"
             height="15px"
@@ -131,13 +129,13 @@ const CreatePost = () => {
         </DialogTitle>
         <DialogContent>
           <Box display="flex" alignItems="center" margin="20px 0">
-            <Avatar />
-            <Typography marginLeft="10px">mahmoud</Typography>
+            <Avatar alt={userData.fullName} src={profileImage.profilePicUrl} />
+            <Typography marginLeft="10px">{userData.fullName}</Typography>
           </Box>
           <CustomTextareaAutosize
             value={postText}
             onChange={handleInputChange}
-            placeholder="Whats on your mind, mahmoud?"
+            placeholder={`Whats on your mind, ${userData.fullName}?`}
           />
           <Input
             type="file"
@@ -153,7 +151,7 @@ const CreatePost = () => {
                   style={{
                     width: "auto",
                     height: "auto",
-                    overflowY: "scroll",
+                    msOverflowY: "scroll",
                   }}
                   src={selectedImage}
                   alt="Uploaded"
@@ -164,7 +162,7 @@ const CreatePost = () => {
             </CustomIconButtonImgUpload>
           </label>
         </DialogContent>
-        <DialogActions justifyContent="center">
+        <DialogActions>
           <CustomDialogActionsButton
             width="100%"
             onClick={handleUploadAndClose}

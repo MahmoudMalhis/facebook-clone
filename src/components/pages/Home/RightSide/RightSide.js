@@ -1,8 +1,35 @@
 import { Box, Typography } from "@mui/material";
-import { CustomAvatar } from "../posts/PostStyle";
+import { CustomAvatar, CustomLink } from "../posts/PostStyle";
 import { CustomRightSideBox, CustomSponsorBox } from "./StyledRightSid";
+import { AuthContext } from "../../../../context/AuthContext";
+import { useState, useContext, useEffect } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+import { firestore } from "../../../firebase";
+import LoadingDataContext from "../../../../context/LoadingDataContext";
 
 const RightSide = () => {
+  const userDataContext = useContext(AuthContext);
+  const [friendConfirm, setFriendConfirm] = useState([]);
+
+  useEffect(() => {
+    try {
+      const confirm = onSnapshot(
+        collection(firestore, "users", userDataContext.email, "friend"),
+        (snapshot) => {
+          const confirmFriend = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setFriendConfirm(confirmFriend);
+        }
+      );
+
+      return () => {
+        confirm();
+      };
+    } catch (error) {}
+  }, [userDataContext.email]);
+
   return (
     <CustomRightSideBox>
       <Box padding="0px 25px 25px" borderBottom="1px solid #dedede">
@@ -27,10 +54,16 @@ const RightSide = () => {
         <Typography color="#999" marginBottom="20px">
           Contacts
         </Typography>
-        <Box display="flex" alignItems="center">
-          <CustomAvatar />
-          <Typography>Mahmoud</Typography>
-        </Box>
+        {friendConfirm.map((friend) => {
+          return (
+            <CustomLink to={`/profile/${friend.senderId}`} key={friend.id}>
+              <Box display="flex" alignItems="center">
+                <CustomAvatar src={friend.Image} alt={friend.name} />
+                <Typography>{friend.name}</Typography>
+              </Box>
+            </CustomLink>
+          );
+        })}
       </Box>
     </CustomRightSideBox>
   );

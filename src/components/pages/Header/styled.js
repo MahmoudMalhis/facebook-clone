@@ -1,7 +1,7 @@
 import { styled, alpha } from "@mui/material/styles";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import IconButton from "@mui/material/IconButton";
-import InputBase from "@mui/material/InputBase";
+import { Box, IconButton, InputBase } from "@mui/material/";
+import { Link } from "react-router-dom";
 
 export const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -13,14 +13,6 @@ export const Search = styled("div")(({ theme }) => ({
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: "inputWidth",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-    display: "flex",
-  },
-  [theme.breakpoints.down("sm")]: {
-    display: "none",
-  },
 }));
 
 export const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -63,11 +55,60 @@ export const CustomFacebookIcon = styled(FacebookIcon)(({ theme }) => ({
 
 export const StyledIconButton = styled(IconButton)(({ theme }) => ({
   borderRadius: "5px",
-  width: "40px",
   [theme.breakpoints.up("md")]: {
     width: "80px",
   },
   [theme.breakpoints.up("lg")]: {
     width: "130px",
   },
+  "& a": {
+    color: "#333",
+    textDecoration: "none",
+    display: "flex",
+  },
+  "& a p": {
+    marginLeft: "10px",
+  },
+}));
+
+export const CustomLink = styled(Link)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  color: "inherit",
+  textDecoration: "none",
+  width: "100%",
+  borderBottom: "1px solid #999",
+  "&:hover": {
+    backgroundColor: "#f2f2f2",
+    color: "#0573e7",
+  },
+}));
+
+export const SearchFilter = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  "z-index": "1000",
+  left: "50%",
+  transform: "translateX(-50%)",
+  top: "54px",
+  width: "70%",
+  borderRadius: "8px",
+  background: "#fff",
+  "& a:not(:nth-of-type(1)) div": {
+    borderTop: "1px solid #999",
+  },
+  "& div": {
+    padding: "10px 20px",
+  },
+  color: "#000",
+}));
+
+export const SearchItem = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  Zindex: "1000",
+  left: "50%",
+  transform: "translateX(-50%)",
+  top: "54px",
+  width: "70%",
+  borderRadius: "8px",
+  backgroundColor: "#fff",
 }));

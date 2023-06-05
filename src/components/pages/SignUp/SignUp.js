@@ -16,7 +16,7 @@ import { ref, push, child, update, set } from "firebase/database";
 import auth from "../../firebase";
 import { database } from "../../firebase";
 import TextFieldInput from "../../Form/TextFieldInput ";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const userInfo = {
@@ -31,6 +31,7 @@ const SignUp = () => {
   };
 
   const [selectedValue, setSelectedValue] = useState(userInfo);
+  const history = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,6 +56,8 @@ const SignUp = () => {
       const user = userCredential.user;
       set(ref(database, "users/" + newPostKey), userDatabase);
     } catch (error) {}
+
+    history("/login");
   };
 
   return (
