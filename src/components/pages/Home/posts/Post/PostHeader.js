@@ -46,7 +46,13 @@ const PostHeader = ({ post }) => {
 
   const handleDelete = async (postId) => {
     try {
-      const postRef = doc(firestore, "posts", postId);
+      const postRef = doc(
+        firestore,
+        "users",
+        userDataContext.email,
+        "posts",
+        postId
+      );
       await deleteDoc(postRef);
     } catch (error) {}
   };

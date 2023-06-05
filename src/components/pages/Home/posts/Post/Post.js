@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Box } from "@mui/material";
 import PostHeader from ".//PostHeader";
 import PostContent from ".//PostContent";
@@ -7,12 +7,16 @@ import PostComments from "./PostComments";
 import LoadingDataContext from "../../../../../context/LoadingDataContext";
 import SkeletonLod from "../../../../Skeleton";
 import { PostsContext } from "../../../../../context/PostsContext";
+import { ActionsPostContext } from "../../../../../context/ActionsPostContext";
 
 const Post = ({ type }) => {
   const { isLoading } = useContext(LoadingDataContext);
   const { postsList, setPostType } = useContext(PostsContext);
 
-  setPostType(type);
+  useEffect(() => {
+    setPostType(type);
+  }, [type, setPostType]);
+
   return (
     <>
       {isLoading ? (

@@ -26,7 +26,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { firestore } from "../../../../firebase";
 import { AuthContext } from "../../../../../context/AuthContext";
 import { ProfilePicContext } from "../../../../../context/ProfilePicContext";
-import { ShowCommentsContext } from "../../../../../context/ShowCommentContext";
+import { ActionsPostContext } from "../../../../../context/ActionsPostContext";
 import { FriendPicContext } from "../../../../../context/FriendPicContext";
 
 const PostComments = ({ postId }) => {
@@ -35,7 +35,7 @@ const PostComments = ({ postId }) => {
   const [comments, setComments] = useState([]);
   const [commentId, setCommentId] = useState("");
   const [anchorComment, setAnchorComment] = useState(null);
-  const { showComments } = useContext(ShowCommentsContext);
+  const { showComments } = useContext(ActionsPostContext);
   const userData = useContext(AuthContext);
   const { friendImage } = useContext(FriendPicContext);
   const profileImageContext = useContext(ProfilePicContext);
@@ -102,8 +102,11 @@ const PostComments = ({ postId }) => {
     }
   };
 
+  const deleteId = (commentDeleteId) => {
+    setCommentId(commentDeleteId);
+  };
+
   const handleDelete = async (commentId) => {
-    console.log(commentId);
     try {
       const postRef = doc(firestore, "users", userData.email, "posts", postId);
       const commentsRef = collection(postRef, "comments");
@@ -131,12 +134,15 @@ const PostComments = ({ postId }) => {
               />
               <Box backgroundColor="#f0f2f5" padding="10px" borderRadius="30px">
                 <Typography fontWeight="bold">{userData.fullName}</Typography>
-                <Typography>
-                  {comment.text} {comment.id}
-                </Typography>
+                <Typography>{comment.text}</Typography>
               </Box>
               <Tooltip>
-                <IconButton onClick={handleCommentMenu}>
+                <IconButton
+                  onClick={(event) => {
+                    handleCommentMenu(event);
+                    deleteId(comment.id);
+                  }}
+                >
                   <CustomLinearScaleIcon />
                 </IconButton>
               </Tooltip>
@@ -155,7 +161,7 @@ const PostComments = ({ postId }) => {
                 open={Boolean(anchorComment)}
                 onClose={handleCloseCommentMenu}
               >
-                <MenuItem onClick={() => handleDelete(comment.id)}>
+                <MenuItem onClick={() => handleDelete(commentId)}>
                   <DeleteIcon />
                   <Typography textAlign="center">Delete</Typography>
                 </MenuItem>

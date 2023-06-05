@@ -4,47 +4,68 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ReplyIcon from "@mui/icons-material/Reply";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import { CustomIconButtonReaction } from "../PostStyle";
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import { firestore } from "../../../../firebase";
-import LikeCounterContext from "../../../../../context/LikeCounterContext";
-import { ShowCommentsContext } from "../../../../../context/ShowCommentContext";
+import { AuthContext } from "../../../../../context/AuthContext";
+import { PostsContext } from "../../../../../context/PostsContext";
+import { ActionsPostContext } from "../../../../../context/ActionsPostContext";
 
 const PostActions = ({ post }) => {
-  const { counterLike, setCounterLike } = useContext(LikeCounterContext);
-  const { showComments, setShowComments } = useContext(ShowCommentsContext);
+  const { showComments, setShowComments } = useContext(ActionsPostContext);
   const [isLiked, setIsLiked] = useState(false);
-  const [likeDoc, setLikeDoc] = useState(null);
+  const [likesList, setLikesList] = useState([]);
+  const { postsList } = useContext(PostsContext);
+  const userData = useContext(AuthContext);
 
+  const likePostId = postsList.find((p) => p.id === post.id);
   useEffect(() => {
-    const fetchLike = async () => {
-      const likeRef = doc(firestore, "likes", post.id);
-      const likeSnapshot = await getDoc(likeRef);
-      if (likeSnapshot.exists()) {
-        setLikeDoc(likeSnapshot.ref);
-        setIsLiked(true);
-      }
-    };
-    fetchLike();
-  }, [post.id]);
+    if (likePostId) {
+      const postRef = doc(
+        firestore,
+        "users",
+        likePostId.email,
+        "posts",
+        likePostId.id
+      );
+
+      const unsubscribe = onSnapshot(postRef, (snapshot) => {
+        const postData = snapshot.data();
+        const currentLikesList = postData.likesList || [];
+        const isUserLiked = currentLikesList.includes(userData.email);
+
+        setIsLiked(isUserLiked);
+        setLikesList(currentLikesList);
+      });
+
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [likePostId, userData.email]);
 
   const handleLike = async () => {
-    if (likeDoc) {
-      await deleteDoc(likeDoc);
-      setIsLiked(false);
-      setLikeDoc(null);
-      setCounterLike((prevCounter) => ({
-        ...prevCounter,
-        [post.id]: prevCounter[post.id] - 1,
-      }));
-    } else {
-      const likeRef = doc(firestore, "likes", post.id);
-      await setDoc(likeRef, { liked: true });
-      setIsLiked(true);
-      setLikeDoc(likeRef);
-      setCounterLike((prevCounter) => ({
-        ...prevCounter,
-        [post.id]: prevCounter[post.id] + 1,
-      }));
+    if (likePostId) {
+      const postRef = doc(
+        firestore,
+        "users",
+        likePostId.email,
+        "posts",
+        likePostId.id
+      );
+
+      if (isLiked) {
+        const updatedLikesList = arrayRemove(userData.email);
+        await updateDoc(postRef, { likesList: updatedLikesList });
+      } else {
+        const updatedLikesList = arrayUnion(userData.email);
+        await updateDoc(postRef, { likesList: updatedLikesList });
+      }
     }
   };
 
