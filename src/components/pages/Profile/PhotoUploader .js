@@ -1,9 +1,9 @@
-import { Input } from "@mui/material";
+import { Input, Box } from "@mui/material";
 import FilterIcon from "@mui/icons-material/Filter";
 import { CustomIconButtonImgUpload } from "../Home/posts/PostStyle";
 
 const PhotoUploader = ({ onChange, selectedImage }) => (
-  <>
+  <Box width="300px">
     <Input
       type="file"
       accept="image/*"
@@ -24,7 +24,7 @@ const PhotoUploader = ({ onChange, selectedImage }) => (
         )}
       </CustomIconButtonImgUpload>
     </label>
-  </>
+  </Box>
 );
 
 export default PhotoUploader;

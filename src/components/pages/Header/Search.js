@@ -23,7 +23,7 @@ const SearchBar = () => {
         const data = snapshot.val();
         const keys = Object.keys(data);
         keys.forEach((key) => {
-          const usersData = data[key];
+          const usersData = { id: key, ...data[key] };
           setUsersValue((prev) => [...prev, usersData]);
         });
       },
@@ -63,7 +63,7 @@ const SearchBar = () => {
             return searchTerm && name.startsWith(searchTerm);
           })
           .map((item) => (
-            <CustomLink to={`profile/${item.email}`} key={item.email}>
+            <CustomLink to={`profile/${item.email}`} key={item.id}>
               <Box
                 onClick={() => onSelectedItem(`${item.fName} ${item.lName}`)}
               >{`${item.fName} ${item.lName}`}</Box>

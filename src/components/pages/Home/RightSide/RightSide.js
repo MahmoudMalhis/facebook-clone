@@ -17,6 +17,7 @@ const RightSide = () => {
         collection(firestore, "users", userDataContext.email, "friend"),
         (snapshot) => {
           const confirmFriend = snapshot.docs.map((doc) => ({
+            id: doc.id,
             ...doc.data(),
           }));
           setFriendConfirm(confirmFriend);

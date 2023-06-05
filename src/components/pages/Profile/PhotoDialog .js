@@ -13,7 +13,7 @@ const PhotoDialog = ({
     <DialogContent>
       <PhotoUploader onChange={onChange} selectedImage={selectedImage} />
     </DialogContent>
-    <DialogActions justifyContent="center">
+    <DialogActions>
       <CustomDialogActionsButton width="100%" onClick={onUploadAndClose}>
         Add photo
       </CustomDialogActionsButton>

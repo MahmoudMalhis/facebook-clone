@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import styles from "./LogIn.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import auth from "../../firebase";
-import { useCookies } from "react-cookie";
 import {
   CustomLogInBox,
   CustomLogoBox,
@@ -20,25 +19,20 @@ const LogIn = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const [cookies, setCookies] = useCookies(["token"]);
   const history = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    return onAuthStateChanged(auth, (user) => {
       if (user) {
         history("/home");
-      } else {
       }
     });
-    return () => unsubscribe();
-  }, []);
+  }, [history]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, userData.email, userData.password)
-      .then((userCredential) => {
-        const accessToken = userCredential.user.accessToken;
-        setCookies("token", accessToken, { path: "/" });
+      .then(() => {
         history("/home");
       })
       .catch((error) => {
@@ -59,6 +53,7 @@ const LogIn = () => {
         }
       });
   };
+
   return (
     <CustomLogInBox>
       <CustomLogoBox className={styles.logo}>

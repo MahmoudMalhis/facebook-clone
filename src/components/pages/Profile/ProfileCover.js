@@ -20,7 +20,7 @@ const ProfileCoverPhoto = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const { friendData, setEmailAddressForData } = useContext(FriendDataContext);
-  const userDataContext = useContext(AuthContext);
+  const { userDataContext } = useContext(AuthContext);
   const userData = friendData ?? userDataContext;
 
   const { friendImage, setEmailAddress } = useContext(FriendPicContext);
@@ -44,8 +44,7 @@ const ProfileCoverPhoto = () => {
       const oldImageRef = ref(storage, `/coverPhotos/${file.name}`);
       try {
         await deleteObject(oldImageRef);
-      } catch (error) {
-      }
+      } catch (error) {}
     }
 
     if (file) {
@@ -62,15 +61,13 @@ const ProfileCoverPhoto = () => {
           { imageUrl },
           { merge: true }
         );
-      } catch (error) {
-      }
+      } catch (error) {}
     }
 
     try {
       setFile(null);
       handleClose();
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleClose = () => {
