@@ -11,8 +11,8 @@ import Logo from "../../Logo/Logo";
 import { dataHeader, dataTextField, data, radioGroup } from "./data";
 import { useState } from "react";
 import styles from "./Signup.module.css";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { ref, push, child, update, set } from "firebase/database";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { ref, push, child, set } from "firebase/database";
 import auth from "../../firebase";
 import { database } from "../../firebase";
 import TextFieldInput from "../../Form/TextFieldInput ";
@@ -31,6 +31,7 @@ const SignUp = () => {
   };
 
   const [selectedValue, setSelectedValue] = useState(userInfo);
+  const [error, setError] = useState("");
   const history = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -48,16 +49,27 @@ const SignUp = () => {
     };
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
+      await createUserWithEmailAndPassword(
         auth,
         selectedValue.email,
         selectedValue.password
       );
-      const user = userCredential.user;
       set(ref(database, "users/" + newPostKey), userDatabase);
-    } catch (error) {}
-
-    history("/login");
+      history("/");
+    } catch (error) {
+      let message = error.message;
+      let code = error.code;
+      if (code === "auth/email-already-in-use") {
+        message = "The email you entered is already use.";
+        setError(message);
+      } else if (code === "auth/weak-password") {
+        message = "Password should be at least 6 characters ";
+        setError(message);
+      } else if (code === "auth/missing-password") {
+        message = "Enter the password.";
+        setError(message);
+      }
+    }
   };
 
   return (
@@ -137,6 +149,14 @@ const SignUp = () => {
               </Typography>
             </Grid>
           ))}
+          <Typography
+            variant="h6"
+            color="error"
+            fontSize="0.67em"
+            marginTop="10px"
+          >
+            {error}
+          </Typography>
         </FormControl>
       </Grid>
     </Box>
