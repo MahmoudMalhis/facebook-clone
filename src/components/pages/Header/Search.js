@@ -17,20 +17,14 @@ const SearchBar = () => {
 
   useEffect(() => {
     const rootRef = ref(database, "users");
-    onValue(
-      rootRef,
-      (snapshot) => {
-        const data = snapshot.val();
-        const keys = Object.keys(data);
-        keys.forEach((key) => {
-          const usersData = { id: key, ...data[key] };
-          setUsersValue((prev) => [...prev, usersData]);
-        });
-      },
-      {
-        onlyOnce: true,
-      }
-    );
+    onValue(rootRef, (snapshot) => {
+      const data = snapshot.val();
+      const keys = Object.keys(data);
+      keys.forEach((key) => {
+        const usersData = { id: key, ...data[key] };
+        setUsersValue((prev) => [...prev, usersData]);
+      });
+    });
   }, []);
 
   const onChangeSearch = (event) => {

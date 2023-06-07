@@ -64,15 +64,13 @@ const PostComments = ({ postId }) => {
         currentTime: new Date().toLocaleTimeString(),
       };
       try {
-        const postRef = doc(
-          firestore,
-          "users",
-          userData.email,
-          "posts",
-          postId
+        const docRef = await addDoc(
+          collection(
+            doc(firestore, "users", userData.email, "posts", postId),
+            "comments"
+          ),
+          newComment
         );
-        const commentsRef = collection(postRef, "comments");
-        const docRef = await addDoc(commentsRef, newComment);
         newComment.id = docRef.id;
         setComments([...comments, newComment]);
         setCommentText("");
@@ -81,8 +79,10 @@ const PostComments = ({ postId }) => {
   };
 
   useEffect(() => {
-    const postRef = doc(firestore, "users", userData.email, "posts", postId);
-    const commentsRef = collection(postRef, "comments");
+    const commentsRef = collection(
+      doc(firestore, "users", userData.email, "posts", postId),
+      "comments"
+    );
 
     const unsubscribe = onSnapshot(commentsRef, (snapshot) => {
       const updatedComments = snapshot.docs.map((doc) => ({
@@ -108,10 +108,15 @@ const PostComments = ({ postId }) => {
 
   const handleDelete = async (commentId) => {
     try {
-      const postRef = doc(firestore, "users", userData.email, "posts", postId);
-      const commentsRef = collection(postRef, "comments");
-      const commentDocRef = doc(commentsRef, commentId);
-      await deleteDoc(commentDocRef);
+      await deleteDoc(
+        doc(
+          collection(
+            doc(firestore, "users", userData.email, "posts", postId),
+            "comments"
+          ),
+          commentId
+        )
+      );
       setComments(comments.filter((comment) => comment.id !== commentId));
     } catch (error) {}
     handleCloseCommentMenu();

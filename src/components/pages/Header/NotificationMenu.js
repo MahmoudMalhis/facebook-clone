@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { CustomLink } from "./styled";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { firestore } from "../../firebase";
 import { AuthContext } from "../../../context/AuthContext";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -26,6 +26,21 @@ const NotificationMenu = () => {
 
   const handleOpenNotification = (event) => {
     setAnchorNotification(event.currentTarget);
+  };
+
+  const handleMenuItemClick = async (notification) => {
+    const notificationRef = doc(
+      firestore,
+      "users",
+      userData.email,
+      "notifications",
+      notification.id
+    );
+    await updateDoc(notificationRef, {
+      isClicked: true,
+    });
+
+    handleCloseNotification();
   };
 
   useEffect(() => {
@@ -57,7 +72,13 @@ const NotificationMenu = () => {
           aria-label="show 17 new notifications"
           onClick={handleOpenNotification}
         >
-          <Badge badgeContent={notifications.length} color="error">
+          <Badge
+            badgeContent={
+              notifications.filter((notifications) => !notifications.isClicked)
+                .length
+            }
+            color="error"
+          >
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -80,7 +101,14 @@ const NotificationMenu = () => {
       >
         {notifications.map((notification) => {
           return (
-            <MenuItem onClick={handleCloseNotification} key={notification.id}>
+            <MenuItem
+              onClick={() => handleMenuItemClick(notification)}
+              key={notification.id}
+              sx={{
+                backgroundColor: notification.isClicked ? "inherit" : "#f2f2f2",
+                marginBottom: "5px",
+              }}
+            >
               <CustomLink to={`profile/${notification.senderId}`}>
                 <Avatar
                   src={notification.senderAvatar}
