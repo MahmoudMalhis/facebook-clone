@@ -1,22 +1,20 @@
-import {
-  FormControl,
-  Box,
-  Typography,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Grid,
-} from "@mui/material";
+import { Typography, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 import Logo from "../../Logo/Logo";
 import { dataHeader, dataTextField, data, radioGroup } from "./data";
 import { useState } from "react";
-import styles from "./Signup.module.css";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, push, child, set } from "firebase/database";
 import auth from "../../firebase";
 import { database } from "../../firebase";
 import TextFieldInput from "../../Form/TextFieldInput ";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  BoxSignUp,
+  FormSignUp,
+  SignUpMainBox,
+  Title,
+  TitleBox,
+} from "./StyleSignUp";
 
 const SignUp = () => {
   const userInfo = {
@@ -73,35 +71,17 @@ const SignUp = () => {
   };
 
   return (
-    <Box textAlign="center" className={styles.main}>
+    <SignUpMainBox>
       <Logo />
-      <Grid
-        container
-        xs={10}
-        sm={8}
-        md={6}
-        lg={4}
-        xl={3}
-        justifyContent={"center"}
-        className={styles.box}
-      >
-        <Grid item xs={12} className={styles.text}>
+      <BoxSignUp>
+        <TitleBox>
           {dataHeader.map((item) => (
-            <Typography
-              key={item.id}
-              className={styles.paragraph}
-              component={item.component}
-            >
+            <Title key={item.id} component={item.component}>
               {item.label}
-            </Typography>
+            </Title>
           ))}
-        </Grid>
-        <FormControl
-          component="form"
-          onSubmit={handleSubmit}
-          fullWidth
-          className={styles.form}
-        >
+        </TitleBox>
+        <FormSignUp component="form" onSubmit={handleSubmit} fullWidth>
           {dataTextField.map((data) => (
             <TextFieldInput
               key={data.id}
@@ -125,29 +105,24 @@ const SignUp = () => {
           >
             {radioGroup.map((item) => {
               return (
-                <Grid item xs={4} key={item.id}>
-                  <FormControlLabel
-                    className={styles.label}
-                    value={item.label}
-                    label={item.label}
-                    control={<Radio />}
-                  />
-                </Grid>
+                <FormControlLabel
+                  value={item.label}
+                  label={item.label}
+                  control={<Radio />}
+                />
               );
             })}
           </RadioGroup>
           {data.map(({ id, label, variant, question, xs, isAccount }) => (
-            <Grid item xs={xs} key={id} className={styles.input}>
-              <Typography variant={variant}>
-                {isAccount ? (
-                  <Link to="/">{label}</Link>
-                ) : (
-                  <>
-                    {label} {question}
-                  </>
-                )}
-              </Typography>
-            </Grid>
+            <Typography variant={variant}>
+              {isAccount ? (
+                <Link to="/">{label}</Link>
+              ) : (
+                <>
+                  {label} {question}
+                </>
+              )}
+            </Typography>
           ))}
           <Typography
             variant="h6"
@@ -157,9 +132,9 @@ const SignUp = () => {
           >
             {error}
           </Typography>
-        </FormControl>
-      </Grid>
-    </Box>
+        </FormSignUp>
+      </BoxSignUp>
+    </SignUpMainBox>
   );
 };
 
