@@ -6,7 +6,6 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { firestore } from "../../../../firebase";
 
 const PostContent = ({ post }) => {
-  const [isLiked, setIsLiked] = useState(false);
   const [likesList, setLikesList] = useState([]);
   const { postsList } = useContext(PostsContext);
   const userData = useContext(AuthContext);
@@ -22,18 +21,11 @@ const PostContent = ({ post }) => {
         likePostId.id
       );
 
-      const unsubscribe = onSnapshot(postRef, (snapshot) => {
-        const postData = snapshot.data();
-        const currentLikesList = postData.likesList || [];
-        const isUserLiked = currentLikesList.includes(userData.email);
+      return onSnapshot(postRef, (snapshot) => {
+        const currentLikesList = snapshot.data()?.likesList || [];
 
-        setIsLiked(isUserLiked);
         setLikesList(currentLikesList);
       });
-
-      return () => {
-        unsubscribe();
-      };
     }
   }, [likePostId, userData.email]);
 
@@ -50,9 +42,11 @@ const PostContent = ({ post }) => {
           alt="Uploaded"
         />
       )}
-      <Typography fontSize="12px" color="#666" marginBottom="5px">
-        {likesList.length} like
-      </Typography>
+      {likesList.length !== 0 && (
+        <Typography fontSize="12px" color="#666" marginBottom="5px">
+          {likesList.length} like
+        </Typography>
+      )}
     </>
   );
 };

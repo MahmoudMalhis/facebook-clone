@@ -12,21 +12,13 @@ import { CustomLinearScaleIcon, CustomLink } from "../PostStyle";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { AuthContext } from "../../../../../context/AuthContext";
-import { ProfilePicContext } from "../../../../../context/ProfilePicContext";
 import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 import { firestore } from "../../../../firebase";
 import { Link } from "react-router-dom";
-import { FriendDataContext } from "../../../../../context/FriendDataContext";
-import { FriendPicContext } from "../../../../../context/FriendPicContext";
 
 const PostHeader = ({ post }) => {
   const [anchorPost, setAnchorPost] = useState(null);
-  const userDataContext = useContext(AuthContext);
-  const { friendData } = useContext(FriendDataContext);
-  const userData = friendData ?? userDataContext;
-  const { friendImage } = useContext(FriendPicContext);
-  const profileImageContext = useContext(ProfilePicContext);
-  const profileImage = friendImage ?? profileImageContext;
+  const userData = useContext(AuthContext);
 
   const handlePostMenu = (event) => {
     setAnchorPost(event.currentTarget);
@@ -37,28 +29,20 @@ const PostHeader = ({ post }) => {
   };
 
   const handleSavePost = async () => {
-    const saveRef = await addDoc(
-      collection(firestore, "users", userDataContext.email, "save"),
-      { post: post }
-    );
+    await addDoc(collection(firestore, "users", userData.email, "save"), {
+      post: post,
+    });
     handleClosePostMenu();
   };
 
   const handleDelete = async (postId) => {
     try {
-      const postRef = doc(
-        firestore,
-        "users",
-        userDataContext.email,
-        "posts",
-        postId
-      );
-      await deleteDoc(postRef);
+      await deleteDoc(doc(firestore, "users", userData.email, "posts", postId));
     } catch (error) {}
   };
 
   let profileEmail =
-    "/profile" + (userDataContext.email === post.email ? "" : `/${post.email}`);
+    "/profile" + (userData.email === post.email ? "" : `/${post.email}`);
 
   return (
     <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -99,10 +83,12 @@ const PostHeader = ({ post }) => {
           <BookmarkIcon />
           <Typography textAlign="center">Saved</Typography>
         </MenuItem>
-        <MenuItem onClick={() => handleDelete(post.id)}>
-          <DeleteIcon />
-          <Typography textAlign="center">Delete</Typography>
-        </MenuItem>
+        {userData.email === post.email && (
+          <MenuItem onClick={() => handleDelete(post.id)}>
+            <DeleteIcon />
+            <Typography textAlign="center">Delete</Typography>
+          </MenuItem>
+        )}
       </Menu>
     </Box>
   );

@@ -82,6 +82,7 @@ export const CustomLink = styled(Link)(({ theme }) => ({
     backgroundColor: "#f2f2f2",
     color: "#0573e7",
   },
+  paddingBottom: "5px",
 }));
 
 export const SearchFilter = styled(Box)(({ theme }) => ({

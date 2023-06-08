@@ -87,6 +87,7 @@ const ProfileAvatar = () => {
             <StyledAvatar
               alt={userData.fullName}
               src={profileImage.profilePicUrl}
+              style={{ top: "-65px", left: "80px" }}
             ></StyledAvatar>
           )
         ) : isProfilePicSelected ? (
