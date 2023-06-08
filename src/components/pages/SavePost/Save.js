@@ -1,14 +1,16 @@
-import React from "react";
 import LeftSide from "../Home/LeftSide/LeftSide";
-import PostSaved from "./PostSaved";
 import { Container, SaveBox } from "./SaveStyle";
+import Post from "../Home/posts/Post/Post";
+import { Box } from "@mui/material";
 
 const Save = () => {
   return (
     <SaveBox>
       <Container>
         <LeftSide />
-        <PostSaved />
+        <Box width="70%">
+          <Post type="saved" />
+        </Box>
       </Container>
     </SaveBox>
   );

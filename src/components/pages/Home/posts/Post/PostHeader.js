@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -12,12 +12,20 @@ import { CustomLinearScaleIcon, CustomLink } from "../PostStyle";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { AuthContext } from "../../../../../context/AuthContext";
-import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import { firestore } from "../../../../firebase";
 import { Link } from "react-router-dom";
 
 const PostHeader = ({ post }) => {
   const [anchorPost, setAnchorPost] = useState(null);
+  const [savePost, setSavePost] = useState(null);
   const userData = useContext(AuthContext);
 
   const handlePostMenu = (event) => {
@@ -28,10 +36,23 @@ const PostHeader = ({ post }) => {
     setAnchorPost(null);
   };
 
-  const handleSavePost = async () => {
-    await addDoc(collection(firestore, "users", userData.email, "save"), {
-      post: post,
+  useEffect(() => {
+    onSnapshot(doc(firestore, "users", userData.email), (snapshot) => {
+      const postData = snapshot.data();
+      const postsSavedList = postData.postsSavedList || [];
+      setSavePost(postsSavedList);
     });
+  }, [userData.email]);
+  const handleSavePost = async () => {
+    const postSaveRef = await doc(firestore, "users", userData.email);
+
+    if (savePost.includes(post.id)) {
+      const updatedPostsSavedList = arrayRemove(post.id);
+      await updateDoc(postSaveRef, { postsSavedList: updatedPostsSavedList });
+    } else {
+      const updatedPostsSavedList = arrayUnion(post.id);
+      await updateDoc(postSaveRef, { postsSavedList: updatedPostsSavedList });
+    }
     handleClosePostMenu();
   };
 
@@ -81,7 +102,9 @@ const PostHeader = ({ post }) => {
       >
         <MenuItem onClick={handleSavePost}>
           <BookmarkIcon />
-          <Typography textAlign="center">Saved</Typography>
+          <Typography textAlign="center">
+            {savePost?.includes(post.id) ? "un save" : "save"}
+          </Typography>
         </MenuItem>
         {userData.email === post.email && (
           <MenuItem onClick={() => handleDelete(post.id)}>
