@@ -106,6 +106,7 @@ const SignUp = () => {
             {radioGroup.map((item) => {
               return (
                 <FormControlLabel
+                  key={item.id}
                   value={item.label}
                   label={item.label}
                   control={<Radio />}
@@ -114,7 +115,7 @@ const SignUp = () => {
             })}
           </RadioGroup>
           {data.map(({ id, label, variant, question, xs, isAccount }) => (
-            <Typography variant={variant}>
+            <Typography variant={variant} key={id}>
               {isAccount ? (
                 <Link to="/">{label}</Link>
               ) : (
