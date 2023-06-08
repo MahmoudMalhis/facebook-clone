@@ -1,6 +1,5 @@
 import { styled } from "@mui/material/styles";
 import { Box, Typography, FormControl } from "@mui/material";
-import { breakpoints, textTransform } from "@mui/system";
 
 export const SignUpMainBox = styled(Box)(({ theme }) => ({
   backgroundColor: "#f0f3f5",
@@ -16,14 +15,14 @@ export const TitleBox = styled(Box)(({ theme }) => ({
 }));
 
 export const Title = styled(Typography)(({ theme }) => ({
-  "&:first-child": {
+  "&:first-of-type": {
     fontSize: "25px",
     lineHeight: "32px",
     textAlign: "center",
     fontWeight: "600",
   },
 
-  "&:nth-child(2)": {
+  "&:nth-of-type(2)": {
     fontSize: "15px",
     lineHeight: "24px",
     textAlign: "center",
@@ -41,12 +40,12 @@ export const BoxSignUp = styled(Box)(({ theme }) => ({
   position: "relative",
   boxShadow: " 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1)",
   borderRadius: "8px",
-  width: "485px",
+  width: "450px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   [theme.breakpoints.down("sm")]: {
-    width: "450px",
+    width: "350px",
   },
 }));
 
@@ -57,38 +56,38 @@ export const FormSignUp = styled(FormControl)(({ theme }) => ({
   justifyContent: "center",
   flexWrap: "wrap",
 
-  "&>div:nth-child(1)": {
+  "&>div:nth-of-type(1)": {
     order: 1,
   },
 
-  "&>div:nth-child(2)": {
+  "&>div:nth-of-type(2)": {
     order: 2,
     marginLeft: "5px",
   },
-  "&>div:nth-child(1), &>div:nth-child(2)": {
+  "&>div:nth-of-type(1), &>div:nth-of-type(2)": {
     width: "calc((100% / 2) - 5px)",
   },
 
-  "&>div:nth-child(3), &>div:nth-child(4)": {
+  "&>div:nth-of-type(3), &>div:nth-of-type(4)": {
     order: 3,
     width: "100%",
   },
 
-  "&>div:nth-child(5),&>div:nth-child(6),&>div:nth-child(7)": {
+  "&>div:nth-of-type(5),&>div:nth-of-type(6),&>div:nth-of-type(7)": {
     order: 5,
-    width: "calc((100% / 3) - 10px)",
+    width: "calc((100% / 3) - (10px / 3))",
   },
 
-  "&>div:nth-child(6),&>div:nth-child(7)": {
+  "&>div:nth-of-type(6),&>div:nth-of-type(7)": {
     marginLeft: "5px",
   },
 
-  "&>div:nth-child(8)": {
+  "&>div:nth-of-type(8)": {
     order: 10,
     width: "100%",
   },
 
-  "&>div:nth-child(8) input": {
+  "&>div:nth-of-type(8) input": {
     background: "none",
     backgroundColor: "#00a400",
     border: "none",
@@ -108,19 +107,19 @@ export const FormSignUp = styled(FormControl)(({ theme }) => ({
     textTransform: "none",
   },
 
-  "&>div:nth-child(8) input:hover": {
+  "&>div:nth-of-type(8) input:hover": {
     opacity: "0.8",
     outline: "none",
   },
 
-  "&>div:nth-child(9)": {
+  "&>div:nth-of-type(9)": {
     order: "7",
     flexWrap: "nowrap",
     flexDirection: "row",
     width: "100%",
   },
 
-  "& .label": {
+  "&>div:nth-of-type(9) label": {
     width: " 100%",
     border: "1px solid #ccd0d5",
     fontWeight: "normal",
@@ -129,15 +128,15 @@ export const FormSignUp = styled(FormControl)(({ theme }) => ({
     borderRadius: "4px",
   },
 
-  "&>p:nth-child(10)": {
+  "&>p:nth-of-type(1)": {
     order: 4,
   },
 
-  "&>p:nth-child(11)": {
+  "&>p:nth-of-type(2)": {
     order: 6,
   },
 
-  "&>p:nth-child(10) , &>p:nth-child(11)  ": {
+  "&>p:nth-of-type(1) , &>p:nth-of-type(2)  ": {
     color: "#606770",
     fontFamily: "SFProText-Medium, Helvetica, Arial, sans-serif",
     fontSize: "12px",
@@ -149,7 +148,7 @@ export const FormSignUp = styled(FormControl)(({ theme }) => ({
     width: "100%",
   },
 
-  "&>p:nth-child(10) svg,&>p:nth-child(11) svg": {
+  "&>p:nth-of-type(1) svg,&>p:nth-of-type(2) svg": {
     width: "12px",
     height: "12px",
     color: "#e2e4e5",
@@ -157,41 +156,42 @@ export const FormSignUp = styled(FormControl)(({ theme }) => ({
     borderRadius: "50%",
   },
 
-  "&>p:nth-child(12)": {
+  "&>p:nth-of-type(3)": {
     order: 8,
   },
 
-  "&>p:nth-child(13)": {
+  "&>p:nth-of-type(4)": {
     order: 9,
   },
 
-  "&>p:nth-child(12) p, &>p:nth-child(13) p": {
+  "&>p:nth-of-type(3) p, &>p:nth-of-type(4) p": {
     color: "#777",
     fontSize: "11px",
     margin: "1em 0",
     textAlign: "left",
   },
 
-  "&>p:nth-child(12) a, &>p:nth-child(13) a": {
+  "&>p:nth-of-type(3) a, &>p:nth-of-type(4) a": {
     color: "#385898",
     cursor: "pointer",
     textDecoration: "none",
   },
 
-  "&>p:nth-child(12) a:hover,&>p:nth-child(13) a:hover": {
+  "&>p:nth-of-type(3) a:hover,&>p:nth-of-type(4) a:hover": {
     textDecoration: "underline",
   },
 
-  "&>span:nth-child(14)": {
+  "&>span": {
     paddingTop: "10px",
     marginTop: "10px",
     fontSize: "17px",
     lineHeight: "20px",
     cursor: "pointer",
+    width: "100%",
     order: "10",
   },
 
-  "&>span:nth-child(14) a ": {
+  "&>span a ": {
     textDecoration: "none",
     color: "#1877f2",
   },
