@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, createContext } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 import LoadingDataContext from "./LoadingDataContext";
 import { AuthContext } from "./AuthContext";
 import { FriendDataContext } from "./FriendDataContext";
@@ -10,6 +10,7 @@ export const PostsContext = createContext();
 const PostsProvider = ({ children }) => {
   const [friends, setFriends] = useState([]);
   const [profilePosts, setProfilePosts] = useState([]);
+  const [savedPosts, setSavedPosts] = useState([]);
   const { setIsLoading } = useContext(LoadingDataContext);
   const userDataContext = useContext(AuthContext);
   const { friendData } = useContext(FriendDataContext);
@@ -19,7 +20,7 @@ const PostsProvider = ({ children }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    if (Object.keys(userData).length) {
+    if (Object.keys(userDataContext).length) {
       onSnapshot(
         collection(firestore, "users", userDataContext.email, "friend"),
         (snapshot) => {
@@ -46,10 +47,20 @@ const PostsProvider = ({ children }) => {
         }
       );
     }
+
+    if (Object.keys(userDataContext).length) {
+      onSnapshot(doc(firestore, "users", userData.email), (doc) => {
+        if (doc.exists()) {
+          const updatedPostSave = doc.data().postsSavedList;
+          setSavedPosts(updatedPostSave);
+          setIsLoading(false);
+        }
+      });
+    }
   }, [userData, userDataContext, setIsLoading]);
 
   useEffect(() => {
-    const updatedPostsList = [];
+    let updatedPostsList = [];
     if (postType === "favorite") {
       friends.forEach((friend) => {
         if (friend.isFavorite) {
@@ -82,7 +93,7 @@ const PostsProvider = ({ children }) => {
         });
       });
     }
-    if (postType === "profile" || postType === "home") {
+    if (postType === "profile" || postType === "home" || postType === "saved") {
       profilePosts.forEach((post) => {
         updatedPostsList.push({
           imageUrlProfile: userData.Image,
@@ -95,11 +106,18 @@ const PostsProvider = ({ children }) => {
         });
       });
     }
-    updatedPostsList.sort(
+
+    if (postType === "saved") {
+      updatedPostsList = updatedPostsList.filter((post) =>
+        savedPosts.includes(post.id)
+      );
+    }
+    updatedPostsList = updatedPostsList?.sort(
       (post_1, post_2) => post_2.createdAt - post_1.createdAt
     );
+
     setPostsList(updatedPostsList);
-  }, [friends, profilePosts, userData, postType]);
+  }, [friends, profilePosts, userData, postType, savedPosts]);
 
   return (
     <PostsContext.Provider value={{ postsList, setPostType, friends }}>
