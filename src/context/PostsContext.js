@@ -9,6 +9,7 @@ export const PostsContext = createContext();
 
 const PostsProvider = ({ children }) => {
   const [friends, setFriends] = useState([]);
+  const [friendsPosts, setFriendsPosts] = useState([]);
   const [profilePosts, setProfilePosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const { setIsLoading } = useContext(LoadingDataContext);
@@ -33,6 +34,40 @@ const PostsProvider = ({ children }) => {
         }
       );
     }
+  }, [setIsLoading, userDataContext]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    friends.forEach((friend) => {
+      onSnapshot(
+        collection(firestore, "users", friend.senderId, "posts"),
+        (snapshot) => {
+          let friendPostsArray = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          friendPostsArray.forEach((post) => {
+            setFriendsPosts((prev) => [
+              ...prev,
+              {
+                imageUrlProfile: friend.Image,
+                name: friend.name,
+                email: friend.senderId,
+                imageUrlPost: post.imageUrl,
+                text: post.text,
+                createdAt: post.createdAt,
+                id: post.id,
+              },
+            ]);
+          });
+          setIsLoading(false);
+        }
+      );
+    });
+  }, [friends, setIsLoading]);
+
+  useEffect(() => {
+    setIsLoading(true);
 
     if (Object.keys(userData).length) {
       onSnapshot(
@@ -53,7 +88,6 @@ const PostsProvider = ({ children }) => {
         if (doc.exists()) {
           const updatedPostSave = doc.data().postsSavedList;
           setSavedPosts(updatedPostSave);
-          setIsLoading(false);
         }
       });
     }
@@ -79,18 +113,8 @@ const PostsProvider = ({ children }) => {
       });
     }
     if (postType === "home") {
-      friends.forEach((friend) => {
-        friend.posts.forEach((post) => {
-          updatedPostsList.push({
-            imageUrlProfile: friend.Image,
-            name: friend.name,
-            email: friend.senderId,
-            imageUrlPost: post.imageUrl,
-            text: post.text,
-            createdAt: post.createdAt,
-            id: post.id,
-          });
-        });
+      friendsPosts.forEach((post) => {
+        updatedPostsList.push(post);
       });
     }
     if (postType === "profile" || postType === "home" || postType === "saved") {
@@ -117,7 +141,16 @@ const PostsProvider = ({ children }) => {
     );
 
     setPostsList(updatedPostsList);
-  }, [friends, profilePosts, userData, postType, savedPosts]);
+  }, [
+    friends,
+    friendsPosts,
+    postType,
+    profilePosts,
+    savedPosts,
+    userData.Image,
+    userData.email,
+    userData.fullName,
+  ]);
 
   return (
     <PostsContext.Provider value={{ postsList, setPostType, friends }}>
