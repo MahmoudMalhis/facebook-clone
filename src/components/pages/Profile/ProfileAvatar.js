@@ -19,7 +19,6 @@ import { FriendPicContext } from "../../../context/FriendPicContext";
 const ProfileAvatar = () => {
   const [openProfilePic, setOpenProfilePic] = useState(false);
   const [fileProfilePic, setFileProfilePic] = useState(null);
-  const [selectedImageProfilePic, setSelectedImageProfilePic] = useState(null);
   const [isProfilePicSelected, setIsProfilePicSelected] = useState(false);
 
   const { friendData } = useContext(FriendDataContext);
@@ -36,7 +35,6 @@ const ProfileAvatar = () => {
 
   const handleChangeProfilePic = (event) => {
     setFileProfilePic(event.target.files[0]);
-    setSelectedImageProfilePic(URL.createObjectURL(event.target.files[0]));
   };
 
   const handleUploadProfilePic = async () => {
@@ -49,7 +47,6 @@ const ProfileAvatar = () => {
       try {
         await uploadTask;
         imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-        setSelectedImageProfilePic(imageUrl);
         await setDoc(
           doc(firestore, "users", userData.email),
           { profilePicUrl: imageUrl },
@@ -87,7 +84,7 @@ const ProfileAvatar = () => {
             <StyledAvatar
               alt={userData.fullName}
               src={profileImage.profilePicUrl}
-              style={{ top: "-65px", left: "80px" }}
+              sx={{ top: { lg: "-65px" }, left: { lg: "80px" } }}
             ></StyledAvatar>
           )
         ) : isProfilePicSelected ? (
