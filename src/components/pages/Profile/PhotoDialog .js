@@ -8,17 +8,19 @@ const PhotoDialog = ({
   onUploadAndClose,
   onChange,
   selectedImage,
-}) => (
-  <Dialog open={open} onClose={onClose}>
-    <DialogContent>
-      <PhotoUploader onChange={onChange} selectedImage={selectedImage} />
-    </DialogContent>
-    <DialogActions>
-      <CustomDialogActionsButton width="100%" onClick={onUploadAndClose}>
-        Add photo
-      </CustomDialogActionsButton>
-    </DialogActions>
-  </Dialog>
-);
+}) => {
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogContent>
+        <PhotoUploader onChange={onChange} selectedImage={selectedImage} />
+      </DialogContent>
+      <DialogActions>
+        <CustomDialogActionsButton width="100%" onClick={onUploadAndClose}>
+          Add photo
+        </CustomDialogActionsButton>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 export default PhotoDialog;

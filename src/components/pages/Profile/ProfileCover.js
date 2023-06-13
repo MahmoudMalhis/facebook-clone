@@ -61,13 +61,11 @@ const ProfileCoverPhoto = () => {
           { imageUrl },
           { merge: true }
         );
+        setFile(null);
+        handleClose();
+        setSelectedImage(null);
       } catch (error) {}
     }
-
-    try {
-      setFile(null);
-      handleClose();
-    } catch (error) {}
   };
 
   const handleClose = () => {
@@ -112,7 +110,7 @@ const ProfileCoverPhoto = () => {
         onClose={handleClose}
         onUploadAndClose={handleUploadAndClose}
         onChange={handleChange}
-        selectedImage={profileImageContext.cover}
+        selectedImage={selectedImage}
       />
     </>
   );

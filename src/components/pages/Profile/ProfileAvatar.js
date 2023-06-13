@@ -20,6 +20,7 @@ const ProfileAvatar = () => {
   const [openProfilePic, setOpenProfilePic] = useState(false);
   const [fileProfilePic, setFileProfilePic] = useState(null);
   const [isProfilePicSelected, setIsProfilePicSelected] = useState(false);
+  const [selectedImageProfilePic, setSelectedImageProfilePic] = useState(null);
 
   const { friendData } = useContext(FriendDataContext);
   const userDataContext = useContext(AuthContext);
@@ -35,6 +36,7 @@ const ProfileAvatar = () => {
 
   const handleChangeProfilePic = (event) => {
     setFileProfilePic(event.target.files[0]);
+    setSelectedImageProfilePic(URL.createObjectURL(event.target.files[0]));
   };
 
   const handleUploadProfilePic = async () => {
@@ -47,19 +49,18 @@ const ProfileAvatar = () => {
       try {
         await uploadTask;
         imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+        setSelectedImageProfilePic(imageUrl);
         await setDoc(
           doc(firestore, "users", userData.email),
           { profilePicUrl: imageUrl },
           { merge: true }
         );
+        setFileProfilePic(null);
+        setIsProfilePicSelected(true);
+        setSelectedImageProfilePic(null);
+        handleCloseProfilePic();
       } catch (error) {}
     }
-
-    try {
-      setFileProfilePic(null);
-      setIsProfilePicSelected(true);
-      handleCloseProfilePic();
-    } catch (error) {}
   };
 
   const handleCloseProfilePic = () => {
@@ -113,7 +114,7 @@ const ProfileAvatar = () => {
         onClose={handleCloseProfilePic}
         onUploadAndClose={handleUploadAndCloseProfilePic}
         onChange={handleChangeProfilePic}
-        selectedImage={profileImage.profilePicUrl}
+        selectedImage={selectedImageProfilePic}
       />
     </>
   );
