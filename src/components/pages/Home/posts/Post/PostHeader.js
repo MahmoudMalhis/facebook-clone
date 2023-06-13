@@ -43,8 +43,9 @@ const PostHeader = ({ post }) => {
       setSavePost(postsSavedList);
     });
   }, [userData.email]);
+
   const handleSavePost = async () => {
-    const postSaveRef = await doc(firestore, "users", userData.email);
+    const postSaveRef = doc(firestore, "users", userData.email);
 
     if (savePost.includes(post.id)) {
       const updatedPostsSavedList = arrayRemove(post.id);
@@ -64,7 +65,6 @@ const PostHeader = ({ post }) => {
 
   let profileEmail =
     "/profile" + (userData.email === post.email ? "" : `/${post.email}`);
-
   return (
     <Box display="flex" alignItems="center" justifyContent="space-between">
       <Box display="flex" alignItems="center">

@@ -4,6 +4,7 @@ import LoadingDataContext from "./LoadingDataContext";
 import { AuthContext } from "./AuthContext";
 import { FriendDataContext } from "./FriendDataContext";
 import { firestore } from "../components/firebase";
+import { ProfilePicContext } from "./ProfilePicContext";
 
 export const PostsContext = createContext();
 
@@ -13,6 +14,7 @@ const PostsProvider = ({ children }) => {
   const [profilePosts, setProfilePosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const { setIsLoading } = useContext(LoadingDataContext);
+  const profileImage = useContext(ProfilePicContext);
   const userDataContext = useContext(AuthContext);
   const { friendData } = useContext(FriendDataContext);
   const userData = friendData ?? userDataContext;
@@ -92,7 +94,6 @@ const PostsProvider = ({ children }) => {
       });
     }
   }, [userData, userDataContext, setIsLoading]);
-
   useEffect(() => {
     let updatedPostsList = [];
     if (postType === "favorite") {
@@ -112,7 +113,7 @@ const PostsProvider = ({ children }) => {
         }
       });
     }
-    if (postType === "home") {
+    if (postType === "home" || postType === "saved") {
       friendsPosts.forEach((post) => {
         updatedPostsList.push(post);
       });
@@ -120,7 +121,7 @@ const PostsProvider = ({ children }) => {
     if (postType === "profile" || postType === "home" || postType === "saved") {
       profilePosts.forEach((post) => {
         updatedPostsList.push({
-          imageUrlProfile: userData.Image,
+          imageUrlProfile: userData.Image || profileImage.profilePicUrl,
           name: userData.fullName,
           email: userData.email,
           imageUrlPost: post.imageUrl,
@@ -150,6 +151,7 @@ const PostsProvider = ({ children }) => {
     userData.Image,
     userData.email,
     userData.fullName,
+    profileImage.profilePicUrl,
   ]);
 
   return (

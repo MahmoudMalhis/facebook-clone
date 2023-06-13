@@ -45,10 +45,8 @@ const CreatePostDialog = ({ open, setOpen }) => {
     let imageUrl = null;
 
     if (file) {
-      const uploadTask = uploadBytesResumable(
-        ref(storage, `/image/${file.name}`),
-        file
-      );
+      const storageRef = ref(storage, `/image/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
       try {
         await uploadTask;
@@ -60,13 +58,7 @@ const CreatePostDialog = ({ open, setOpen }) => {
       const post = {
         imageUrl,
         text: postText,
-        createdAt: new Date().toLocaleString([], {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-        }),
+        createdAt: new Date().toLocaleString(),
       };
       await addDoc(
         collection(firestore, "users", userData.email, "posts"),

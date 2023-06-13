@@ -53,7 +53,6 @@ export const StyledIconButton = styled(IconButton)(({ theme }) => ({
   marginTop: "10px",
   "&:hover": {
     color: "#0573e7",
-    backgroundColor: "#f7f8fa",
     backgroundColor: "#f0f2f5",
   },
 }));
@@ -130,4 +129,6 @@ export const CustomLinearScaleIcon = styled(LinearScaleIcon)(({}) => ({
 export const CustomLink = styled(Link)(({}) => ({
   color: "inherit",
   textDecoration: "none",
+  marginTop: "10px",
+  display: "block",
 }));
