@@ -20,12 +20,11 @@ const ProfileCoverPhoto = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const { friendData, setEmailAddressForData } = useContext(FriendDataContext);
-  const { userDataContext } = useContext(AuthContext);
+  const userDataContext = useContext(AuthContext);
   const userData = friendData ?? userDataContext;
 
   const { friendImage, setEmailAddress } = useContext(FriendPicContext);
   const profileImageContext = useContext(ProfilePicContext);
-  const profileImage = friendImage ?? profileImageContext;
 
   useEffect(() => {
     setEmailAddress(email);
@@ -41,15 +40,16 @@ const ProfileCoverPhoto = () => {
     let imageUrl = null;
 
     if (selectedImage) {
-      const oldImageRef = ref(storage, `/coverPhotos/${file.name}`);
       try {
-        await deleteObject(oldImageRef);
+        await deleteObject(ref(storage, `/coverPhotos/${file.name}`));
       } catch (error) {}
     }
 
     if (file) {
-      const storageRef = ref(storage, `/coverPhotos/${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      const uploadTask = uploadBytesResumable(
+        ref(storage, `/coverPhotos/${file.name}`),
+        file
+      );
 
       try {
         await uploadTask;
@@ -61,13 +61,11 @@ const ProfileCoverPhoto = () => {
           { imageUrl },
           { merge: true }
         );
+        setFile(null);
+        handleClose();
+        setSelectedImage(null);
       } catch (error) {}
     }
-
-    try {
-      setFile(null);
-      handleClose();
-    } catch (error) {}
   };
 
   const handleClose = () => {
@@ -85,29 +83,34 @@ const ProfileCoverPhoto = () => {
 
   return (
     <>
-      <ImageCover src={profileImage?.cover} />
       {friendData ? (
-        <AddFriendButton />
+        <>
+          <ImageCover src={friendImage?.cover} />
+          <AddFriendButton />
+        </>
       ) : (
-        <StyledIconButton onClick={handlePostClick}>
-          <Typography
-            marginLeft="10px"
-            color="#0573e7"
-            bgcolor="#f0f2f5"
-            padding="5px 10px"
-            borderRadius="5px"
-            fontSize="10px"
-          >
-            Edit cover photo
-          </Typography>
-        </StyledIconButton>
+        <>
+          <ImageCover src={profileImageContext?.cover} />
+          <StyledIconButton onClick={handlePostClick}>
+            <Typography
+              marginLeft="10px"
+              color="#0573e7"
+              bgcolor="#f0f2f5"
+              padding="5px 10px"
+              borderRadius="5px"
+              fontSize="10px"
+            >
+              Edit cover photo
+            </Typography>
+          </StyledIconButton>
+        </>
       )}
       <PhotoDialog
         open={open}
         onClose={handleClose}
         onUploadAndClose={handleUploadAndClose}
         onChange={handleChange}
-        selectedImage={profileImageContext.cover}
+        selectedImage={selectedImage}
       />
     </>
   );

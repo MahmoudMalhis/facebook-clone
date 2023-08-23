@@ -19,8 +19,8 @@ import { FriendPicContext } from "../../../context/FriendPicContext";
 const ProfileAvatar = () => {
   const [openProfilePic, setOpenProfilePic] = useState(false);
   const [fileProfilePic, setFileProfilePic] = useState(null);
-  const [selectedImageProfilePic, setSelectedImageProfilePic] = useState(null);
   const [isProfilePicSelected, setIsProfilePicSelected] = useState(false);
+  const [selectedImageProfilePic, setSelectedImageProfilePic] = useState(null);
 
   const { friendData } = useContext(FriendDataContext);
   const userDataContext = useContext(AuthContext);
@@ -55,14 +55,12 @@ const ProfileAvatar = () => {
           { profilePicUrl: imageUrl },
           { merge: true }
         );
+        setFileProfilePic(null);
+        setIsProfilePicSelected(true);
+        setSelectedImageProfilePic(null);
+        handleCloseProfilePic();
       } catch (error) {}
     }
-
-    try {
-      setFileProfilePic(null);
-      setIsProfilePicSelected(true);
-      handleCloseProfilePic();
-    } catch (error) {}
   };
 
   const handleCloseProfilePic = () => {
@@ -87,6 +85,7 @@ const ProfileAvatar = () => {
             <StyledAvatar
               alt={userData.fullName}
               src={profileImage.profilePicUrl}
+              sx={{ top: { lg: "-65px" }, left: { lg: "80px" } }}
             ></StyledAvatar>
           )
         ) : isProfilePicSelected ? (
@@ -115,7 +114,7 @@ const ProfileAvatar = () => {
         onClose={handleCloseProfilePic}
         onUploadAndClose={handleUploadAndCloseProfilePic}
         onChange={handleChangeProfilePic}
-        selectedImage={profileImage.profilePicUrl}
+        selectedImage={selectedImageProfilePic}
       />
     </>
   );

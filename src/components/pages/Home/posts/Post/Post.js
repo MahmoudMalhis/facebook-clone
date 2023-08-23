@@ -7,7 +7,6 @@ import PostComments from "./PostComments";
 import LoadingDataContext from "../../../../../context/LoadingDataContext";
 import SkeletonLod from "../../../../Skeleton";
 import { PostsContext } from "../../../../../context/PostsContext";
-import { ActionsPostContext } from "../../../../../context/ActionsPostContext";
 
 const Post = ({ type }) => {
   const { isLoading } = useContext(LoadingDataContext);

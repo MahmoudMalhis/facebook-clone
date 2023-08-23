@@ -13,7 +13,6 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import MenuProfile from "./Menu";
-import { PostsContext } from "../../../context/PostsContext";
 
 const AddFriendButton = () => {
   const { email } = useParams();
@@ -34,7 +33,7 @@ const AddFriendButton = () => {
   const updatedPostsFriendRef = useRef([]);
   useEffect(() => {
     if (Object.keys(friendData).length) {
-      const unsubscribe = onSnapshot(
+      return onSnapshot(
         collection(firestore, "users", friendData.email, "posts/"),
         (snapshot) => {
           const updatedPosts = snapshot.docs.map((doc) => ({
@@ -44,14 +43,13 @@ const AddFriendButton = () => {
           updatedPostsFriendRef.current = updatedPosts;
         }
       );
-      return () => unsubscribe();
     }
   }, [friendData]);
 
   const updatedPostsUserRef = useRef([]);
   useEffect(() => {
     if (Object.keys(userDataContext).length) {
-      const unsubscribe = onSnapshot(
+      return onSnapshot(
         collection(firestore, "users", userDataContext.email, "posts/"),
         (snapshot) => {
           const updatedPosts = snapshot.docs.map((doc) => ({
@@ -61,7 +59,6 @@ const AddFriendButton = () => {
           updatedPostsUserRef.current = updatedPosts;
         }
       );
-      return () => unsubscribe();
     }
   }, [userDataContext]);
 
@@ -82,8 +79,7 @@ const AddFriendButton = () => {
         posts: updatedPostsUserRef.current,
         isFavorite: false,
       });
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleAddFriend = async () => {
@@ -129,8 +125,7 @@ const AddFriendButton = () => {
           addedFriendData
         ),
       ]);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -174,8 +169,7 @@ const AddFriendButton = () => {
         added();
         confirm();
       };
-    } catch (error) {
-    }
+    } catch (error) {}
   }, [userDataContext.email, setIsLoading]);
 
   const senderId = addedFriends.find((friend) => friend.senderId === email);

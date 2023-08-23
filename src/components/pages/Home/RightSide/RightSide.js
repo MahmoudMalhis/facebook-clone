@@ -5,7 +5,6 @@ import { AuthContext } from "../../../../context/AuthContext";
 import { useState, useContext, useEffect } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestore } from "../../../firebase";
-import LoadingDataContext from "../../../../context/LoadingDataContext";
 
 const RightSide = () => {
   const userDataContext = useContext(AuthContext);

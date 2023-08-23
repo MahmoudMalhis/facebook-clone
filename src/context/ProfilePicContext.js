@@ -17,7 +17,10 @@ export const ProfilePicProvider = ({ children }) => {
           if (doc.exists()) {
             const profileData = doc.data();
             if (profileData.profilePicUrl) {
-              setProfileImage({ profilePic: profileData.profilePicUrl });
+              setProfileImage({
+                ...profileData,
+                profilePic: profileData.profilePicUrl,
+              });
             }
             if (profileData.imageUrl) {
               setProfileImage({ ...profileData, cover: profileData.imageUrl });

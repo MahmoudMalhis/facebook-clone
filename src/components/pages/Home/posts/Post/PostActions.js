@@ -19,7 +19,6 @@ import { ActionsPostContext } from "../../../../../context/ActionsPostContext";
 const PostActions = ({ post }) => {
   const { showComments, setShowComments } = useContext(ActionsPostContext);
   const [isLiked, setIsLiked] = useState(false);
-  const [likesList, setLikesList] = useState([]);
   const { postsList } = useContext(PostsContext);
   const userData = useContext(AuthContext);
 
@@ -34,18 +33,12 @@ const PostActions = ({ post }) => {
         likePostId.id
       );
 
-      const unsubscribe = onSnapshot(postRef, (snapshot) => {
-        const postData = snapshot.data();
-        const currentLikesList = postData.likesList || [];
+      return onSnapshot(postRef, (snapshot) => {
+        const currentLikesList = snapshot.data()?.likesList || [];
         const isUserLiked = currentLikesList.includes(userData.email);
 
         setIsLiked(isUserLiked);
-        setLikesList(currentLikesList);
       });
-
-      return () => {
-        unsubscribe();
-      };
     }
   }, [likePostId, userData.email]);
 

@@ -26,16 +26,12 @@ const MenuProfile = () => {
   const handleFavorite = async () => {
     friends.forEach(async (friend) => {
       if (friend.senderId === friendData.email) {
-        const friendDocRef = doc(
-          firestore,
-          "users",
-          userData.email,
-          "friend",
-          friend.id
+        await updateDoc(
+          doc(firestore, "users", userData.email, "friend", friend.id),
+          {
+            isFavorite: !friend.isFavorite,
+          }
         );
-        await updateDoc(friendDocRef, {
-          isFavorite: !friend.isFavorite,
-        });
       }
     });
     handleCloseCommentMenu();
